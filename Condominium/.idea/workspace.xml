@@ -4,7 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2e934ded-b2fb-4671-8a0c-f8e48abf4266" name="Changes" comment="smell" />
+    <list default="true" id="2e934ded-b2fb-4671-8a0c-f8e48abf4266" name="Changes" comment="smell">
+      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/index.pb" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/sonarlint/issuestore/index.pb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SonarCloud/Sonar_todo.txt" beforeDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -104,7 +108,7 @@
       <recent name="logic.controller.guicontroller.second" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.Main1GUI">
+  <component name="RunManager" selected="Application.Main2GUI">
     <configuration name="Main1GUI" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="logic.controller.guicontroller.first.general.Main1GUI" />
       <module name="Condominium" />
@@ -168,8 +172,8 @@
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.Main1GUI" />
         <item itemvalue="Application.Main2GUI" />
+        <item itemvalue="Application.Main1GUI" />
         <item itemvalue="JUnit.AllTests" />
         <item itemvalue="JUnit.test in Condominium" />
       </list>
@@ -297,6 +301,9 @@
       <workItem from="1644787593438" duration="387000" />
       <workItem from="1644788955923" duration="262000" />
       <workItem from="1644789656988" duration="819000" />
+      <workItem from="1646132222135" duration="128000" />
+      <workItem from="1646132947992" duration="1810000" />
+      <workItem from="1646142121191" duration="223000" />
     </task>
     <task id="LOCAL-00001" summary="prova pack">
       <created>1638798010140</created>
