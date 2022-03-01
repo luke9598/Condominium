@@ -1,0 +1,2061 @@
+Index: src/logic/controller/guicontroller/general/MenuGUI.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package logic.controller.guicontroller.general;\r\n\r\nimport javafx.collections.ObservableList;\r\nimport javafx.fxml.FXML;\r\nimport javafx.fxml.FXMLLoader;\r\nimport javafx.fxml.Initializable;\r\nimport javafx.scene.Parent;\r\nimport javafx.scene.control.Button;\r\nimport javafx.scene.control.Label;\r\nimport javafx.scene.control.ScrollPane;\r\nimport javafx.scene.image.ImageView;\r\nimport javafx.scene.layout.Pane;\r\nimport javafx.scene.layout.VBox;\r\nimport logic.controller.applicationcontroller.PostController;\r\nimport logic.controller.guicontroller.general.home.PostGUI;\r\nimport logic.engineeringclasses.bean.PostBean;\r\nimport logic.model.Post;\r\nimport logic.model.UserSingleton;\r\nimport java.io.IOException;\r\nimport java.net.URL;\r\nimport java.util.ResourceBundle;\r\n\r\npublic class MenuGUI extends MainGUI implements Initializable {\r\n\r\n    public static final UserSingleton sg = UserSingleton.getInstance();\r\n    private final PostController controller = new PostController();\r\n    private final VBox scrollBox = new VBox();\r\n\r\n    @FXML private Button btnSign;\r\n    @FXML private Button btnApartment;\r\n    @FXML private Label lbName;\r\n    @FXML private Button btnMeeting;\r\n    @FXML private Button btnHome;\r\n    @FXML private Label tfCondominiumCode;\r\n    @FXML private Label lbTitle; //TODO\r\n    @FXML private ImageView imgUser; //TODO\r\n\r\n    @FXML public void btnHomeClick() {\r\n        scrollBox.getChildren().clear();\r\n        Pane addPost = view.getPage(\"AddPost\");\r\n        scrollBox.getChildren().add(addPost);\r\n        ObservableList<Post> posts = controller.loadPost();\r\n        loadPosts(posts);\r\n        border.setRight(null);\r\n        border.setCenter(new ScrollPane(scrollBox));\r\n    }\r\n\r\n    @FXML public void btnMeetingClick() {\r\n        border.setRight(null);\r\n        try{\r\n        switch (sg.getRole()) {\r\n            case ADMINISTRATOR:\r\n                FXMLLoader loader = view.loader(\"TabOrganize\");\r\n                Parent root = loader.load();\r\n               // TabOrganizeGUI tab = new TabOrganizeGUI();\r\n              //  tab.regTabClick();\r\n                border.setCenter(root);\r\n                break;\r\n            case OWNER:\r\n\r\n            case RESIDENT:\r\n                scrollBox.getChildren().clear();\r\n                Pane Contact = view.getPage(\"Contact\");\r\n                scrollBox.getChildren().add(Contact);\r\n                border.setCenter(new ScrollPane(scrollBox));\r\n                break;\r\n        }}catch(Exception e){\r\n            System.out.println(\"ERROR\");\r\n            e.printStackTrace();\r\n        }\r\n    }\r\n\r\n    @FXML public void btnInfoClick() {\r\n        border.setRight(null);\r\n        switch (sg.getRole()){\r\n            case ADMINISTRATOR:\r\n                Pane condInfo = view.getPage(\"CondInfo\");\r\n                border.setCenter(condInfo);\r\n                break;\r\n            case OWNER:\r\n                Pane Rate = view.getPage(\"RateResident\");\r\n                border.setCenter(Rate);\r\n                break;\r\n            case RESIDENT:\r\n                Pane aptInfo = view.getPage(\"AptInfo\");\r\n                border.setCenter(aptInfo);\r\n                break;\r\n        }\r\n    }\r\n\r\n    @FXML private void btnSignOutClick() {\r\n        sg.clearState();\r\n        Pane log = view.getPage(\"Login\");\r\n        border.setRight(null);\r\n        border.setLeft(null);\r\n        border.setCenter(log);\r\n        fullScreen(false);\r\n    }\r\n\r\n    private void loadPosts(ObservableList<Post> posts) {\r\n        try {\r\n            for (int i = posts.size() - 1; i >= 0; i--) {\r\n                PostBean bean = setUpPost(posts.get(i));\r\n                FXMLLoader loader = view.loader(\"Post\");\r\n                Parent root = loader.load();\r\n                PostGUI postgui = loader.getController();\r\n                postgui.setUpPost(bean);\r\n                scrollBox.getChildren().add(root);\r\n            }\r\n        } catch (Exception e) {\r\n            e.printStackTrace();\r\n        }\r\n    }\r\n\r\n    private PostBean setUpPost(Post curr) {\r\n        PostBean post = new PostBean();\r\n        post.setId(curr.getId());\r\n        post.setImage(curr.getImage());\r\n        post.setText(curr.getText());\r\n        post.setUser(curr.getUser());\r\n        return post;\r\n    }\r\n\r\n    private void btnColor(Button btn) {\r\n        btn.setOnMouseEntered(event -> btn.setStyle(\"-fx-background-color : #0A0E3F\"));\r\n        btn.setOnMouseExited(event -> btn.setStyle(\"-fx-background-color : #0C39FF\"));\r\n        //TODO ADD TO CSS\r\n    }\r\n\r\n    public void setUp() throws IOException {\r\n        btnHomeClick();\r\n        btnColor(btnHome);\r\n        btnColor(btnMeeting);\r\n        btnColor(btnSign);\r\n        btnColor(btnApartment);\r\n        tfCondominiumCode.setText(sg.getAddress());\r\n        switch (sg.getRole()) {\r\n            case ADMINISTRATOR:\r\n                lbName.setText(sg.getAdministrator().getName());\r\n                btnApartment.setText(\"Condominium Info\");\r\n                btnMeeting.setText(\"Requests\");\r\n                break;\r\n            case OWNER:\r\n                lbName.setText(sg.getOwner().getName());\r\n                btnMeeting.setText(\"Request Meeting\");\r\n                btnApartment.setText(\"Rate Resident\");\r\n                break;\r\n            case RESIDENT:\r\n                lbName.setText(sg.getResident().getName());\r\n                btnMeeting.setText(\"Contact\");\r\n                btnApartment.setText(\"Apartment Info\");\r\n                break;\r\n        }\r\n    }\r\n\r\n    @Override\r\n    public void initialize(URL location, ResourceBundle resources) {\r\n\r\n        try {\r\n            setUp();\r\n        } catch (IOException e) {\r\n            e.printStackTrace();\r\n        }\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/logic/controller/guicontroller/general/MenuGUI.java b/src/logic/controller/guicontroller/general/MenuGUI.java
+--- a/src/logic/controller/guicontroller/general/MenuGUI.java	(revision 7d47bd5323c00044053142316b183ac00439c9f5)
++++ b/src/logic/controller/guicontroller/general/MenuGUI.java	(date 1639999283991)
+@@ -12,6 +12,7 @@
+ import javafx.scene.layout.Pane;
+ import javafx.scene.layout.VBox;
+ import logic.controller.applicationcontroller.PostController;
++import logic.controller.guicontroller.admin.condominium.InfoGUI;
+ import logic.controller.guicontroller.general.home.PostGUI;
+ import logic.engineeringclasses.bean.PostBean;
+ import logic.model.Post;
+@@ -72,19 +73,27 @@
+ 
+     @FXML public void btnInfoClick() {
+         border.setRight(null);
+-        switch (sg.getRole()){
+-            case ADMINISTRATOR:
+-                Pane condInfo = view.getPage("CondInfo");
+-                border.setCenter(condInfo);
+-                break;
+-            case OWNER:
+-                Pane Rate = view.getPage("RateResident");
+-                border.setCenter(Rate);
+-                break;
+-            case RESIDENT:
+-                Pane aptInfo = view.getPage("AptInfo");
+-                border.setCenter(aptInfo);
+-                break;
++        try{
++            switch (sg.getRole()){
++                case ADMINISTRATOR:
++                    FXMLLoader loader = view.loader("Info");
++                    Parent root = loader.load();
++                    InfoGUI info = loader.getController();
++                    info.setUp(sg.getAddress());
++                    border.setCenter(root);
++                    break;
++                case OWNER:
++                    Pane Rate = view.getPage("RateResident");
++                    border.setCenter(Rate);
++                    break;
++                case RESIDENT:
++                    Pane aptInfo = view.getPage("AptInfo");
++                    border.setCenter(aptInfo);
++                    break;
++
++            }
++        }catch(Exception e){
++            e.printStackTrace();
+         }
+     }
+ 
+@@ -136,17 +145,17 @@
+         tfCondominiumCode.setText(sg.getAddress());
+         switch (sg.getRole()) {
+             case ADMINISTRATOR:
+-                lbName.setText(sg.getAdministrator().getName());
++                lbName.setText(sg.getAdministrator().getUsrName());
+                 btnApartment.setText("Condominium Info");
+                 btnMeeting.setText("Requests");
+                 break;
+             case OWNER:
+-                lbName.setText(sg.getOwner().getName());
++                lbName.setText(sg.getOwner().getUsrName());
+                 btnMeeting.setText("Request Meeting");
+                 btnApartment.setText("Rate Resident");
+                 break;
+             case RESIDENT:
+-                lbName.setText(sg.getResident().getName());
++                lbName.setText(sg.getResident().getUsrName());
+                 btnMeeting.setText("Contact");
+                 btnApartment.setText("Apartment Info");
+                 break;
+Index: src/logic/model/User.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package logic.model;\r\n\r\npublic class User {\r\n\r\n\tprivate String userID;\r\n    private String name;\r\n\tprivate String email;\r\n\tprivate String password;\r\n\tprivate String address;\r\n\t\r\n\tpublic User(String userID,String name,String email,String password, String address){\r\n\t\tthis.setUserID(userID);\r\n\t\tthis.setName(name);\r\n\t\tthis.setEmail(email);\r\n\t\tthis.setPassword(password);\r\n\t\tthis.setAddress(address);\r\n\t}\r\n\t\r\n\tpublic String getUserID() {\r\n        return userID;\r\n    }\r\n\r\n    public void setUserID(String userID) {\r\n        this.userID = userID;\r\n    }\r\n    \r\n    public String getName() {\r\n        return name;\r\n    }\r\n\r\n    public void setName(String name){\r\n        this.name = name;\r\n    }\r\n\r\n    public String getEmail() {\r\n        return email;\r\n    }\r\n\r\n    public void setEmail(String email){\r\n        this.email = email;\r\n    }\r\n    \r\n    public String getPassword() {\r\n        return password;\r\n    }\r\n\r\n    public void setPassword(String password) {\r\n        this.password = password;\r\n    }\r\n    \r\n    public String getAddress() {\r\n        return address;\r\n    }\r\n\r\n    public void setAddress(String address) {\r\n        this.address = address;\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/logic/model/User.java b/src/logic/model/User.java
+--- a/src/logic/model/User.java	(revision 7d47bd5323c00044053142316b183ac00439c9f5)
++++ b/src/logic/model/User.java	(date 1639999284069)
+@@ -2,57 +2,76 @@
+ 
+ public class User {
+ 
+-	private String userID;
+-    private String name;
+-	private String email;
+-	private String password;
+-	private String address;
++	private String usrID;
++    private String usrName;
++	private String usrEmail;
++	private String usrPwd;
++    private String usrRole;
++	private String usrAddr;
+ 	
+-	public User(String userID,String name,String email,String password, String address){
+-		this.setUserID(userID);
+-		this.setName(name);
+-		this.setEmail(email);
+-		this.setPassword(password);
+-		this.setAddress(address);
+-	}
+-	
+-	public String getUserID() {
+-        return userID;
++	public User(String usrID, String usrName, String usrEmail, String usrPwd, String usrAddr){
++		this.setUsrID(usrID);
++		this.setUsrName(usrName);
++		this.setUsrEmail(usrEmail);
++		this.setUsrPwd(usrPwd);
++		this.setUsrAddr(usrAddr);
++	}
++
++    public User(String usrID, String usrName, String usrEmail, String usrPwd,String usrRole, String usrAddr){
++        this.setUsrID(usrID);
++        this.setUsrName(usrName);
++        this.setUsrEmail(usrEmail);
++        this.setUsrPwd(usrPwd);
++        this.setUsrRole(usrRole);
++        this.setUsrAddr(usrAddr);
++    }
++
++
++	public String getUsrID() {
++        return usrID;
+     }
+ 
+-    public void setUserID(String userID) {
+-        this.userID = userID;
++    public void setUsrID(String usrID) {
++        this.usrID = usrID;
+     }
+     
+-    public String getName() {
+-        return name;
++    public String getUsrName() {
++        return usrName;
+     }
+ 
+-    public void setName(String name){
+-        this.name = name;
++    public void setUsrName(String usrName){
++        this.usrName = usrName;
+     }
+ 
+-    public String getEmail() {
+-        return email;
++    public String getUsrEmail() {
++        return usrEmail;
+     }
+ 
+-    public void setEmail(String email){
+-        this.email = email;
++    public void setUsrEmail(String usrEmail){
++        this.usrEmail = usrEmail;
+     }
+     
+-    public String getPassword() {
+-        return password;
++    public String getUsrPwd() {
++        return usrPwd;
+     }
+ 
+-    public void setPassword(String password) {
+-        this.password = password;
++    public void setUsrPwd(String usrPwd) {
++        this.usrPwd = usrPwd;
+     }
+-    
+-    public String getAddress() {
+-        return address;
++
++    public String getUsrRole() {
++        return usrRole;
+     }
+ 
+-    public void setAddress(String address) {
+-        this.address = address;
++    public void setUsrRole(String usrRole) {
++        this.usrRole = usrRole;
++    }
++    
++    public String getUsrAddr() {
++        return usrAddr;
++    }
++
++    public void setUsrAddr(String usrAddr) {
++        this.usrAddr = usrAddr;
+     }
+ }
+Index: src/logic/view/CondInfoView.fxml
+===================================================================
+diff --git a/src/logic/view/CondInfoView.fxml b/src/logic/view/CondInfoView.fxml
+deleted file mode 100644
+--- a/src/logic/view/CondInfoView.fxml	(revision 7d47bd5323c00044053142316b183ac00439c9f5)
++++ /dev/null	(revision 7d47bd5323c00044053142316b183ac00439c9f5)
+@@ -1,36 +0,0 @@
+-<?xml version="1.0" encoding="UTF-8"?>
+-
+-<?import javafx.scene.control.*?>
+-<?import javafx.scene.image.Image?>
+-<?import javafx.scene.image.ImageView?>
+-<?import javafx.scene.layout.AnchorPane?>
+-<?import javafx.scene.layout.Pane?>
+-<?import javafx.scene.text.Text?>
+-<AnchorPane prefHeight="427.0" prefWidth="757.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="logic.controller.guicontroller.admin.organize.CondInfoGUI">
+-   <children>
+-      <TableView fx:id="condominiumTable" editable="true" layoutX="14.0" layoutY="14.0" onMouseClicked="#submitUser">
+-        <columns>
+-          <TableColumn fx:id="OwnerCol" prefWidth="125.0" resizable="false" text="Owner" />
+-          <TableColumn fx:id="ResidentCol" prefWidth="125.0" resizable="false" text="Resident" />
+-          <TableColumn fx:id="IdCol" prefWidth="125.0" resizable="false" text="Apartament ID" />
+-          <TableColumn fx:id="TaxCol" editable="true" prefWidth="125.0" resizable="false" text="Taxes" />
+-        </columns>
+-      </TableView>
+-      <Pane fx:id="InvPane" visible="false" layoutX="516.0" layoutY="14.0" prefHeight="400.0" prefWidth="241.0">
+-         <children>
+-            <Text fx:id="OwnerText" layoutX="7.0" layoutY="136.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Owner:" />
+-            <ImageView fx:id="userImg" fitWidth="80.0" layoutX="81.0" pickOnBounds="true" preserveRatio="true">
+-<!--               <image>-->
+-<!--                   <Image url="@../../../../../../../../Downloads/2x/outline_person_black_24dp.png" />-->
+-<!--               </image>-->
+-            </ImageView>
+-            <TextField fx:id="OwnerFullName" editable="false" layoutX="64.0" layoutY="119.0" prefHeight="25.0" prefWidth="166.0" />
+-            <Text fx:id="ResidentText" layoutX="7.0" layoutY="167.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Resident:" />
+-            <TextField fx:id="ResidentFullName" editable="false" layoutX="64.0" layoutY="150.0" prefHeight="25.0" prefWidth="166.0" />
+-            <TextArea fx:id="mailText" layoutX="65.0" layoutY="190.0" onKeyReleased="#enableButton" prefHeight="70.0" prefWidth="166.0" />
+-            <Text layoutX="6.0" layoutY="205.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Mail Text:" />
+-            <Button fx:id="sendMailBtn" layoutX="65.0" layoutY="267.0" mnemonicParsing="false" onAction="#sendMail" text="Send Mail" />
+-         </children>
+-      </Pane>
+-   </children>
+-</AnchorPane>
+Index: bin/logic/view/CondInfoView.fxml
+===================================================================
+diff --git a/bin/logic/view/CondInfoView.fxml b/bin/logic/view/CondInfoView.fxml
+deleted file mode 100644
+--- a/bin/logic/view/CondInfoView.fxml	(revision 7d47bd5323c00044053142316b183ac00439c9f5)
++++ /dev/null	(revision 7d47bd5323c00044053142316b183ac00439c9f5)
+@@ -1,36 +0,0 @@
+-<?xml version="1.0" encoding="UTF-8"?>
+-
+-<?import javafx.scene.control.*?>
+-<?import javafx.scene.image.Image?>
+-<?import javafx.scene.image.ImageView?>
+-<?import javafx.scene.layout.AnchorPane?>
+-<?import javafx.scene.layout.Pane?>
+-<?import javafx.scene.text.Text?>
+-<AnchorPane prefHeight="427.0" prefWidth="757.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="logic.controller.guicontroller.admin.organize.CondInfoGUI">
+-   <children>
+-      <TableView fx:id="condominiumTable" editable="true" layoutX="14.0" layoutY="14.0" onMouseClicked="#submitUser">
+-        <columns>
+-          <TableColumn fx:id="OwnerCol" prefWidth="125.0" resizable="false" text="Owner" />
+-          <TableColumn fx:id="ResidentCol" prefWidth="125.0" resizable="false" text="Resident" />
+-          <TableColumn fx:id="IdCol" prefWidth="125.0" resizable="false" text="Apartament ID" />
+-          <TableColumn fx:id="TaxCol" editable="true" prefWidth="125.0" resizable="false" text="Taxes" />
+-        </columns>
+-      </TableView>
+-      <Pane fx:id="InvPane" visible="false" layoutX="516.0" layoutY="14.0" prefHeight="400.0" prefWidth="241.0">
+-         <children>
+-            <Text fx:id="OwnerText" layoutX="7.0" layoutY="136.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Owner:" />
+-            <ImageView fx:id="userImg" fitWidth="80.0" layoutX="81.0" pickOnBounds="true" preserveRatio="true">
+-<!--               <image>-->
+-<!--                   <Image url="@../../../../../../../../Downloads/2x/outline_person_black_24dp.png" />-->
+-<!--               </image>-->
+-            </ImageView>
+-            <TextField fx:id="OwnerFullName" editable="false" layoutX="64.0" layoutY="119.0" prefHeight="25.0" prefWidth="166.0" />
+-            <Text fx:id="ResidentText" layoutX="7.0" layoutY="167.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Resident:" />
+-            <TextField fx:id="ResidentFullName" editable="false" layoutX="64.0" layoutY="150.0" prefHeight="25.0" prefWidth="166.0" />
+-            <TextArea fx:id="mailText" layoutX="65.0" layoutY="190.0" onKeyReleased="#enableButton" prefHeight="70.0" prefWidth="166.0" />
+-            <Text layoutX="6.0" layoutY="205.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Mail Text:" />
+-            <Button fx:id="sendMailBtn" layoutX="65.0" layoutY="267.0" mnemonicParsing="false" onAction="#sendMail" text="Send Mail" />
+-         </children>
+-      </Pane>
+-   </children>
+-</AnchorPane>
+Index: src/logic/engineeringclasses/exception/PatternException.java
+===================================================================
+diff --git a/src/logic/engineeringclasses/exception/PatternException.java b/src/logic/engineeringclasses/exception/PatternException.java
+deleted file mode 100644
+--- a/src/logic/engineeringclasses/exception/PatternException.java	(revision 7d47bd5323c00044053142316b183ac00439c9f5)
++++ /dev/null	(revision 7d47bd5323c00044053142316b183ac00439c9f5)
+@@ -1,12 +0,0 @@
+-package logic.engineeringclasses.exception;
+-
+-public class PatternException extends Exception {
+-		  /**
+-	 * 
+-	 */
+-	private static final long serialVersionUID = 1L;
+-	
+-	public PatternException(String errorMessage) {
+-		super(errorMessage);
+-	}
+-}
+Index: src/logic/controller/applicationcontroller/CondominiumController.java
+===================================================================
+diff --git a/src/logic/controller/applicationcontroller/CondominiumController.java b/src/logic/controller/applicationcontroller/CondominiumController.java
+deleted file mode 100644
+--- a/src/logic/controller/applicationcontroller/CondominiumController.java	(revision 7d47bd5323c00044053142316b183ac00439c9f5)
++++ /dev/null	(revision 7d47bd5323c00044053142316b183ac00439c9f5)
+@@ -1,4 +0,0 @@
+-package logic.controller.applicationcontroller;
+-
+-public class CondominiumController {
+-}
+Index: src/logic/controller/guicontroller/admin/organize/CondInfoGUI.java
+===================================================================
+diff --git a/src/logic/controller/guicontroller/admin/organize/CondInfoGUI.java b/src/logic/controller/guicontroller/admin/organize/CondInfoGUI.java
+deleted file mode 100644
+--- a/src/logic/controller/guicontroller/admin/organize/CondInfoGUI.java	(revision 7d47bd5323c00044053142316b183ac00439c9f5)
++++ /dev/null	(revision 7d47bd5323c00044053142316b183ac00439c9f5)
+@@ -1,115 +0,0 @@
+-package logic.controller.guicontroller.admin.organize;
+-
+-import javafx.collections.ObservableList;
+-import javafx.event.ActionEvent;
+-import javafx.fxml.FXML;
+-import javafx.fxml.Initializable;
+-import javafx.scene.control.*;
+-import javafx.scene.control.cell.PropertyValueFactory;
+-import javafx.scene.image.ImageView;
+-import javafx.scene.input.KeyEvent;
+-import javafx.scene.input.MouseEvent;
+-import javafx.scene.layout.Pane;
+-import javafx.scene.text.Text;
+-import logic.controller.applicationcontroller.ApartmentController;
+-import logic.controller.applicationcontroller.SendEmail;
+-import logic.controller.applicationcontroller.ViewController;
+-import logic.engineeringclasses.dao.ApartmentDAO;
+-import logic.model.Apartment;
+-import logic.model.UserSingleton;
+-
+-import java.net.URL;
+-import java.sql.SQLException;
+-import java.util.Optional;
+-import java.util.ResourceBundle;
+-
+-public class CondInfoGUI implements Initializable{
+-
+-        private ViewController view = new ViewController();
+-        private static UserSingleton sg = UserSingleton.getInstance();
+-        private ApartmentController aptController = new ApartmentController();
+-
+-
+-
+-        @FXML private TextField OwnerFullName;
+-        @FXML private TextField ResidentFullName;
+-        @FXML private Pane InvPane;
+-        @FXML private Text ResidentText;
+-        @FXML private Text OwnerText;
+-        @FXML private ImageView userImg;
+-        @FXML private TextArea mailText;
+-        @FXML private Button sendMailBtn;
+-        @FXML private TableColumn<Apartment, String> IdCol;
+-        @FXML private TableColumn<Apartment, String> OwnerCol;
+-        @FXML private TableColumn<Apartment, String> ResidentCol;
+-        @FXML private TableColumn<Apartment, String> TaxCol;
+-        @FXML private TableView<Apartment> condominiumTable;
+-
+-
+-        @Override
+-        public void initialize(URL location, ResourceBundle resources){
+-            sendMailBtn.setDisable(true);
+-
+-            OwnerCol.setCellValueFactory(new PropertyValueFactory<>("owner"));
+-            ResidentCol.setCellValueFactory(new PropertyValueFactory<>("resident"));
+-            IdCol.setCellValueFactory(new PropertyValueFactory<>("number"));
+-            TaxCol.setCellValueFactory(new PropertyValueFactory<>("fee"));
+-
+-            final ObservableList<Apartment> apartment;
+-            try {
+-                apartment = aptController.loadApartments(sg.getAddress());
+-                System.out.println("ciao");
+-                condominiumTable.setItems(apartment);
+-            } catch (SQLException e) {
+-                e.printStackTrace();
+-            }
+-        }
+-
+-        public void submitUser(MouseEvent mouseEvent) throws SQLException {
+-            mailText.setText("");
+-            sendMailBtn.setDisable(true);
+-            InvPane.setVisible(true);
+-            OwnerFullName.setText(condominiumTable.getSelectionModel().getSelectedItem().getOwner());
+-            ResidentFullName.setText(condominiumTable.getSelectionModel().getSelectedItem().getResident());
+-        }
+-
+-        public void sendMail(ActionEvent actionEvent) throws SQLException {
+-            String mail = aptController.checkMailById(aptController.checkUserAptFromNumber((condominiumTable.getSelectionModel().getSelectedItem().getNumber()),sg.getAddress(),"apt_own"));
+-            System.out.println(mail);
+-
+-            String subject = "Hi from Condominium!";
+-            String body = mailText.getText();
+-            String message = String.format(body);
+-
+-            String[] recipients = new String[] { mail };
+-            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+-            alert.setTitle("Confirmation");
+-            alert.setHeaderText("Confirm to send email?");
+-            alert.setResizable(false);
+-            alert.setContentText("Are you sure to send mail to "+mail+" with text '"+mailText.getText()+"' as message?");
+-            Optional<ButtonType> result = alert.showAndWait();
+-            ButtonType button = result.orElse(ButtonType.CANCEL);
+-            if (button == ButtonType.OK) {
+-                new SendEmail().send(recipients, recipients, subject, message);
+-                Alert alert1 = new Alert(Alert.AlertType.INFORMATION);
+-                alert1.setTitle("Information");
+-                alert1.setHeaderText("Mail sent to "+mail+"!");
+-                alert1.setContentText("");
+-                alert1.show();
+-            }else{
+-                Alert alert1 = new Alert(Alert.AlertType.INFORMATION);
+-                alert1.setTitle("Information");
+-                alert1.setHeaderText("Mail not sent!");
+-                alert1.setContentText("");
+-                alert1.show();
+-            }
+-        }
+-
+-        public void enableButton(KeyEvent keyEvent) {
+-            if(mailText.getText().matches("( *)")){
+-                sendMailBtn.setDisable(true);
+-            }else{
+-                sendMailBtn.setDisable(false);
+-            }
+-        }
+-}
+Index: src/logic/model/Resident.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package logic.model;\r\n\r\nimport logic.engineeringclasses.exception.PatternException;\r\n\r\npublic class Resident extends User{\r\n\r\n\tpublic Resident(String userID, String name, String email, String password,String cc)throws PatternException{\r\n\t\tsuper( userID,  name,  email,  password, cc);\r\n\t\t// TODO Auto-generated constructor stub\r\n\t}\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/logic/model/Resident.java b/src/logic/model/Resident.java
+--- a/src/logic/model/Resident.java	(revision 7d47bd5323c00044053142316b183ac00439c9f5)
++++ b/src/logic/model/Resident.java	(date 1639999284069)
+@@ -1,10 +1,10 @@
+ package logic.model;
+ 
+-import logic.engineeringclasses.exception.PatternException;
++import logic.engineeringclasses.exception.InputException;
+ 
+ public class Resident extends User{
+ 
+-	public Resident(String userID, String name, String email, String password,String cc)throws PatternException{
++	public Resident(String userID, String name, String email, String password,String cc)throws InputException {
+ 		super( userID,  name,  email,  password, cc);
+ 		// TODO Auto-generated constructor stub
+ 	}
+Index: src/logic/model/Owner.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package logic.model;\r\n\r\nimport logic.engineeringclasses.exception.PatternException;\r\n\r\npublic class Owner extends User{\r\n\r\n\tpublic Owner(String userID, String name, String email, String password,String cc)throws PatternException{\r\n\t\tsuper( userID,  name,  email,  password,cc);\r\n\t\t// TODO Auto-generated constructor stub\r\n\t}\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/logic/model/Owner.java b/src/logic/model/Owner.java
+--- a/src/logic/model/Owner.java	(revision 7d47bd5323c00044053142316b183ac00439c9f5)
++++ b/src/logic/model/Owner.java	(date 1639999284069)
+@@ -1,10 +1,10 @@
+ package logic.model;
+ 
+-import logic.engineeringclasses.exception.PatternException;
++import logic.engineeringclasses.exception.InputException;
+ 
+ public class Owner extends User{
+ 
+-	public Owner(String userID, String name, String email, String password,String cc)throws PatternException{
++	public Owner(String userID, String name, String email, String password,String cc)throws InputException {
+ 		super( userID,  name,  email,  password,cc);
+ 		// TODO Auto-generated constructor stub
+ 	}
+Index: bin/logic/view/MeetTableView.fxml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n\r\n<?import javafx.scene.control.*?>\r\n\r\n<TableView fx:id=\"tableMeeting\" minHeight=\"400.0\" minWidth=\"400.0\" onMouseClicked=\"#getSelected\" stylesheets=\"@style.css\" xmlns=\"http://javafx.com/javafx\" xmlns:fx=\"http://javafx.com/fxml\" fx:controller=\"logic.controller.guicontroller.admin.requests.meeting.MeetingTableGUI\">\r\n  <columns>\r\n    <TableColumn fx:id=\"tcId\" editable=\"false\" styleClass=\"tableColumn\"  text=\"ID\" />\r\n    <TableColumn fx:id=\"tcName\" editable=\"false\" styleClass=\"tableColumn\"  text=\"Name\" />\r\n    <TableColumn fx:id=\"tcAddr\" editable=\"false\" styleClass=\"tableColumn\" text=\"Address\" />\r\n    <TableColumn fx:id=\"tcObj\" editable=\"false\" styleClass=\"tableColumn\"  text=\"Object\" />\r\n    <TableColumn fx:id=\"tcTxt\" editable=\"false\" text=\"Text\" />\r\n  </columns>\r\n</TableView>\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/bin/logic/view/MeetTableView.fxml b/bin/logic/view/MeetTableView.fxml
+--- a/bin/logic/view/MeetTableView.fxml	(revision 7d47bd5323c00044053142316b183ac00439c9f5)
++++ b/bin/logic/view/MeetTableView.fxml	(date 1639999284085)
+@@ -2,12 +2,12 @@
+ 
+ <?import javafx.scene.control.*?>
+ 
+-<TableView fx:id="tableMeeting" minHeight="400.0" minWidth="400.0" onMouseClicked="#getSelected" stylesheets="@style.css" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="logic.controller.guicontroller.admin.requests.meeting.MeetingTableGUI">
++<TableView fx:id="tableMeeting" onMouseClicked="#getSelected" stylesheets="@style.css" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="logic.controller.guicontroller.admin.requests.meeting.MeetingTableGUI">
+   <columns>
+-    <TableColumn fx:id="tcId" editable="false" styleClass="tableColumn"  text="ID" />
+-    <TableColumn fx:id="tcName" editable="false" styleClass="tableColumn"  text="Name" />
+-    <TableColumn fx:id="tcAddr" editable="false" styleClass="tableColumn" text="Address" />
+-    <TableColumn fx:id="tcObj" editable="false" styleClass="tableColumn"  text="Object" />
+-    <TableColumn fx:id="tcTxt" editable="false" text="Text" />
++    <TableColumn fx:id="tcId" editable="false" text="ID"/>
++    <TableColumn fx:id="tcName" editable="false" text="Name"/>
++    <TableColumn fx:id="tcAddr" editable="false" text="Address"/>
++    <TableColumn fx:id="tcObj" editable="false" text="Object"/>
++    <TableColumn fx:id="tcTxt" editable="false" text="Text"/>
+   </columns>
+ </TableView>
+Index: bin/logic/view/InfoView.fxml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n\r\n<?import javafx.scene.control.*?>\r\n\r\n<TableView maxHeight=\"-Infinity\" maxWidth=\"-Infinity\" minHeight=\"-Infinity\" minWidth=\"-Infinity\" onMouseClicked=\"#getSelected\" prefHeight=\"400.0\" prefWidth=\"600.0\" xmlns:fx=\"http://javafx.com/fxml/1\" xmlns=\"http://javafx.com/javafx/11.0.2\" fx:controller=\"logic.controller.guicontroller.admin.condominium.InfoGUI\">\r\n  <columns>\r\n    <TableColumn fx:id=\"tcId\" prefWidth=\"75.0\" text=\"ID\" />\r\n    <TableColumn fx:id=\"tcName\" prefWidth=\"75.0\" text=\"Name\" />\r\n      <TableColumn fx:id=\"tcEmail\" prefWidth=\"75.0\" text=\"Email\" />\r\n      <TableColumn fx:id=\"tcPassword\" prefWidth=\"75.0\" text=\"Password\" />\r\n      <TableColumn fx:id=\"tcAddress\" prefWidth=\"75.0\" text=\"Address\" />\r\n      <TableColumn fx:id=\"tcApartment\" prefWidth=\"75.0\" text=\"Apartment\" />\r\n  </columns>\r\n</TableView>\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/bin/logic/view/InfoView.fxml b/bin/logic/view/InfoView.fxml
+--- a/bin/logic/view/InfoView.fxml	(revision 7d47bd5323c00044053142316b183ac00439c9f5)
++++ b/bin/logic/view/InfoView.fxml	(date 1639999284069)
+@@ -2,13 +2,13 @@
+ 
+ <?import javafx.scene.control.*?>
+ 
+-<TableView maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#getSelected" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/11.0.2" fx:controller="logic.controller.guicontroller.admin.condominium.InfoGUI">
++<TableView fx:id="tableView" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#getSelected" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="logic.controller.guicontroller.admin.condominium.InfoGUI">
+   <columns>
+-    <TableColumn fx:id="tcId" prefWidth="75.0" text="ID" />
++    <TableColumn fx:id="tcID" prefWidth="75.0" text="ID" />
+     <TableColumn fx:id="tcName" prefWidth="75.0" text="Name" />
+-      <TableColumn fx:id="tcEmail" prefWidth="75.0" text="Email" />
+-      <TableColumn fx:id="tcPassword" prefWidth="75.0" text="Password" />
+-      <TableColumn fx:id="tcAddress" prefWidth="75.0" text="Address" />
+-      <TableColumn fx:id="tcApartment" prefWidth="75.0" text="Apartment" />
++    <TableColumn fx:id="tcEmail" prefWidth="75.0" text="Email" />
++    <TableColumn fx:id="tcPwd" prefWidth="75.0" text="Password" />
++    <TableColumn fx:id="tcRole" prefWidth="75.0" text="Role" />
++    <TableColumn fx:id="tcAddress" prefWidth="75.0" text="Address" />
+   </columns>
+ </TableView>
+Index: src/logic/controller/guicontroller/admin/condominium/InfoGUI.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package logic.controller.guicontroller.admin.condominium;\r\n\r\npublic class InfoGUI {\r\n\r\n    public void getSelected() {\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/logic/controller/guicontroller/admin/condominium/InfoGUI.java b/src/logic/controller/guicontroller/admin/condominium/InfoGUI.java
+--- a/src/logic/controller/guicontroller/admin/condominium/InfoGUI.java	(revision 7d47bd5323c00044053142316b183ac00439c9f5)
++++ b/src/logic/controller/guicontroller/admin/condominium/InfoGUI.java	(date 1639999283960)
+@@ -1,7 +1,41 @@
+ package logic.controller.guicontroller.admin.condominium;
+ 
++import javafx.collections.ObservableList;
++import javafx.fxml.FXML;
++import javafx.scene.control.TableColumn;
++import javafx.scene.control.TableView;
++import javafx.scene.control.cell.PropertyValueFactory;
++import logic.controller.applicationcontroller.UserController;
++import logic.model.User;
++
+ public class InfoGUI {
+ 
++    private final UserController controller = new UserController();
++
++    @FXML private TableView<User> tableView;
++    @FXML private TableColumn<User, String> tcID;
++    @FXML private TableColumn<User, String> tcName;
++    @FXML private TableColumn<User, String> tcEmail;
++    @FXML private TableColumn<User, String> tcPwd;
++    @FXML private TableColumn<User, String> tcRole;
++    @FXML private TableColumn<User, String> tcAddress;
++
+     public void getSelected() {
++
++    }
++
++    public void setUp(String address) {
++        tcID.setCellValueFactory(new PropertyValueFactory<>("usrID"));
++        tcName.setCellValueFactory(new PropertyValueFactory<>("usrName"));
++        tcEmail.setCellValueFactory(new PropertyValueFactory<>("usrEmail"));
++        tcPwd.setCellValueFactory(new PropertyValueFactory<>("usrPwd"));
++        tcRole.setCellValueFactory(new PropertyValueFactory<>("usrRole"));
++        tcAddress.setCellValueFactory(new PropertyValueFactory<>("usrAddr"));
++        try {
++            ObservableList<User> list = controller.loadUserList(address);
++            tableView.setItems(list);
++        }catch(Exception e) {
++            System.out.println("No");
++        }
+     }
+ }
+Index: src/logic/engineeringclasses/bean/UserBean.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package logic.engineeringclasses.bean;\r\n\r\npublic class UserBean {\r\n\r\n\tprivate int userID;\r\n    private String name;\r\n    private String surname;\r\n\tprivate String email;\r\n\tprivate String password;\r\n\tprivate String role;\r\n\tprivate String okPwd;\r\n\tprivate String address;\r\n\t\r\n\tpublic int getID() {\r\n        return userID;\r\n    }\r\n\r\n    public void setID(int userID) {\r\n        this.userID = userID;\r\n    }\r\n    \r\n    public String getName() {\r\n        return name;\r\n    }\r\n\r\n    public void setName(String name) {\r\n        this.name = name;\r\n    }\r\n\r\n    public String getSurname() {\r\n        return surname;\r\n    }\r\n\r\n    public void setSurname(String surname) {\r\n        this.surname = surname;\r\n    }\r\n    \r\n    public String getEmail() {\r\n        return email;\r\n    }\r\n\r\n    public void setEmail(String email)\t{\r\n        this.email = email;\r\n    }\r\n    \r\n    public String getPassword() {\r\n        return password;\r\n    }\r\n\r\n    public void setPassword(String password) {\r\n        this.password = password;\r\n    }\r\n    \r\n    public String getOkPassword() {\r\n        return okPwd;\r\n    }\r\n\r\n    public void setOkPassword(String okPwd) {\r\n        this.okPwd = okPwd;\r\n    }\r\n       \r\n    public String getRole() {\r\n        return role;\r\n    }\r\n\r\n    public void setRole(String role) {\r\n        this.role = role;\r\n    }\r\n    \r\n    public String getAddress() {\r\n        return address;\r\n    }\r\n\r\n    public void setAddress(String address) {\r\n        this.address = address;\r\n    }\r\n\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/logic/engineeringclasses/bean/UserBean.java b/src/logic/engineeringclasses/bean/UserBean.java
+--- a/src/logic/engineeringclasses/bean/UserBean.java	(revision 7d47bd5323c00044053142316b183ac00439c9f5)
++++ b/src/logic/engineeringclasses/bean/UserBean.java	(date 1639999469703)
+@@ -2,7 +2,7 @@
+ 
+ public class UserBean {
+ 
+-	private int userID;
++	//private String userID;
+     private String name;
+     private String surname;
+ 	private String email;
+@@ -10,14 +10,15 @@
+ 	private String role;
+ 	private String okPwd;
+ 	private String address;
+-	
+-	public int getID() {
+-        return userID;
+-    }
++    private int Id;
+ 
+-    public void setID(int userID) {
+-        this.userID = userID;
+-    }
++//	public String getID() {
++//        return userID;
++//    }
++//
++//    public void setID(String userID) {
++//        this.userID = userID;
++//    }
+     
+     public String getName() {
+         return name;
+@@ -75,4 +76,7 @@
+         this.address = address;
+     }
+ 
++    public void setID(int id) {this.Id = id;}
++
++    public int getID() {return this.Id;}
+ }
+Index: src/logic/engineeringclasses/query/RegisterQuery.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package logic.engineeringclasses.query;\r\n\r\nimport java.sql.ResultSet;\r\nimport java.sql.SQLException;\r\nimport java.sql.Statement;\r\n\r\npublic class RegisterQuery {\r\n\r\n    public static ResultSet selectRegistration(Statement stmt, String email, String address) throws SQLException {\r\n        String sql = \"SELECT reg_id from registration where reg_email='\" + email + \"'and reg_addr='\" + address+ \"'\";\r\n        System.out.println(sql);\r\n        return stmt.executeQuery(sql);\r\n    }\r\n    public static ResultSet selectRegisteredUserList(Statement stmt, String address) throws SQLException {\r\n        String sql = \"SELECT * from registration where reg_addr ='\" + address + \"'\";\r\n        System.out.println(sql);\r\n        return stmt.executeQuery(sql);\r\n    }\r\n\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/logic/engineeringclasses/query/RegisterQuery.java b/src/logic/engineeringclasses/query/RegisterQuery.java
+--- a/src/logic/engineeringclasses/query/RegisterQuery.java	(revision 7d47bd5323c00044053142316b183ac00439c9f5)
++++ b/src/logic/engineeringclasses/query/RegisterQuery.java	(date 1639999284038)
+@@ -17,4 +17,5 @@
+         return stmt.executeQuery(sql);
+     }
+ 
++
+ }
+Index: .idea/workspace.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"AutoImportSettings\">\r\n    <option name=\"autoReloadType\" value=\"SELECTIVE\" />\r\n  </component>\r\n  <component name=\"ChangeListManager\">\r\n    <list default=\"true\" id=\"2e934ded-b2fb-4671-8a0c-f8e48abf4266\" name=\"Changes\" comment=\"modifiche davide\">\r\n      <change afterPath=\"$PROJECT_DIR$/src/logic/view/InfoDetailView.fxml\" afterDir=\"false\" />\r\n    </list>\r\n    <option name=\"SHOW_DIALOG\" value=\"false\" />\r\n    <option name=\"HIGHLIGHT_CONFLICTS\" value=\"true\" />\r\n    <option name=\"HIGHLIGHT_NON_ACTIVE_CHANGELIST\" value=\"false\" />\r\n    <option name=\"LAST_RESOLUTION\" value=\"IGNORE\" />\r\n  </component>\r\n  <component name=\"FileTemplateManagerImpl\">\r\n    <option name=\"RECENT_TEMPLATES\">\r\n      <list>\r\n        <option value=\"Interface\" />\r\n        <option value=\"CSS File\" />\r\n        <option value=\"FxmlFile\" />\r\n        <option value=\"Class\" />\r\n      </list>\r\n    </option>\r\n  </component>\r\n  <component name=\"Git.Settings\">\r\n    <option name=\"PUSH_AUTO_UPDATE\" value=\"true\" />\r\n    <option name=\"RECENT_BRANCH_BY_REPOSITORY\">\r\n      <map>\r\n        <entry key=\"$PROJECT_DIR$/..\" value=\"main\" />\r\n      </map>\r\n    </option>\r\n    <option name=\"RECENT_GIT_ROOT_PATH\" value=\"$PROJECT_DIR$/..\" />\r\n  </component>\r\n  <component name=\"GitSEFilterConfiguration\">\r\n    <file-type-list>\r\n      <filtered-out-file-type name=\"LOCAL_BRANCH\" />\r\n      <filtered-out-file-type name=\"REMOTE_BRANCH\" />\r\n      <filtered-out-file-type name=\"TAG\" />\r\n      <filtered-out-file-type name=\"COMMIT_BY_MESSAGE\" />\r\n    </file-type-list>\r\n  </component>\r\n  <component name=\"MarkdownSettingsMigration\">\r\n    <option name=\"stateVersion\" value=\"1\" />\r\n  </component>\r\n  <component name=\"ProblemsViewState\">\r\n    <option name=\"selectedIndex\" value=\"3\" />\r\n  </component>\r\n  <component name=\"ProjectId\" id=\"1zzfXtFT8IbQZQnA8Ynacc6WRXa\" />\r\n  <component name=\"ProjectLevelVcsManager\" settingsEditedManually=\"true\">\r\n    <ConfirmationsSetting value=\"2\" id=\"Add\" />\r\n  </component>\r\n  <component name=\"ProjectViewState\">\r\n    <option name=\"hideEmptyMiddlePackages\" value=\"true\" />\r\n    <option name=\"showLibraryContents\" value=\"true\" />\r\n  </component>\r\n  <component name=\"PropertiesComponent\">\r\n    <property name=\"ASKED_ADD_EXTERNAL_FILES\" value=\"true\" />\r\n    <property name=\"DatabaseDriversLRU\" value=\"mysql\" />\r\n    <property name=\"Downloaded.Files.Path.Enabled\" value=\"false\" />\r\n    <property name=\"Repository.Attach.Annotations\" value=\"false\" />\r\n    <property name=\"Repository.Attach.JavaDocs\" value=\"false\" />\r\n    <property name=\"Repository.Attach.Sources\" value=\"false\" />\r\n    <property name=\"RunOnceActivity.OpenProjectViewOnStart\" value=\"true\" />\r\n    <property name=\"RunOnceActivity.ShowReadmeOnStart\" value=\"true\" />\r\n    <property name=\"SHARE_PROJECT_CONFIGURATION_FILES\" value=\"true\" />\r\n    <property name=\"WebServerToolWindowFactoryState\" value=\"false\" />\r\n    <property name=\"codeWithMe.voiceChat.enabledByDefault\" value=\"false\" />\r\n    <property name=\"database.data.extractors.current.export.id\" value=\"SQL Inserts\" />\r\n    <property name=\"last.edited.regexp\" value=\"dasdsa\" />\r\n    <property name=\"last_opened_file_path\" value=\"$PROJECT_DIR$/src/logic/view\" />\r\n    <property name=\"list.type.of.created.stylesheet\" value=\"CSS\" />\r\n    <property name=\"nodejs_package_manager_path\" value=\"npm\" />\r\n    <property name=\"project.structure.last.edited\" value=\"Modules\" />\r\n    <property name=\"project.structure.proportion\" value=\"0.15\" />\r\n    <property name=\"project.structure.side.proportion\" value=\"0.2\" />\r\n    <property name=\"settings.editor.selected.configurable\" value=\"preferences.pluginManager\" />\r\n  </component>\r\n  <component name=\"RecentsManager\">\r\n    <key name=\"CreateClassDialog.RecentsKey\">\r\n      <recent name=\"logic.controller.guicontroller\" />\r\n      <recent name=\"logic.controller.applicationcontroller.\" />\r\n    </key>\r\n    <key name=\"CopyFile.RECENT_KEYS\">\r\n      <recent name=\"C:\\Users\\Moret\\eclipse-workspace\\Condominium\\src\\logic\\view\" />\r\n      <recent name=\"C:\\Users\\Moret\\eclipse-workspace\\Condominium\\src\\logic\\model\" />\r\n      <recent name=\"C:\\Users\\Moret\\eclipse-workspace\\Condominium\\src\\logic\\controller\\applicationcontroller\" />\r\n      <recent name=\"C:\\Users\\Moret\\eclipse-workspace\\Condominium\\src\\logic\\controller\\guicontroller\" />\r\n    </key>\r\n    <key name=\"MoveFile.RECENT_KEYS\">\r\n      <recent name=\"C:\\Users\\Moret\\Desktop\\progettoFx\\Condominium\\src\\logic\\view\\Icon\" />\r\n      <recent name=\"C:\\Users\\Moret\\eclipse-workspace\\Condominium\\src\\RandomTries\" />\r\n    </key>\r\n  </component>\r\n  <component name=\"RunManager\" selected=\"Application.MainGUI\">\r\n    <configuration name=\"MainGUI\" type=\"Application\" factoryName=\"Application\" temporary=\"true\" nameIsGenerated=\"true\">\r\n      <option name=\"MAIN_CLASS_NAME\" value=\"logic.controller.guicontroller.general.MainGUI\" />\r\n      <module name=\"Condominium\" />\r\n      <extension name=\"coverage\">\r\n        <pattern>\r\n          <option name=\"PATTERN\" value=\"logic.controller.guicontroller.admin.requests.registration.*\" />\r\n          <option name=\"ENABLED\" value=\"true\" />\r\n        </pattern>\r\n      </extension>\r\n      <method v=\"2\">\r\n        <option name=\"Make\" enabled=\"true\" />\r\n      </method>\r\n    </configuration>\r\n    <configuration name=\"AllTests\" type=\"JUnit\" factoryName=\"JUnit\" temporary=\"true\" nameIsGenerated=\"true\">\r\n      <module name=\"Condominium\" />\r\n      <extension name=\"coverage\">\r\n        <pattern>\r\n          <option name=\"PATTERN\" value=\"test.*\" />\r\n          <option name=\"ENABLED\" value=\"true\" />\r\n        </pattern>\r\n      </extension>\r\n      <option name=\"PACKAGE_NAME\" value=\"test\" />\r\n      <option name=\"MAIN_CLASS_NAME\" value=\"test.AllTests\" />\r\n      <option name=\"TEST_OBJECT\" value=\"class\" />\r\n      <method v=\"2\">\r\n        <option name=\"Make\" enabled=\"true\" />\r\n      </method>\r\n    </configuration>\r\n    <configuration name=\"test in Condominium\" type=\"JUnit\" factoryName=\"JUnit\" temporary=\"true\" nameIsGenerated=\"true\">\r\n      <module name=\"Condominium\" />\r\n      <extension name=\"coverage\">\r\n        <pattern>\r\n          <option name=\"PATTERN\" value=\"test.*\" />\r\n          <option name=\"ENABLED\" value=\"true\" />\r\n        </pattern>\r\n      </extension>\r\n      <option name=\"PACKAGE_NAME\" value=\"test\" />\r\n      <option name=\"TEST_OBJECT\" value=\"package\" />\r\n      <method v=\"2\">\r\n        <option name=\"Make\" enabled=\"true\" />\r\n      </method>\r\n    </configuration>\r\n    <list>\r\n      <item itemvalue=\"Application.MainGUI\" />\r\n      <item itemvalue=\"JUnit.test in Condominium\" />\r\n      <item itemvalue=\"JUnit.AllTests\" />\r\n    </list>\r\n    <recent_temporary>\r\n      <list>\r\n        <item itemvalue=\"Application.MainGUI\" />\r\n        <item itemvalue=\"JUnit.AllTests\" />\r\n        <item itemvalue=\"JUnit.test in Condominium\" />\r\n      </list>\r\n    </recent_temporary>\r\n  </component>\r\n  <component name=\"SpellCheckerSettings\" RuntimeDictionaries=\"0\" Folders=\"0\" CustomDictionaries=\"0\" DefaultDictionary=\"application-level\" UseSingleDictionary=\"true\" transferred=\"true\" />\r\n  <component name=\"TaskManager\">\r\n    <task active=\"true\" id=\"Default\" summary=\"Default task\">\r\n      <changelist id=\"2e934ded-b2fb-4671-8a0c-f8e48abf4266\" name=\"Changes\" comment=\"\" />\r\n      <created>1635155885038</created>\r\n      <option name=\"number\" value=\"Default\" />\r\n      <option name=\"presentableId\" value=\"Default\" />\r\n      <updated>1635155885038</updated>\r\n      <workItem from=\"1635155886551\" duration=\"176000\" />\r\n      <workItem from=\"1635156089050\" duration=\"11000\" />\r\n      <workItem from=\"1635156329547\" duration=\"1761000\" />\r\n      <workItem from=\"1635158143418\" duration=\"813000\" />\r\n      <workItem from=\"1635164812000\" duration=\"924000\" />\r\n      <workItem from=\"1635165775917\" duration=\"330000\" />\r\n      <workItem from=\"1635166138879\" duration=\"7428000\" />\r\n      <workItem from=\"1635236253416\" duration=\"8295000\" />\r\n      <workItem from=\"1635251463747\" duration=\"5116000\" />\r\n      <workItem from=\"1635344556536\" duration=\"5714000\" />\r\n      <workItem from=\"1635409913924\" duration=\"6535000\" />\r\n      <workItem from=\"1635495148647\" duration=\"3263000\" />\r\n      <workItem from=\"1635499045813\" duration=\"5265000\" />\r\n      <workItem from=\"1635504659528\" duration=\"4000\" />\r\n      <workItem from=\"1635866649237\" duration=\"982000\" />\r\n      <workItem from=\"1635867904135\" duration=\"1049000\" />\r\n      <workItem from=\"1635930726917\" duration=\"5286000\" />\r\n      <workItem from=\"1635936208891\" duration=\"2280000\" />\r\n      <workItem from=\"1635938527173\" duration=\"2748000\" />\r\n      <workItem from=\"1635944597870\" duration=\"1287000\" />\r\n      <workItem from=\"1635945924200\" duration=\"4299000\" />\r\n      <workItem from=\"1635950487882\" duration=\"1105000\" />\r\n      <workItem from=\"1636017590502\" duration=\"9815000\" />\r\n      <workItem from=\"1636104196116\" duration=\"8009000\" />\r\n      <workItem from=\"1636367497281\" duration=\"6022000\" />\r\n      <workItem from=\"1636449914225\" duration=\"9130000\" />\r\n      <workItem from=\"1636465245540\" duration=\"3626000\" />\r\n      <workItem from=\"1636536299749\" duration=\"7626000\" />\r\n      <workItem from=\"1636969816049\" duration=\"5168000\" />\r\n      <workItem from=\"1636983537850\" duration=\"8704000\" />\r\n      <workItem from=\"1637054847853\" duration=\"4587000\" />\r\n      <workItem from=\"1637059749368\" duration=\"2062000\" />\r\n      <workItem from=\"1637062025314\" duration=\"1995000\" />\r\n      <workItem from=\"1637069233601\" duration=\"8991000\" />\r\n      <workItem from=\"1637140448108\" duration=\"7310000\" />\r\n      <workItem from=\"1637156471884\" duration=\"5683000\" />\r\n      <workItem from=\"1637229139609\" duration=\"6075000\" />\r\n      <workItem from=\"1637243750575\" duration=\"2186000\" />\r\n      <workItem from=\"1637314755798\" duration=\"5478000\" />\r\n      <workItem from=\"1637329351529\" duration=\"5998000\" />\r\n      <workItem from=\"1637575040390\" duration=\"6472000\" />\r\n      <workItem from=\"1637588794715\" duration=\"5086000\" />\r\n      <workItem from=\"1637597406704\" duration=\"240000\" />\r\n      <workItem from=\"1637659811424\" duration=\"8293000\" />\r\n      <workItem from=\"1637676029962\" duration=\"1496000\" />\r\n      <workItem from=\"1638439009147\" duration=\"610000\" />\r\n      <workItem from=\"1638525029471\" duration=\"6370000\" />\r\n      <workItem from=\"1638538143547\" duration=\"5489000\" />\r\n      <workItem from=\"1638797578383\" duration=\"5158000\" />\r\n      <workItem from=\"1638870272364\" duration=\"5908000\" />\r\n      <workItem from=\"1638882399761\" duration=\"9903000\" />\r\n      <workItem from=\"1639043709263\" duration=\"6369000\" />\r\n      <workItem from=\"1639056181157\" duration=\"7115000\" />\r\n      <workItem from=\"1639130043064\" duration=\"4806000\" />\r\n      <workItem from=\"1639141830180\" duration=\"1942000\" />\r\n      <workItem from=\"1639143874924\" duration=\"3846000\" />\r\n      <workItem from=\"1639475588379\" duration=\"6847000\" />\r\n      <workItem from=\"1639488889888\" duration=\"4075000\" />\r\n      <workItem from=\"1639564077024\" duration=\"8835000\" />\r\n      <workItem from=\"1639736000105\" duration=\"4088000\" />\r\n      <workItem from=\"1639988756406\" duration=\"10387000\" />\r\n    </task>\r\n    <task id=\"LOCAL-00001\" summary=\"prova pack\">\r\n      <created>1638798010140</created>\r\n      <option name=\"number\" value=\"00001\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00001\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1638798010140</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00002\" summary=\"reorganized project\">\r\n      <created>1638800194624</created>\r\n      <option name=\"number\" value=\"00002\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00002\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1638800194624</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00003\" summary=\"reorganized project\">\r\n      <created>1638801224567</created>\r\n      <option name=\"number\" value=\"00003\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00003\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1638801224567</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00004\" summary=\"reorganized\">\r\n      <created>1639057914127</created>\r\n      <option name=\"number\" value=\"00004\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00004\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1639057914127</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00005\" summary=\"Add registration to Owner\">\r\n      <created>1639482410209</created>\r\n      <option name=\"number\" value=\"00005\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00005\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1639482410209</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00006\" summary=\"Add registration to Owner\">\r\n      <created>1639482467640</created>\r\n      <option name=\"number\" value=\"00006\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00006\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1639482467641</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00007\" summary=\"modifiche davide\">\r\n      <created>1639998915744</created>\r\n      <option name=\"number\" value=\"00007\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00007\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1639998915744</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00008\" summary=\"modifiche davide\">\r\n      <created>1639998956716</created>\r\n      <option name=\"number\" value=\"00008\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00008\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1639998956716</updated>\r\n    </task>\r\n    <option name=\"localTasksCounter\" value=\"9\" />\r\n    <servers />\r\n  </component>\r\n  <component name=\"TypeScriptGeneratedFilesManager\">\r\n    <option name=\"version\" value=\"3\" />\r\n  </component>\r\n  <component name=\"Vcs.Log.Tabs.Properties\">\r\n    <option name=\"TAB_STATES\">\r\n      <map>\r\n        <entry key=\"MAIN\">\r\n          <value>\r\n            <State>\r\n              <option name=\"FILTERS\">\r\n                <map>\r\n                  <entry key=\"branch\">\r\n                    <value>\r\n                      <list>\r\n                        <option value=\"davideMerge\" />\r\n                      </list>\r\n                    </value>\r\n                  </entry>\r\n                </map>\r\n              </option>\r\n            </State>\r\n          </value>\r\n        </entry>\r\n      </map>\r\n    </option>\r\n  </component>\r\n  <component name=\"VcsManagerConfiguration\">\r\n    <option name=\"ADD_EXTERNAL_FILES_SILENTLY\" value=\"true\" />\r\n    <MESSAGE value=\"prova pack\" />\r\n    <MESSAGE value=\"reorganized project\" />\r\n    <MESSAGE value=\"reorganized\" />\r\n    <MESSAGE value=\"Add registration to Owner\" />\r\n    <MESSAGE value=\"modifiche davide\" />\r\n    <option name=\"LAST_COMMIT_MESSAGE\" value=\"modifiche davide\" />\r\n  </component>\r\n  <component name=\"XDebuggerManager\">\r\n    <breakpoint-manager>\r\n      <breakpoints>\r\n        <breakpoint enabled=\"true\" type=\"java-exception\">\r\n          <properties class=\"java.lang.RuntimeException\" package=\"java.lang\" />\r\n          <option name=\"timeStamp\" value=\"1\" />\r\n        </breakpoint>\r\n        <breakpoint enabled=\"true\" type=\"java-exception\">\r\n          <properties class=\"java.lang.IllegalStateException\" package=\"java.lang\" />\r\n          <option name=\"timeStamp\" value=\"2\" />\r\n        </breakpoint>\r\n        <breakpoint enabled=\"true\" type=\"java-exception\">\r\n          <properties class=\"java.lang.NullPointerException\" package=\"java.lang\" />\r\n          <option name=\"timeStamp\" value=\"3\" />\r\n        </breakpoint>\r\n        <line-breakpoint enabled=\"true\" type=\"java-line\">\r\n          <url>file://$PROJECT_DIR$/src/logic/engineeringclasses/dao/ApartmentDAO.java</url>\r\n          <line>98</line>\r\n          <option name=\"timeStamp\" value=\"4\" />\r\n        </line-breakpoint>\r\n      </breakpoints>\r\n    </breakpoint-manager>\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/workspace.xml b/.idea/workspace.xml
+--- a/.idea/workspace.xml	(revision 7d47bd5323c00044053142316b183ac00439c9f5)
++++ b/.idea/workspace.xml	(date 1640000564766)
+@@ -4,9 +4,7 @@
+     <option name="autoReloadType" value="SELECTIVE" />
+   </component>
+   <component name="ChangeListManager">
+-    <list default="true" id="2e934ded-b2fb-4671-8a0c-f8e48abf4266" name="Changes" comment="modifiche davide">
+-      <change afterPath="$PROJECT_DIR$/src/logic/view/InfoDetailView.fxml" afterDir="false" />
+-    </list>
++    <list default="true" id="2e934ded-b2fb-4671-8a0c-f8e48abf4266" name="Changes" comment="modifiche davide" />
+     <option name="SHOW_DIALOG" value="false" />
+     <option name="HIGHLIGHT_CONFLICTS" value="true" />
+     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+@@ -38,9 +36,6 @@
+       <filtered-out-file-type name="TAG" />
+       <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
+     </file-type-list>
+-  </component>
+-  <component name="MarkdownSettingsMigration">
+-    <option name="stateVersion" value="1" />
+   </component>
+   <component name="ProblemsViewState">
+     <option name="selectedIndex" value="3" />
+@@ -67,7 +62,7 @@
+     <property name="codeWithMe.voiceChat.enabledByDefault" value="false" />
+     <property name="database.data.extractors.current.export.id" value="SQL Inserts" />
+     <property name="last.edited.regexp" value="dasdsa" />
+-    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/logic/view" />
++    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../Università/ISPW/Progetto/Util/mysql-connector.jar" />
+     <property name="list.type.of.created.stylesheet" value="CSS" />
+     <property name="nodejs_package_manager_path" value="npm" />
+     <property name="project.structure.last.edited" value="Modules" />
+@@ -81,6 +76,7 @@
+       <recent name="logic.controller.applicationcontroller." />
+     </key>
+     <key name="CopyFile.RECENT_KEYS">
++      <recent name="C:\Users\david\OneDrive\Desktop\progettoFx\Condominium\src\logic\view" />
+       <recent name="C:\Users\Moret\eclipse-workspace\Condominium\src\logic\view" />
+       <recent name="C:\Users\Moret\eclipse-workspace\Condominium\src\logic\model" />
+       <recent name="C:\Users\Moret\eclipse-workspace\Condominium\src\logic\controller\applicationcontroller" />
+@@ -212,10 +208,12 @@
+       <workItem from="1639141830180" duration="1942000" />
+       <workItem from="1639143874924" duration="3846000" />
+       <workItem from="1639475588379" duration="6847000" />
+-      <workItem from="1639488889888" duration="4075000" />
+-      <workItem from="1639564077024" duration="8835000" />
+-      <workItem from="1639736000105" duration="4088000" />
+-      <workItem from="1639988756406" duration="10387000" />
++      <workItem from="1639488889888" duration="4903000" />
++      <workItem from="1639561459838" duration="7067000" />
++      <workItem from="1639575585243" duration="3268000" />
++      <workItem from="1639650994309" duration="3508000" />
++      <workItem from="1639735354387" duration="4934000" />
++      <workItem from="1639994646211" duration="3961000" />
+     </task>
+     <task id="LOCAL-00001" summary="prova pack">
+       <created>1638798010140</created>
+@@ -259,21 +257,28 @@
+       <option name="project" value="LOCAL" />
+       <updated>1639482467641</updated>
+     </task>
+-    <task id="LOCAL-00007" summary="modifiche davide">
+-      <created>1639998915744</created>
++    <task id="LOCAL-00007" summary="Add registration to Owner">
++      <created>1639493176667</created>
+       <option name="number" value="00007" />
+       <option name="presentableId" value="LOCAL-00007" />
+       <option name="project" value="LOCAL" />
+-      <updated>1639998915744</updated>
++      <updated>1639493176667</updated>
+     </task>
+-    <task id="LOCAL-00008" summary="modifiche davide">
+-      <created>1639998956716</created>
++    <task id="LOCAL-00008" summary="Add insert Owner">
++      <created>1639567922338</created>
+       <option name="number" value="00008" />
+       <option name="presentableId" value="LOCAL-00008" />
+       <option name="project" value="LOCAL" />
+-      <updated>1639998956716</updated>
++      <updated>1639567922338</updated>
++    </task>
++    <task id="LOCAL-00009" summary="mod insert">
++      <created>1639994782352</created>
++      <option name="number" value="00009" />
++      <option name="presentableId" value="LOCAL-00009" />
++      <option name="project" value="LOCAL" />
++      <updated>1639994782352</updated>
+     </task>
+-    <option name="localTasksCounter" value="9" />
++    <option name="localTasksCounter" value="10" />
+     <servers />
+   </component>
+   <component name="TypeScriptGeneratedFilesManager">
+@@ -290,7 +295,7 @@
+                   <entry key="branch">
+                     <value>
+                       <list>
+-                        <option value="davideMerge" />
++                        <option value="main" />
+                       </list>
+                     </value>
+                   </entry>
+@@ -308,8 +313,9 @@
+     <MESSAGE value="reorganized project" />
+     <MESSAGE value="reorganized" />
+     <MESSAGE value="Add registration to Owner" />
+-    <MESSAGE value="modifiche davide" />
+-    <option name="LAST_COMMIT_MESSAGE" value="modifiche davide" />
++    <MESSAGE value="Add insert Owner" />
++    <MESSAGE value="mod insert" />
++    <option name="LAST_COMMIT_MESSAGE" value="mod insert" />
+   </component>
+   <component name="XDebuggerManager">
+     <breakpoint-manager>
+@@ -326,11 +332,6 @@
+           <properties class="java.lang.NullPointerException" package="java.lang" />
+           <option name="timeStamp" value="3" />
+         </breakpoint>
+-        <line-breakpoint enabled="true" type="java-line">
+-          <url>file://$PROJECT_DIR$/src/logic/engineeringclasses/dao/ApartmentDAO.java</url>
+-          <line>98</line>
+-          <option name="timeStamp" value="4" />
+-        </line-breakpoint>
+       </breakpoints>
+     </breakpoint-manager>
+   </component>
+Index: src/logic/view/LoginView.fxml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n\r\n<?import javafx.geometry.*?>\r\n<?import javafx.scene.control.*?>\r\n<?import javafx.scene.image.Image?>\r\n<?import javafx.scene.image.ImageView?>\r\n<?import javafx.scene.layout.*?>\r\n<?import javafx.scene.text.*?>\r\n<AnchorPane id=\"AnchorPane\" prefHeight=\"650.0\" prefWidth=\"950.0\" style=\"-fx-background-color: #fff;\"\r\n            xmlns=\"http://javafx.com/javafx/11.0.2\" xmlns:fx=\"http://javafx.com/fxml/1\"\r\n            fx:controller=\"logic.controller.guicontroller.general.login.LoginGUI\">\r\n    <AnchorPane prefHeight=\"650.0\" prefWidth=\"400.0\" style=\"-fx-background-color: #0C39FF;\"\r\n                AnchorPane.bottomAnchor=\"0.0\" AnchorPane.leftAnchor=\"0.0\" AnchorPane.topAnchor=\"0.0\">\r\n        <Label alignment=\"CENTER\" layoutX=\"32.0\" layoutY=\"269.0\" prefHeight=\"58.0\" prefWidth=\"317.0\"\r\n               text=\"Condominium\" textFill=\"WHITE\" AnchorPane.leftAnchor=\"32.0\" AnchorPane.rightAnchor=\"32.0\">\r\n        </Label>\r\n        <Label alignment=\"CENTER\" layoutX=\"46.0\" layoutY=\"315.0\" prefHeight=\"23.0\" prefWidth=\"290.0\"\r\n               text=\"Manage your condominiums easily\" textFill=\"WHITE\" AnchorPane.leftAnchor=\"32.0\"\r\n               AnchorPane.rightAnchor=\"32.0\">\r\n        </Label>\r\n        <ImageView fitHeight=\"113.0\" fitWidth=\"116.0\" layoutX=\"144.0\" layoutY=\"108.0\" pickOnBounds=\"true\"\r\n                   preserveRatio=\"true\" AnchorPane.leftAnchor=\"144.0\" AnchorPane.rightAnchor=\"143.0\"\r\n                   AnchorPane.topAnchor=\"108.0\">\r\n            <Image url=\"@Icon/outline_apartment_white_48dp.png\"/>\r\n        </ImageView>\r\n    </AnchorPane>\r\n    <VBox layoutX=\"488.0\" layoutY=\"50.0\" prefHeight=\"400.0\" prefWidth=\"350.0\" AnchorPane.bottomAnchor=\"150.0\"\r\n          AnchorPane.leftAnchor=\"480.0\" AnchorPane.rightAnchor=\"80.0\" AnchorPane.topAnchor=\"150.0\">\r\n        <TextField fx:id=\"tfEmail\" prefHeight=\"40.0\" promptText=\"Email\">\r\n            <font>\r\n                <Font size=\"18.0\"/>\r\n            </font>\r\n        </TextField>\r\n        <PasswordField fx:id=\"tfPwd\" prefHeight=\"40.0\" promptText=\"Password\">\r\n            <font>\r\n                <Font size=\"18.0\"/>\r\n            </font>\r\n            <VBox.margin>\r\n                <Insets top=\"25.0\"/>\r\n            </VBox.margin>\r\n        </PasswordField>\r\n        <ComboBox fx:id=\"comboBox\" minWidth=\"390.0\" prefHeight=\"40.0\" promptText=\"Condominium Address\">\r\n            <VBox.margin>\r\n                <Insets top=\"25.0\"/>\r\n            </VBox.margin>\r\n        </ComboBox>\r\n        <Button mnemonicParsing=\"false\" onAction=\"#onSignClick\" prefHeight=\"40.0\"\r\n                prefWidth=\"420.0\" stylesheets=\"@style.css\" text=\"Sign in\">\r\n            <font>\r\n                <Font size=\"18.0\"/>\r\n            </font>\r\n            <VBox.margin>\r\n                <Insets top=\"25.0\"/>\r\n            </VBox.margin>\r\n        </Button>\r\n        <Pane prefHeight=\"31.0\" prefWidth=\"275.0\">\r\n            <VBox.margin>\r\n                <Insets top=\"10.0\"/>\r\n            </VBox.margin>\r\n            <Separator accessibleText=\"Or\" layoutX=\"3.0\" layoutY=\"13.0\" prefHeight=\"5.0\" prefWidth=\"390.0\"/>\r\n            <Label alignment=\"CENTER\" layoutX=\"180.0\" layoutY=\"4.0\" prefHeight=\"23.0\" prefWidth=\"31.0\"\r\n                   style=\"-fx-background-color: #fff;\" text=\"Or\" textAlignment=\"CENTER\" textFill=\"#5b5a5a\">\r\n            </Label>\r\n        </Pane>\r\n        <Button mnemonicParsing=\"false\" onAction=\"#onSignupClick\" prefHeight=\"40.0\"\r\n                prefWidth=\"420.0\" stylesheets=\"@style.css\" text=\"Sign up\">\r\n            <font>\r\n                <Font size=\"18.0\"/>\r\n            </font>\r\n            <VBox.margin>\r\n                <Insets top=\"10.0\"/>\r\n            </VBox.margin>\r\n        </Button>\r\n    </VBox>\r\n    <Label alignment=\"CENTER\" layoutX=\"394.0\" layoutY=\"466.0\" prefHeight=\"23.0\" prefWidth=\"93.0\" text=\"Design by me\"\r\n           textFill=\"#5b5a5a\" AnchorPane.bottomAnchor=\"14.0\">\r\n    </Label>\r\n    <Label alignment=\"CENTER\" layoutX=\"842.0\" layoutY=\"612.0\" prefHeight=\"23.0\" prefWidth=\"93.0\" text=\"DOWNLOAD APP\"\r\n           textFill=\"#a6b1cc\" AnchorPane.bottomAnchor=\"14.799999999999955\">\r\n    </Label>\r\n</AnchorPane>\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/logic/view/LoginView.fxml b/src/logic/view/LoginView.fxml
+--- a/src/logic/view/LoginView.fxml	(revision 7d47bd5323c00044053142316b183ac00439c9f5)
++++ b/src/logic/view/LoginView.fxml	(date 1639999284069)
+@@ -2,80 +2,66 @@
+ 
+ <?import javafx.geometry.*?>
+ <?import javafx.scene.control.*?>
+-<?import javafx.scene.image.Image?>
+-<?import javafx.scene.image.ImageView?>
++<?import javafx.scene.image.*?>
+ <?import javafx.scene.layout.*?>
+ <?import javafx.scene.text.*?>
+-<AnchorPane id="AnchorPane" prefHeight="650.0" prefWidth="950.0" style="-fx-background-color: #fff;"
+-            xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1"
+-            fx:controller="logic.controller.guicontroller.general.login.LoginGUI">
+-    <AnchorPane prefHeight="650.0" prefWidth="400.0" style="-fx-background-color: #0C39FF;"
+-                AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+-        <Label alignment="CENTER" layoutX="32.0" layoutY="269.0" prefHeight="58.0" prefWidth="317.0"
+-               text="Condominium" textFill="WHITE" AnchorPane.leftAnchor="32.0" AnchorPane.rightAnchor="32.0">
++
++<AnchorPane prefHeight="650.0" prefWidth="950.0" stylesheets="style.css" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="logic.controller.guicontroller.general.login.LoginGUI">
++    <AnchorPane prefHeight="650.0" prefWidth="400.0" style="-fx-background-color: #0C39FF;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
++        <Label alignment="CENTER" layoutX="32.0" layoutY="269.0" prefHeight="58.0" prefWidth="317.0" text="Condominium" textFill="WHITE" AnchorPane.leftAnchor="32.0" AnchorPane.rightAnchor="32.0">
+         </Label>
+-        <Label alignment="CENTER" layoutX="46.0" layoutY="315.0" prefHeight="23.0" prefWidth="290.0"
+-               text="Manage your condominiums easily" textFill="WHITE" AnchorPane.leftAnchor="32.0"
+-               AnchorPane.rightAnchor="32.0">
++        <Label alignment="CENTER" layoutX="46.0" layoutY="315.0" prefHeight="23.0" prefWidth="290.0" text="Manage your condominiums easily" textFill="WHITE" AnchorPane.leftAnchor="32.0" AnchorPane.rightAnchor="32.0">
+         </Label>
+-        <ImageView fitHeight="113.0" fitWidth="116.0" layoutX="144.0" layoutY="108.0" pickOnBounds="true"
+-                   preserveRatio="true" AnchorPane.leftAnchor="144.0" AnchorPane.rightAnchor="143.0"
+-                   AnchorPane.topAnchor="108.0">
+-            <Image url="@Icon/outline_apartment_white_48dp.png"/>
++        <ImageView fitHeight="113.0" fitWidth="116.0" layoutX="144.0" layoutY="108.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="144.0" AnchorPane.rightAnchor="143.0" AnchorPane.topAnchor="108.0">
++            <Image url="@Icon/outline_apartment_white_48dp.png" />
+         </ImageView>
+     </AnchorPane>
+-    <VBox layoutX="488.0" layoutY="50.0" prefHeight="400.0" prefWidth="350.0" AnchorPane.bottomAnchor="150.0"
+-          AnchorPane.leftAnchor="480.0" AnchorPane.rightAnchor="80.0" AnchorPane.topAnchor="150.0">
++    <VBox layoutX="488.0" layoutY="50.0" prefHeight="400.0" prefWidth="350.0" AnchorPane.bottomAnchor="150.0" AnchorPane.leftAnchor="480.0" AnchorPane.rightAnchor="80.0" AnchorPane.topAnchor="150.0">
+         <TextField fx:id="tfEmail" prefHeight="40.0" promptText="Email">
+             <font>
+-                <Font size="18.0"/>
++                <Font size="18.0" />
+             </font>
+         </TextField>
+         <PasswordField fx:id="tfPwd" prefHeight="40.0" promptText="Password">
+             <font>
+-                <Font size="18.0"/>
++                <Font size="18.0" />
+             </font>
+             <VBox.margin>
+-                <Insets top="25.0"/>
++                <Insets top="25.0" />
+             </VBox.margin>
+         </PasswordField>
+         <ComboBox fx:id="comboBox" minWidth="390.0" prefHeight="40.0" promptText="Condominium Address">
+             <VBox.margin>
+-                <Insets top="25.0"/>
++                <Insets top="25.0" />
+             </VBox.margin>
+         </ComboBox>
+-        <Button mnemonicParsing="false" onAction="#onSignClick" prefHeight="40.0"
+-                prefWidth="420.0" stylesheets="@style.css" text="Sign in">
++        <Button mnemonicParsing="false" onAction="#onSignClick" prefHeight="40.0" prefWidth="420.0" stylesheets="@style.css" text="Sign in">
+             <font>
+-                <Font size="18.0"/>
++                <Font size="18.0" />
+             </font>
+             <VBox.margin>
+-                <Insets top="25.0"/>
++                <Insets top="25.0" />
+             </VBox.margin>
+         </Button>
+         <Pane prefHeight="31.0" prefWidth="275.0">
+             <VBox.margin>
+-                <Insets top="10.0"/>
++                <Insets top="10.0" />
+             </VBox.margin>
+-            <Separator accessibleText="Or" layoutX="3.0" layoutY="13.0" prefHeight="5.0" prefWidth="390.0"/>
+-            <Label alignment="CENTER" layoutX="180.0" layoutY="4.0" prefHeight="23.0" prefWidth="31.0"
+-                   style="-fx-background-color: #fff;" text="Or" textAlignment="CENTER" textFill="#5b5a5a">
++            <Separator accessibleText="Or" layoutX="3.0" layoutY="13.0" prefHeight="5.0" prefWidth="390.0" />
++            <Label alignment="CENTER" layoutX="180.0" layoutY="4.0" prefHeight="23.0" prefWidth="31.0" style="-fx-background-color: #fff;" text="Or" textAlignment="CENTER" textFill="#5b5a5a">
+             </Label>
+         </Pane>
+-        <Button mnemonicParsing="false" onAction="#onSignupClick" prefHeight="40.0"
+-                prefWidth="420.0" stylesheets="@style.css" text="Sign up">
++        <Button mnemonicParsing="false" onAction="#onSignupClick" prefHeight="40.0" prefWidth="420.0" stylesheets="@style.css" text="Sign up">
+             <font>
+-                <Font size="18.0"/>
++                <Font size="18.0" />
+             </font>
+             <VBox.margin>
+-                <Insets top="10.0"/>
++                <Insets top="10.0" />
+             </VBox.margin>
+         </Button>
+     </VBox>
+-    <Label alignment="CENTER" layoutX="394.0" layoutY="466.0" prefHeight="23.0" prefWidth="93.0" text="Design by me"
+-           textFill="#5b5a5a" AnchorPane.bottomAnchor="14.0">
++    <Label alignment="CENTER" layoutX="394.0" layoutY="466.0" prefHeight="23.0" prefWidth="93.0" text="Design by me" textFill="#5b5a5a" AnchorPane.bottomAnchor="14.0">
+     </Label>
+-    <Label alignment="CENTER" layoutX="842.0" layoutY="612.0" prefHeight="23.0" prefWidth="93.0" text="DOWNLOAD APP"
+-           textFill="#a6b1cc" AnchorPane.bottomAnchor="14.799999999999955">
++    <Label alignment="CENTER" layoutX="842.0" layoutY="612.0" prefHeight="23.0" prefWidth="93.0" text="DOWNLOAD APP" textFill="#a6b1cc" AnchorPane.bottomAnchor="14.799999999999955">
+     </Label>
+ </AnchorPane>
+Index: src/logic/model/Administrator.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package logic.model;\r\n\r\nimport logic.engineeringclasses.exception.PatternException;\r\n\r\nimport java.util.List;\r\n\r\npublic class Administrator extends User {\r\n\r\n\tprivate List<Request> list;\r\n\t//organize meeting\r\n\t\r\n\tpublic Administrator(String userID, String name, String email, String password,String cc,List<Request> list)throws PatternException{\r\n\t\tsuper( userID,  name,  email,  password, cc);\r\n\t\tthis.setListRequest(list);\r\n\t}\r\n\t\r\n\tpublic List<Request> getListRequest(){\r\n\t\treturn this.list;\r\n\t}\r\n\t\r\n\tpublic void setListRequest(List<Request> list) {\r\n\t\tthis.list = list;\r\n\t}\r\n\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/logic/model/Administrator.java b/src/logic/model/Administrator.java
+--- a/src/logic/model/Administrator.java	(revision 7d47bd5323c00044053142316b183ac00439c9f5)
++++ b/src/logic/model/Administrator.java	(date 1639999284038)
+@@ -1,6 +1,6 @@
+ package logic.model;
+ 
+-import logic.engineeringclasses.exception.PatternException;
++import logic.engineeringclasses.exception.InputException;
+ 
+ import java.util.List;
+ 
+@@ -9,7 +9,7 @@
+ 	private List<Request> list;
+ 	//organize meeting
+ 	
+-	public Administrator(String userID, String name, String email, String password,String cc,List<Request> list)throws PatternException{
++	public Administrator(String userID, String name, String email, String password,String cc,List<Request> list)throws InputException {
+ 		super( userID,  name,  email,  password, cc);
+ 		this.setListRequest(list);
+ 	}
+Index: src/logic/view/TabOrganizeView.fxml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n\r\n<?import javafx.scene.control.*?>\r\n\r\n<TabPane maxHeight=\"-Infinity\" maxWidth=\"-Infinity\" minHeight=\"-Infinity\" minWidth=\"-Infinity\" prefHeight=\"400.0\" prefWidth=\"600.0\" tabClosingPolicy=\"UNAVAILABLE\" xmlns=\"http://javafx.com/javafx/11.0.2\" xmlns:fx=\"http://javafx.com/fxml/1\" fx:controller=\"logic.controller.guicontroller.admin.requests.TabOrganizeGUI\">\r\n    <Tab fx:id=\"tabRegistration\" closable=\"false\" text=\"Registration\" />\r\n    <Tab fx:id=\"tabMeeting\" closable=\"false\" text=\"Meeting\" />\r\n</TabPane>\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/logic/view/TabOrganizeView.fxml b/src/logic/view/TabOrganizeView.fxml
+--- a/src/logic/view/TabOrganizeView.fxml	(revision 7d47bd5323c00044053142316b183ac00439c9f5)
++++ b/src/logic/view/TabOrganizeView.fxml	(date 1639999284085)
+@@ -2,7 +2,7 @@
+ 
+ <?import javafx.scene.control.*?>
+ 
+-<TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="logic.controller.guicontroller.admin.requests.TabOrganizeGUI">
++<TabPane fx:id="tabOrganize" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="logic.controller.guicontroller.admin.requests.TabOrganizeGUI">
+     <Tab fx:id="tabRegistration" closable="false" text="Registration" />
+     <Tab fx:id="tabMeeting" closable="false" text="Meeting" />
+ </TabPane>
+Index: src/logic/controller/guicontroller/admin/requests/TabOrganizeGUI.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package logic.controller.guicontroller.admin.requests;\r\n\r\nimport javafx.event.Event;\r\nimport javafx.fxml.FXML;\r\nimport javafx.fxml.FXMLLoader;\r\nimport javafx.fxml.Initializable;\r\nimport javafx.scene.Parent;\r\nimport javafx.scene.control.Tab;\r\nimport logic.controller.applicationcontroller.ViewController;\r\nimport logic.controller.guicontroller.admin.requests.meeting.MeetingTableGUI;\r\nimport logic.controller.guicontroller.admin.requests.registration.RegistrationTableGUI;\r\nimport logic.controller.guicontroller.general.MainGUI;\r\nimport logic.controller.guicontroller.general.MenuGUI;\r\nimport logic.model.UserSingleton;\r\n\r\nimport java.io.IOException;\r\nimport java.net.URL;\r\nimport java.util.ResourceBundle;\r\n\r\npublic class TabOrganizeGUI implements Initializable {\r\n\r\n    @FXML private Tab tabRegistration;\r\n    @FXML private Tab tabMeeting;\r\n    protected ViewController view = new ViewController();\r\n    UserSingleton sg = UserSingleton.getInstance();\r\n\r\n    @Override\r\n    public void initialize(URL location, ResourceBundle resources) {\r\n\r\n        try {\r\n            FXMLLoader loader = view.loader(\"RegistrationTable\");\r\n            Parent root = loader.load();\r\n            RegistrationTableGUI reg = loader.getController();\r\n            reg.setUpRegistration(sg.getAddress());\r\n            tabRegistration.setContent(root);\r\n        } catch (IOException e) {\r\n            e.printStackTrace();\r\n        }\r\n        try {\r\n            FXMLLoader loader = view.loader(\"MeetTable\");\r\n            Parent root = loader.load();\r\n            MeetingTableGUI meet = loader.getController();\r\n            meet.setUpMeeting(sg.getAddress());\r\n            tabMeeting.setContent(root);\r\n        } catch (Exception e) {\r\n            System.out.println(\"ERRORE\");\r\n            e.printStackTrace();\r\n        }\r\n\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/logic/controller/guicontroller/admin/requests/TabOrganizeGUI.java b/src/logic/controller/guicontroller/admin/requests/TabOrganizeGUI.java
+--- a/src/logic/controller/guicontroller/admin/requests/TabOrganizeGUI.java	(revision 7d47bd5323c00044053142316b183ac00439c9f5)
++++ b/src/logic/controller/guicontroller/admin/requests/TabOrganizeGUI.java	(date 1639999283976)
+@@ -6,6 +6,7 @@
+ import javafx.fxml.Initializable;
+ import javafx.scene.Parent;
+ import javafx.scene.control.Tab;
++import javafx.scene.control.TabPane;
+ import logic.controller.applicationcontroller.ViewController;
+ import logic.controller.guicontroller.admin.requests.meeting.MeetingTableGUI;
+ import logic.controller.guicontroller.admin.requests.registration.RegistrationTableGUI;
+@@ -19,11 +20,21 @@
+ 
+ public class TabOrganizeGUI implements Initializable {
+ 
++    @FXML private TabPane tabOrganize;
+     @FXML private Tab tabRegistration;
+     @FXML private Tab tabMeeting;
+     protected ViewController view = new ViewController();
+     UserSingleton sg = UserSingleton.getInstance();
+ 
++
++    public void selectRegistration(){
++        tabOrganize.getSelectionModel().select(tabRegistration);
++    }
++
++    public void selectMeeting(){
++        tabOrganize.getSelectionModel().select(tabMeeting);
++    }
++
+     @Override
+     public void initialize(URL location, ResourceBundle resources) {
+ 
+Index: src/logic/controller/applicationcontroller/PatternController.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package logic.controller.applicationcontroller;\r\n\r\nimport javafx.scene.control.TextField;\r\nimport javafx.scene.control.TextFormatter;\r\nimport javafx.util.StringConverter;\r\n\r\nimport java.util.function.UnaryOperator;\r\nimport java.util.regex.Matcher;\r\nimport java.util.regex.Pattern;\r\n\r\npublic class PatternController {\r\n\r\n\tpublic static  final Pattern VALID_TEXT_REGEX =\r\n\t\t\tPattern.compile(\"^[A-z\\\\s]\", Pattern.CASE_INSENSITIVE);\r\n\r\n\tpublic static final Pattern VALID_NAME_REGEX = \r\n\t\t    Pattern.compile(\"^[A-Z][a-z\\\\s]{2,15}$\", Pattern.CASE_INSENSITIVE);\r\n\t\r\n\tpublic static final Pattern VALID_EMAIL_ADDRESS_REGEX = \r\n\t\t    Pattern.compile(\"^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\\\.[A-Z]{2,6}$\", Pattern.CASE_INSENSITIVE);\r\n\t\r\n\tpublic static final Pattern VALID_PASSWORD_REGEX = \r\n\t\t    Pattern.compile(\"^(?=.*[A-Za-z])(?=.*\\\\d)[A-Za-z\\\\d]{4,15}$\", Pattern.CASE_INSENSITIVE);\r\n\r\n\tpublic  boolean isText(String text){\r\n\t\tMatcher matcher = VALID_TEXT_REGEX.matcher(text);\r\n\t\treturn !matcher.find();\r\n\t}\r\n\r\n\r\n\tpublic boolean isName(String name) {\r\n\t\tMatcher matcher = VALID_NAME_REGEX.matcher(name);\r\n\t    return !matcher.find();\r\n\t}\r\n\t    \r\n\tpublic  boolean isEmail(String emailStr) {\r\n\t\tMatcher matcher = VALID_EMAIL_ADDRESS_REGEX.matcher(emailStr);\r\n\t    return matcher.find();\r\n\t}\r\n\t\r\n\tpublic  boolean isPassword(String password) {\r\n\t\tMatcher matcher = VALID_PASSWORD_REGEX.matcher(password);\r\n\t    return matcher.find();\r\n\t}\r\n\r\n\tpublic void textFilter(TextField tf){\r\n\t\t//TODO PER MARCO\r\n\t\tPattern validEditingState = Pattern.compile(\"-?(([1-9][0-9]*)|0)?(\\\\.[0-9]*)?\");\r\n\t\tUnaryOperator<TextFormatter.Change> filter = c -> {\r\n\t\t\tString text = c.getControlNewText();\r\n\t\t\tif (validEditingState.matcher(text).matches()) {\r\n\t\t\t\treturn c ;\r\n\t\t\t} else {\r\n\t\t\t\treturn null ;\r\n\t\t\t}\r\n\t\t};\r\n\t\tStringConverter<Double> converter = new StringConverter<Double>() {\r\n\t\t\t@Override\r\n\t\t\tpublic Double fromString(String s) {\r\n\t\t\t\tif (s.isEmpty() || \"-\".equals(s) || \".\".equals(s) || \"-.\".equals(s)) {\r\n\t\t\t\t\treturn 0.0 ;\r\n\t\t\t\t} else {\r\n\t\t\t\t\treturn Double.valueOf(s);\r\n\t\t\t\t}\r\n\t\t\t}\r\n\t\t\t@Override\r\n\t\t\tpublic String toString(Double d) {\r\n\t\t\t\treturn d.toString();\r\n\t\t\t}\r\n\t\t};\r\n\t\tTextFormatter<Double> textFormatter = new TextFormatter<>(converter, 0.0, filter);\r\n\t\ttf.setTextFormatter(textFormatter);\r\n\t}\r\n\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/logic/controller/applicationcontroller/PatternController.java b/src/logic/controller/applicationcontroller/PatternController.java
+--- a/src/logic/controller/applicationcontroller/PatternController.java	(revision 7d47bd5323c00044053142316b183ac00439c9f5)
++++ b/src/logic/controller/applicationcontroller/PatternController.java	(date 1639999283960)
+@@ -44,7 +44,6 @@
+ 	}
+ 
+ 	public void textFilter(TextField tf){
+-		//TODO PER MARCO
+ 		Pattern validEditingState = Pattern.compile("-?(([1-9][0-9]*)|0)?(\\.[0-9]*)?");
+ 		UnaryOperator<TextFormatter.Change> filter = c -> {
+ 			String text = c.getControlNewText();
+Index: src/logic/view/InfoView.fxml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n\r\n<?import javafx.scene.control.*?>\r\n\r\n<TableView maxHeight=\"-Infinity\" maxWidth=\"-Infinity\" minHeight=\"-Infinity\" minWidth=\"-Infinity\" onMouseClicked=\"#getSelected\" prefHeight=\"400.0\" prefWidth=\"600.0\" xmlns:fx=\"http://javafx.com/fxml/1\" xmlns=\"http://javafx.com/javafx/11.0.2\" fx:controller=\"logic.controller.guicontroller.admin.condominium.InfoGUI\">\r\n  <columns>\r\n    <TableColumn fx:id=\"tcId\" prefWidth=\"75.0\" text=\"ID\" />\r\n    <TableColumn fx:id=\"tcName\" prefWidth=\"75.0\" text=\"Name\" />\r\n      <TableColumn fx:id=\"tcEmail\" prefWidth=\"75.0\" text=\"Email\" />\r\n      <TableColumn fx:id=\"tcPassword\" prefWidth=\"75.0\" text=\"Password\" />\r\n      <TableColumn fx:id=\"tcAddress\" prefWidth=\"75.0\" text=\"Address\" />\r\n      <TableColumn fx:id=\"tcApartment\" prefWidth=\"75.0\" text=\"Apartment\" />\r\n  </columns>\r\n</TableView>\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/logic/view/InfoView.fxml b/src/logic/view/InfoView.fxml
+--- a/src/logic/view/InfoView.fxml	(revision 7d47bd5323c00044053142316b183ac00439c9f5)
++++ b/src/logic/view/InfoView.fxml	(date 1639999284069)
+@@ -2,13 +2,13 @@
+ 
+ <?import javafx.scene.control.*?>
+ 
+-<TableView maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#getSelected" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/11.0.2" fx:controller="logic.controller.guicontroller.admin.condominium.InfoGUI">
++<TableView fx:id="tableView" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#getSelected" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="logic.controller.guicontroller.admin.condominium.InfoGUI">
+   <columns>
+-    <TableColumn fx:id="tcId" prefWidth="75.0" text="ID" />
++    <TableColumn fx:id="tcID" prefWidth="75.0" text="ID" />
+     <TableColumn fx:id="tcName" prefWidth="75.0" text="Name" />
+-      <TableColumn fx:id="tcEmail" prefWidth="75.0" text="Email" />
+-      <TableColumn fx:id="tcPassword" prefWidth="75.0" text="Password" />
+-      <TableColumn fx:id="tcAddress" prefWidth="75.0" text="Address" />
+-      <TableColumn fx:id="tcApartment" prefWidth="75.0" text="Apartment" />
++    <TableColumn fx:id="tcEmail" prefWidth="75.0" text="Email" />
++    <TableColumn fx:id="tcPwd" prefWidth="75.0" text="Password" />
++    <TableColumn fx:id="tcRole" prefWidth="75.0" text="Role" />
++    <TableColumn fx:id="tcAddress" prefWidth="75.0" text="Address" />
+   </columns>
+ </TableView>
+Index: src/logic/view/MeetTableView.fxml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n\r\n<?import javafx.scene.control.*?>\r\n\r\n<TableView fx:id=\"tableMeeting\" minHeight=\"400.0\" minWidth=\"400.0\" onMouseClicked=\"#getSelected\" stylesheets=\"@style.css\" xmlns=\"http://javafx.com/javafx\" xmlns:fx=\"http://javafx.com/fxml\" fx:controller=\"logic.controller.guicontroller.admin.requests.meeting.MeetingTableGUI\">\r\n  <columns>\r\n    <TableColumn fx:id=\"tcId\" editable=\"false\" styleClass=\"tableColumn\"  text=\"ID\" />\r\n    <TableColumn fx:id=\"tcName\" editable=\"false\" styleClass=\"tableColumn\"  text=\"Name\" />\r\n    <TableColumn fx:id=\"tcAddr\" editable=\"false\" styleClass=\"tableColumn\" text=\"Address\" />\r\n    <TableColumn fx:id=\"tcObj\" editable=\"false\" styleClass=\"tableColumn\"  text=\"Object\" />\r\n    <TableColumn fx:id=\"tcTxt\" editable=\"false\" text=\"Text\" />\r\n  </columns>\r\n</TableView>\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/logic/view/MeetTableView.fxml b/src/logic/view/MeetTableView.fxml
+--- a/src/logic/view/MeetTableView.fxml	(revision 7d47bd5323c00044053142316b183ac00439c9f5)
++++ b/src/logic/view/MeetTableView.fxml	(date 1639999284085)
+@@ -2,12 +2,12 @@
+ 
+ <?import javafx.scene.control.*?>
+ 
+-<TableView fx:id="tableMeeting" minHeight="400.0" minWidth="400.0" onMouseClicked="#getSelected" stylesheets="@style.css" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="logic.controller.guicontroller.admin.requests.meeting.MeetingTableGUI">
++<TableView fx:id="tableMeeting" onMouseClicked="#getSelected" stylesheets="@style.css" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="logic.controller.guicontroller.admin.requests.meeting.MeetingTableGUI">
+   <columns>
+-    <TableColumn fx:id="tcId" editable="false" styleClass="tableColumn"  text="ID" />
+-    <TableColumn fx:id="tcName" editable="false" styleClass="tableColumn"  text="Name" />
+-    <TableColumn fx:id="tcAddr" editable="false" styleClass="tableColumn" text="Address" />
+-    <TableColumn fx:id="tcObj" editable="false" styleClass="tableColumn"  text="Object" />
+-    <TableColumn fx:id="tcTxt" editable="false" text="Text" />
++    <TableColumn fx:id="tcId" editable="false" text="ID"/>
++    <TableColumn fx:id="tcName" editable="false" text="Name"/>
++    <TableColumn fx:id="tcAddr" editable="false" text="Address"/>
++    <TableColumn fx:id="tcObj" editable="false" text="Object"/>
++    <TableColumn fx:id="tcTxt" editable="false" text="Text"/>
+   </columns>
+ </TableView>
+Index: src/logic/view/RegistrationDetailTableView.fxml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n\r\n<?import javafx.geometry.Insets?>\r\n<?import javafx.scene.control.Button?>\r\n<?import javafx.scene.control.TextField?>\r\n<?import javafx.scene.image.Image?>\r\n<?import javafx.scene.image.ImageView?>\r\n<?import javafx.scene.layout.AnchorPane?>\r\n<?import javafx.scene.layout.ColumnConstraints?>\r\n<?import javafx.scene.layout.GridPane?>\r\n<?import javafx.scene.layout.RowConstraints?>\r\n<?import javafx.scene.layout.VBox?>\r\n<?import javafx.scene.text.Text?>\r\n\r\n<AnchorPane prefHeight=\"400.0\" prefWidth=\"600.0\" xmlns=\"http://javafx.com/javafx/17\" xmlns:fx=\"http://javafx.com/fxml/1\" fx:controller=\"logic.controller.guicontroller.admin.requests.registration.RegistrationTableDetailGUI\">\r\n   <VBox prefHeight=\"200.0\" prefWidth=\"100.0\" spacing=\"20.0\" AnchorPane.bottomAnchor=\"0.0\" AnchorPane.leftAnchor=\"0.0\" AnchorPane.rightAnchor=\"0.0\" AnchorPane.topAnchor=\"0.0\">\r\n      <children>\r\n         <Button mnemonicParsing=\"false\" onAction=\"#btnX\" style=\"-fx-background-color: null;\">\r\n            <graphic>\r\n               <ImageView fitHeight=\"26.0\" fitWidth=\"30.0\" pickOnBounds=\"true\" preserveRatio=\"true\">\r\n                  <Image url=\"@Icon/outline_arrow_back_black_24dp.png\" />\r\n               </ImageView>\r\n            </graphic>\r\n         </Button>\r\n         <GridPane alignment=\"CENTER\" vgap=\"10.0\">\r\n           <columnConstraints>\r\n             <ColumnConstraints hgrow=\"SOMETIMES\" maxWidth=\"295.0\" minWidth=\"10.0\" prefWidth=\"164.6\" />\r\n             <ColumnConstraints hgrow=\"SOMETIMES\" maxWidth=\"436.19999999999993\" minWidth=\"10.0\" prefWidth=\"436.19999999999993\" />\r\n           </columnConstraints>\r\n           <rowConstraints>\r\n             <RowConstraints minHeight=\"10.0\" prefHeight=\"30.0\" vgrow=\"SOMETIMES\" />\r\n             <RowConstraints minHeight=\"10.0\" prefHeight=\"30.0\" vgrow=\"SOMETIMES\" />\r\n               <RowConstraints minHeight=\"10.0\" prefHeight=\"30.0\" vgrow=\"SOMETIMES\" />\r\n               <RowConstraints minHeight=\"10.0\" prefHeight=\"30.0\" vgrow=\"SOMETIMES\" />\r\n               <RowConstraints minHeight=\"10.0\" prefHeight=\"30.0\" vgrow=\"SOMETIMES\" />\r\n               <RowConstraints minHeight=\"10.0\" prefHeight=\"30.0\" vgrow=\"SOMETIMES\" />\r\n               <RowConstraints minHeight=\"10.0\" prefHeight=\"30.0\" vgrow=\"SOMETIMES\" />\r\n           </rowConstraints>\r\n            <children>\r\n               <TextField fx:id=\"tfEmail\" alignment=\"CENTER\" editable=\"false\" prefWidth=\"200.0\" promptText=\"Email\" GridPane.columnIndex=\"1\" GridPane.rowIndex=\"2\" />\r\n               <Text strokeType=\"OUTSIDE\" strokeWidth=\"0.0\" text=\"ID        \" />\r\n               <TextField fx:id=\"tfID\" alignment=\"CENTER\" editable=\"false\" prefWidth=\"200.0\" promptText=\"ID\" GridPane.columnIndex=\"1\" />\r\n               <Text strokeType=\"OUTSIDE\" strokeWidth=\"0.0\" text=\"Email     \" GridPane.rowIndex=\"2\" />\r\n               <Text strokeType=\"OUTSIDE\" strokeWidth=\"0.0\" text=\"Password  \" GridPane.rowIndex=\"3\" />\r\n               <TextField fx:id=\"tfPwd\" alignment=\"CENTER\" editable=\"false\" prefWidth=\"200.0\" promptText=\"Password\" GridPane.columnIndex=\"1\" GridPane.rowIndex=\"3\" />\r\n               <Text strokeType=\"OUTSIDE\" strokeWidth=\"0.0\" text=\"Role      \" GridPane.rowIndex=\"4\" />\r\n               <TextField fx:id=\"tfRole\" alignment=\"CENTER\" editable=\"false\" prefWidth=\"200.0\" promptText=\"Role\" GridPane.columnIndex=\"1\" GridPane.rowIndex=\"4\" />\r\n               <Text strokeType=\"OUTSIDE\" strokeWidth=\"0.0\" text=\"Address \" GridPane.rowIndex=\"5\" />\r\n               <TextField fx:id=\"tfAddr\" alignment=\"CENTER\" editable=\"false\" prefWidth=\"200.0\" promptText=\"Address\" GridPane.columnIndex=\"1\" GridPane.rowIndex=\"5\" />\r\n               <TextField fx:id=\"tfName\" alignment=\"CENTER\" editable=\"false\" promptText=\"Name\" GridPane.columnIndex=\"1\" GridPane.rowIndex=\"1\" />\r\n               <Text strokeType=\"OUTSIDE\" strokeWidth=\"0.0\" text=\"Name\" GridPane.rowIndex=\"1\" />\r\n            </children>\r\n            <VBox.margin>\r\n               <Insets />\r\n            </VBox.margin>\r\n         </GridPane>\r\n      </children>\r\n   </VBox>\r\n</AnchorPane>\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/logic/view/RegistrationDetailTableView.fxml b/src/logic/view/RegistrationDetailTableView.fxml
+--- a/src/logic/view/RegistrationDetailTableView.fxml	(revision 7d47bd5323c00044053142316b183ac00439c9f5)
++++ b/src/logic/view/RegistrationDetailTableView.fxml	(date 1639999317702)
+@@ -1,59 +1,64 @@
+ <?xml version="1.0" encoding="UTF-8"?>
+ 
+-<?import javafx.geometry.Insets?>
+-<?import javafx.scene.control.Button?>
+-<?import javafx.scene.control.TextField?>
+-<?import javafx.scene.image.Image?>
+-<?import javafx.scene.image.ImageView?>
+-<?import javafx.scene.layout.AnchorPane?>
+-<?import javafx.scene.layout.ColumnConstraints?>
+-<?import javafx.scene.layout.GridPane?>
+-<?import javafx.scene.layout.RowConstraints?>
+-<?import javafx.scene.layout.VBox?>
+-<?import javafx.scene.text.Text?>
++<?import javafx.geometry.*?>
++<?import javafx.scene.control.*?>
++<?import javafx.scene.image.*?>
++<?import javafx.scene.layout.*?>
++<?import javafx.scene.text.*?>
+ 
+-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="logic.controller.guicontroller.admin.requests.registration.RegistrationTableDetailGUI">
+-   <VBox prefHeight="200.0" prefWidth="100.0" spacing="20.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+-      <children>
+-         <Button mnemonicParsing="false" onAction="#btnX" style="-fx-background-color: null;">
+-            <graphic>
++<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="logic.controller.guicontroller.admin.requests.registration.RegistrationTableDetailGUI">
++    <VBox prefHeight="200.0" prefWidth="100.0" spacing="20.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
++          AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
++        <Button mnemonicParsing="false" onAction="#btnX" style="-fx-background-color: null;">
++           <graphic>
+                <ImageView fitHeight="26.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+-                  <Image url="@Icon/outline_arrow_back_black_24dp.png" />
++                   <Image url="@Icon/outline_arrow_back_black_24dp.png"/>
+                </ImageView>
+-            </graphic>
+-         </Button>
+-         <GridPane alignment="CENTER" vgap="10.0">
+-           <columnConstraints>
+-             <ColumnConstraints hgrow="SOMETIMES" maxWidth="295.0" minWidth="10.0" prefWidth="164.6" />
+-             <ColumnConstraints hgrow="SOMETIMES" maxWidth="436.19999999999993" minWidth="10.0" prefWidth="436.19999999999993" />
+-           </columnConstraints>
+-           <rowConstraints>
+-             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+-             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+-               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+-               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+-               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+-               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+-               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+-           </rowConstraints>
+-            <children>
+-               <TextField fx:id="tfEmail" alignment="CENTER" editable="false" prefWidth="200.0" promptText="Email" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+-               <Text strokeType="OUTSIDE" strokeWidth="0.0" text="ID        " />
+-               <TextField fx:id="tfID" alignment="CENTER" editable="false" prefWidth="200.0" promptText="ID" GridPane.columnIndex="1" />
+-               <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Email     " GridPane.rowIndex="2" />
+-               <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Password  " GridPane.rowIndex="3" />
+-               <TextField fx:id="tfPwd" alignment="CENTER" editable="false" prefWidth="200.0" promptText="Password" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+-               <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Role      " GridPane.rowIndex="4" />
+-               <TextField fx:id="tfRole" alignment="CENTER" editable="false" prefWidth="200.0" promptText="Role" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+-               <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Address " GridPane.rowIndex="5" />
+-               <TextField fx:id="tfAddr" alignment="CENTER" editable="false" prefWidth="200.0" promptText="Address" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+-               <TextField fx:id="tfName" alignment="CENTER" editable="false" promptText="Name" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+-               <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Name" GridPane.rowIndex="1" />
+-            </children>
+-            <VBox.margin>
+-               <Insets />
+-            </VBox.margin>
+-         </GridPane>
+-      </children>
+-   </VBox>
++           </graphic>
++        </Button>
++        <GridPane alignment="CENTER" vgap="10.0">
++            <columnConstraints>
++                <ColumnConstraints hgrow="SOMETIMES" maxWidth="295.0" minWidth="10.0" prefWidth="164.6"/>
++                <ColumnConstraints hgrow="SOMETIMES" maxWidth="436.19999999999993" minWidth="10.0"
++                                   prefWidth="436.19999999999993"/>
++            </columnConstraints>
++            <rowConstraints>
++                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
++                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
++                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
++                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
++                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
++                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
++                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
++            </rowConstraints>
++            <VBox.margin>
++                <Insets/>
++            </VBox.margin>
++            <TextField fx:id="tfEmail" alignment="CENTER" editable="false" prefWidth="200.0" promptText="Email"
++                       GridPane.columnIndex="1" GridPane.rowIndex="2"/>
++            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="ID        "/>
++            <TextField fx:id="tfID" alignment="CENTER" editable="false" prefWidth="200.0" promptText="ID"
++                       GridPane.columnIndex="1"/>
++            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Email     " GridPane.rowIndex="2"/>
++            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Password  " GridPane.rowIndex="3"/>
++            <TextField fx:id="tfPwd" alignment="CENTER" editable="false" prefWidth="200.0" promptText="Password"
++                       GridPane.columnIndex="1" GridPane.rowIndex="3"/>
++            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Role      " GridPane.rowIndex="4"/>
++            <TextField fx:id="tfRole" alignment="CENTER" editable="false" prefWidth="200.0" promptText="Role"
++                       GridPane.columnIndex="1" GridPane.rowIndex="4"/>
++            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Address " GridPane.rowIndex="5"/>
++            <TextField fx:id="tfAddr" alignment="CENTER" editable="false" prefWidth="200.0" promptText="Address"
++                       GridPane.columnIndex="1" GridPane.rowIndex="5"/>
++            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Apartment" GridPane.rowIndex="6"/>
++            <TextField fx:id="tfApartment" alignment="CENTER" editable="false" prefWidth="200.0"
++                       promptText="Apartment" GridPane.columnIndex="1" GridPane.rowIndex="6"/>
++            <TextField fx:id="tfName" alignment="CENTER" editable="false" promptText="Name" GridPane.columnIndex="1"
++                       GridPane.rowIndex="1"/>
++            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Name" GridPane.rowIndex="1"/>
++        </GridPane>
++        <HBox alignment="CENTER" prefHeight="54.0" prefWidth="600.0" spacing="50.0">
++            <Button minWidth="200.0" mnemonicParsing="false" onAction="#btnAddClick" text="Add"/>
++            <Button minWidth="200.0" mnemonicParsing="false" onAction="#btnDeleteClick" text="Delete"/>
++        </HBox>
++    </VBox>
+ </AnchorPane>
+Index: src/logic/model/Registration.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package logic.model;\r\n\r\npublic class Registration {\r\n\r\n    private String id;\r\n    private String name;\r\n\tprivate String email;\r\n\tprivate String password;\r\n\tprivate String role;\r\n\tprivate String address;\r\n    private String apartment;\r\n\t\r\n\tpublic Registration(String id , String name, String email, String password, String role, String address, String apartment){\r\n\t\tthis.setId(id);\r\n        this.setName(name);\r\n\t\tthis.setEmail(email);\r\n\t\tthis.setPassword(password);\r\n\t\tthis.setRole(role);\r\n\t\tthis.setAddress(address);\r\n        this.setApartment(apartment);\r\n\t}\r\n\r\n    public String getId(){return id;}\r\n\r\n    public void setId(String id){this.id = id;}\r\n\r\n    public String getName() {\r\n        return name;\r\n    }\r\n\r\n    public void setName(String name){\r\n        this.name = name;\r\n    }\r\n\r\n    public String getEmail() {\r\n        return email;\r\n    }\r\n\r\n    public void setEmail(String email){\r\n        this.email = email;\r\n    }\r\n    \r\n    public String getPassword() {\r\n        return password;\r\n    }\r\n\r\n    public void setPassword(String password) {\r\n        this.password = password;\r\n    }\r\n    \r\n    public String getRole() {\r\n        return role;\r\n    }\r\n\r\n    public void setRole(String role) {\r\n        this.role = role;\r\n    }\r\n    \r\n    public String getAddress() {\r\n        return address;\r\n    }\r\n\r\n    public void setAddress(String address) {\r\n        this.address = address;\r\n    }\r\n\r\n    private void setApartment(String apartment) {\r\n        this.apartment = apartment;\r\n    }\r\n\r\n    public String getApartment(){\r\n        return apartment;\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/logic/model/Registration.java b/src/logic/model/Registration.java
+--- a/src/logic/model/Registration.java	(revision 7d47bd5323c00044053142316b183ac00439c9f5)
++++ b/src/logic/model/Registration.java	(date 1639999284069)
+@@ -2,73 +2,73 @@
+ 
+ public class Registration {
+ 
+-    private String id;
+-    private String name;
+-	private String email;
+-	private String password;
+-	private String role;
+-	private String address;
+-    private String apartment;
++    private String regID;
++    private String regName;
++	private String regEmail;
++	private String regPwd;
++	private String regRole;
++	private String regAddr;
++    private String regApt;
+ 	
+-	public Registration(String id , String name, String email, String password, String role, String address, String apartment){
+-		this.setId(id);
+-        this.setName(name);
+-		this.setEmail(email);
+-		this.setPassword(password);
+-		this.setRole(role);
+-		this.setAddress(address);
+-        this.setApartment(apartment);
++	public Registration(String regID, String regName, String regEmail, String regPwd, String regRole, String regAddr, String regApt){
++		this.setRegID(regID);
++        this.setRegName(regName);
++		this.setRegEmail(regEmail);
++		this.setRegPwd(regPwd);
++		this.setRegRole(regRole);
++		this.setRegAddr(regAddr);
++        this.setRegApt(regApt);
+ 	}
+ 
+-    public String getId(){return id;}
++    public String getRegID(){return regID;}
+ 
+-    public void setId(String id){this.id = id;}
++    public void setRegID(String regID){this.regID = regID;}
+ 
+-    public String getName() {
+-        return name;
++    public String getRegName() {
++        return regName;
+     }
+ 
+-    public void setName(String name){
+-        this.name = name;
++    public void setRegName(String regName){
++        this.regName = regName;
+     }
+ 
+-    public String getEmail() {
+-        return email;
++    public String getRegEmail() {
++        return regEmail;
+     }
+ 
+-    public void setEmail(String email){
+-        this.email = email;
++    public void setRegEmail(String regEmail){
++        this.regEmail = regEmail;
+     }
+     
+-    public String getPassword() {
+-        return password;
++    public String getRegPwd() {
++        return regPwd;
+     }
+ 
+-    public void setPassword(String password) {
+-        this.password = password;
++    public void setRegPwd(String regPwd) {
++        this.regPwd = regPwd;
+     }
+     
+-    public String getRole() {
+-        return role;
++    public String getRegRole() {
++        return regRole;
+     }
+ 
+-    public void setRole(String role) {
+-        this.role = role;
++    public void setRegRole(String regRole) {
++        this.regRole = regRole;
+     }
+     
+-    public String getAddress() {
+-        return address;
++    public String getRegAddr() {
++        return regAddr;
+     }
+ 
+-    public void setAddress(String address) {
+-        this.address = address;
++    public void setRegAddr(String regAddr) {
++        this.regAddr = regAddr;
+     }
+ 
+-    private void setApartment(String apartment) {
+-        this.apartment = apartment;
++    private void setRegApt(String regApt) {
++        this.regApt = regApt;
+     }
+ 
+-    public String getApartment(){
+-        return apartment;
++    public String getRegApt(){
++        return regApt;
+     }
+ }
+Index: bin/logic/view/TabOrganizeView.fxml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n\r\n<?import javafx.scene.control.*?>\r\n\r\n<TabPane maxHeight=\"-Infinity\" maxWidth=\"-Infinity\" minHeight=\"-Infinity\" minWidth=\"-Infinity\" prefHeight=\"400.0\" prefWidth=\"600.0\" tabClosingPolicy=\"UNAVAILABLE\" xmlns=\"http://javafx.com/javafx/11.0.2\" xmlns:fx=\"http://javafx.com/fxml/1\" fx:controller=\"logic.controller.guicontroller.admin.requests.TabOrganizeGUI\">\r\n    <Tab fx:id=\"tabRegistration\" closable=\"false\" text=\"Registration\" />\r\n    <Tab fx:id=\"tabMeeting\" closable=\"false\" text=\"Meeting\" />\r\n</TabPane>\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/bin/logic/view/TabOrganizeView.fxml b/bin/logic/view/TabOrganizeView.fxml
+--- a/bin/logic/view/TabOrganizeView.fxml	(revision 7d47bd5323c00044053142316b183ac00439c9f5)
++++ b/bin/logic/view/TabOrganizeView.fxml	(date 1639999284085)
+@@ -2,7 +2,7 @@
+ 
+ <?import javafx.scene.control.*?>
+ 
+-<TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="logic.controller.guicontroller.admin.requests.TabOrganizeGUI">
++<TabPane fx:id="tabOrganize" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="logic.controller.guicontroller.admin.requests.TabOrganizeGUI">
+     <Tab fx:id="tabRegistration" closable="false" text="Registration" />
+     <Tab fx:id="tabMeeting" closable="false" text="Meeting" />
+ </TabPane>
+Index: src/logic/engineeringclasses/dao/RegisterDAO.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package logic.engineeringclasses.dao;\r\n\r\nimport javafx.collections.FXCollections;\r\nimport javafx.collections.ObservableList;\r\nimport logic.engineeringclasses.bean.RegistrationBean;\r\nimport logic.engineeringclasses.query.RegisterQuery;\r\nimport logic.model.Registration;\r\nimport logic.model.User;\r\n\r\nimport java.sql.ResultSet;\r\nimport java.sql.SQLException;\r\n\r\npublic class RegisterDAO extends SqlDAO{\r\n\r\n    public boolean checkRegistration(String email,String condominiumCode) throws SQLException {\r\n        try {\r\n            connect();\r\n            ResultSet rs = RegisterQuery.selectRegistration(stmt, email, condominiumCode);\r\n            if(rs.next()) {\r\n                return false;\r\n            }\r\n        } finally {\r\n            disconnect();\r\n        }\r\n        return true;\r\n    }\r\n\r\n    public void addRegistrationUser(User user, String role, String apt) throws SQLException{\r\n        try{\r\n            String sql= \"INSERT INTO registration (reg_name, reg_email, reg_pwd, reg_role, reg_addr,reg_apt) VALUES (?,?,?,?,?,?)\";\r\n            System.out.println(sql);\r\n            preset = prepConnect(sql);\r\n            preset.setString(1, user.getName());\r\n            preset.setString(2, user.getEmail());\r\n            preset.setString(3, user.getPassword());\r\n            preset.setString(4, role);\r\n            preset.setString(5, user.getAddress());\r\n            preset.setString(6,apt);\r\n            preset.execute();\r\n        } finally {\r\n            disconnect();\r\n        }\r\n    }\r\n\r\n    public ObservableList<Registration> loadRegistrationList(String address) throws SQLException{\r\n        ObservableList<Registration> list = FXCollections.observableArrayList();\r\n        ResultSet rs;\r\n        try {\r\n            connect();\r\n            rs = RegisterQuery.selectRegisteredUserList(stmt,address);\r\n            while(rs.next()) {\r\n                list.add(new Registration(rs.getString(\"reg_id\")+\"\\n\",rs.getString(\"reg_name\"),rs.getString(\"reg_email\"),rs.getString(\"reg_pwd\"),rs.getString(\"reg_role\"),rs.getString(\"reg_addr\"), rs.getString(\"reg_apt\")));\r\n            }\r\n        } finally {\r\n            disconnect();\r\n        }\r\n        return list;\r\n    }\r\n\r\n    public void deleteRegistered(int registerId)throws SQLException {\r\n        try{\r\n            connect();\r\n            String sql= \"DELETE FROM registration WHERE reg_id='\"+registerId+\"'\";\r\n            stmt.executeUpdate(sql);\r\n        } finally {\r\n            disconnect();\r\n        }\r\n    }\r\n\r\n    public void addRegistered(RegistrationBean reg) throws SQLException{\r\n        try{\r\n            connect();\r\n            String sql = \"INSERT INTO users (user_name,user_email,user_pwd,user_role,user_addr) VALUES (?,?,?,?,?)\";\r\n            preset = prepConnect(sql);\r\n            System.out.println(reg.getName());\r\n            preset.setString(1, reg.getName());\r\n            System.out.println(reg.getEmail());\r\n            preset.setString(2, reg.getEmail());\r\n            System.out.println(reg.getPassword());\r\n            preset.setString(3, reg.getPassword());\r\n            System.out.println(reg.getRole());\r\n            preset.setString(4, reg.getRole());\r\n            System.out.println(reg.getAddress());\r\n            preset.setString(5, reg.getAddress());\r\n            preset.execute();\r\n        } finally {\r\n            disconnect();\r\n        }\r\n    }\r\n\r\n\r\n\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/logic/engineeringclasses/dao/RegisterDAO.java b/src/logic/engineeringclasses/dao/RegisterDAO.java
+--- a/src/logic/engineeringclasses/dao/RegisterDAO.java	(revision 7d47bd5323c00044053142316b183ac00439c9f5)
++++ b/src/logic/engineeringclasses/dao/RegisterDAO.java	(date 1639999284022)
+@@ -30,11 +30,11 @@
+             String sql= "INSERT INTO registration (reg_name, reg_email, reg_pwd, reg_role, reg_addr,reg_apt) VALUES (?,?,?,?,?,?)";
+             System.out.println(sql);
+             preset = prepConnect(sql);
+-            preset.setString(1, user.getName());
+-            preset.setString(2, user.getEmail());
+-            preset.setString(3, user.getPassword());
++            preset.setString(1, user.getUsrName());
++            preset.setString(2, user.getUsrEmail());
++            preset.setString(3, user.getUsrPwd());
+             preset.setString(4, role);
+-            preset.setString(5, user.getAddress());
++            preset.setString(5, user.getUsrAddr());
+             preset.setString(6,apt);
+             preset.execute();
+         } finally {
+@@ -49,7 +49,7 @@
+             connect();
+             rs = RegisterQuery.selectRegisteredUserList(stmt,address);
+             while(rs.next()) {
+-                list.add(new Registration(rs.getString("reg_id")+"\n",rs.getString("reg_name"),rs.getString("reg_email"),rs.getString("reg_pwd"),rs.getString("reg_role"),rs.getString("reg_addr"), rs.getString("reg_apt")));
++                list.add(new Registration(rs.getString("reg_id"),rs.getString("reg_name"),rs.getString("reg_email"),rs.getString("reg_pwd"),rs.getString("reg_role"),rs.getString("reg_addr"), rs.getString("reg_apt")));
+             }
+         } finally {
+             disconnect();
+Index: src/logic/engineeringclasses/dao/ApartmentDAO.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package logic.engineeringclasses.dao;\r\n\r\n\r\nimport javafx.collections.FXCollections;\r\nimport javafx.collections.ObservableList;\r\nimport logic.engineeringclasses.query.ApartmentQuery;\r\nimport logic.model.Apartment;\r\n\r\nimport java.sql.ResultSet;\r\nimport java.sql.SQLException;\r\n\r\npublic class ApartmentDAO extends SqlDAO{\r\n\r\n    private final UserDAO userDao = new UserDAO();\r\n\r\n    public int loadApartmentId(String apartment, String address) throws SQLException {\r\n        int id = 0;\r\n        ResultSet rs;\r\n        try{\r\n            connect();\r\n            rs = ApartmentQuery.selectApartmentId(stmt,apartment,address);\r\n            if(rs.next()) {\r\n                id = rs.getInt(\"apt_id\");\r\n            }\r\n        }finally{\r\n            disconnect();\r\n        }\r\n        return id;\r\n    }\r\n\r\n    public ObservableList<String> loadApartmentResident(String address) throws SQLException{\r\n        ObservableList<String> list = FXCollections.observableArrayList();\r\n        ResultSet rs;\r\n        try{\r\n            connect();\r\n            rs = ApartmentQuery.selectApartmentResident(stmt,address);\r\n            while(rs.next()) {\r\n                list.add(rs.getString(\"apt_name\"));\r\n            }\r\n        }finally{\r\n            disconnect();\r\n        }\r\n        return list;\r\n    }\r\n\r\n\r\n    public ObservableList<String> loadApartmentOwner(String address) throws SQLException{\r\n        ObservableList<String> list = FXCollections.observableArrayList();\r\n\t\tResultSet rs;\r\n        try{\r\n            connect();\r\n            rs = ApartmentQuery.selectApartmentOwner(stmt,address);\r\n            while(rs.next()) {\r\n                list.add(rs.getString(\"apt_name\"));\r\n            }\r\n        }finally{\r\n            disconnect();\r\n        }\r\n        return list;\r\n    }\r\n\r\n    public ObservableList<Apartment> loadApartments(String address) throws SQLException {\r\n        ObservableList<Apartment> apartments = FXCollections.observableArrayList();\r\n        ResultSet rs;\r\n        try {\r\n            connect();\r\n            rs = ApartmentQuery.loadApt(stmt,address);\r\n            while(rs.next()) {\r\n                String aptID = rs.getString(\"apt_name\");\r\n                String aptAdd = rs.getString(\"apt_addr\");\r\n                String aptOwn = rs.getString(\"apt_own\");\r\n                String aptRes = rs.getString(\"apt_res\");\r\n                Apartment apartment = new Apartment(aptID, aptAdd, userDao.checkNameByID(aptOwn), userDao.checkNameByID(aptRes), \"0\");\r\n                apartments.add(apartment);\r\n            }\r\n        } finally {\r\n            disconnect();\r\n        }\r\n        return apartments;\r\n    }\r\n\r\n    public Apartment checkApartments(String userId,String condAddress, String type_usr) throws SQLException{\r\n        Apartment apartment = null;\r\n        ResultSet rs;\r\n        try{\r\n            connect();\r\n            rs = ApartmentQuery.selectAptInfo(stmt,userId,condAddress,type_usr);\r\n            while(rs.next()) {\r\n                String aptID = rs.getString(\"apt_name\");\r\n                String aptAdd = rs.getString(\"apt_addr\");\r\n                String aptOwn = rs.getString(\"apt_own\");\r\n                String aptRes = rs.getString(\"apt_res\");\r\n                apartment = new Apartment(aptID, aptAdd, userDao.checkNameByID(aptOwn), userDao.checkNameByID(aptRes),\"0\");\r\n            }\r\n        }finally{\r\n            disconnect();\r\n        }\r\n        return apartment;\r\n    }\r\n\r\n    public ObservableList<Apartment> checkApartmentsList(String userId,String condAddress, String type_usr) throws SQLException{\r\n        ObservableList<Apartment> list = FXCollections.observableArrayList();\r\n        ResultSet rs;\r\n        try{\r\n            connect();\r\n            rs = ApartmentQuery.selectAptInfo(stmt,userId,condAddress,type_usr);\r\n            while(rs.next()) {\r\n                String aptID = rs.getString(\"apt_name\");\r\n                String aptAdd = rs.getString(\"apt_addr\");\r\n                String aptOwn = rs.getString(\"apt_own\");\r\n                String aptRes = rs.getString(\"apt_res\");\r\n                Apartment apartment = new Apartment(aptID, aptAdd, userDao.checkNameByID(aptOwn), userDao.checkNameByID(aptRes),\"0\");\r\n                list.add(apartment);\r\n            }\r\n        }finally{\r\n            disconnect();\r\n        }\r\n        return list;\r\n    }\r\n\r\n    public void addResident(String apartment,String address) throws SQLException{\r\n        try{\r\n            connect();\r\n            String sql = \"UPDATE apartment SET apt_res=? where apt_name=? and apt_addr=?\";\r\n            preset = prepConnect(sql);\r\n            preset.setString(1, loadLatestId(\"users\",\"user_id\"));\r\n            preset.setString(2,apartment);\r\n            preset.setString(3,address);\r\n            preset.executeUpdate();\r\n        } finally {\r\n            disconnect();\r\n        }\r\n    }\r\n\r\n    public String checkUserAptFromNumber(String aptNumber,String condAddr, String userRequired) throws SQLException{\r\n        String usrId = null;\r\n        try {\r\n            connect();\r\n            ResultSet rs = ApartmentQuery.checkApartmentFromNumber(stmt,aptNumber,condAddr,userRequired);\r\n            if(rs.next()) {\r\n                usrId = rs.getString(userRequired);\r\n            }\r\n        } finally {\r\n            disconnect();\r\n        }\r\n        return usrId;\r\n    }\r\n\r\n    public String checkMailById(String userId) throws SQLException {\r\n        String userEmail = null;\r\n        try {\r\n            connect();\r\n            ResultSet rs = ApartmentQuery.selectEmail(stmt, userId);\r\n            if(rs.next()) {\r\n                userEmail = rs.getString(\"user_email\");\r\n            }\r\n        } finally {\r\n            disconnect();\r\n        }\r\n        return userEmail;\r\n    }\r\n\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/logic/engineeringclasses/dao/ApartmentDAO.java b/src/logic/engineeringclasses/dao/ApartmentDAO.java
+--- a/src/logic/engineeringclasses/dao/ApartmentDAO.java	(revision 7d47bd5323c00044053142316b183ac00439c9f5)
++++ b/src/logic/engineeringclasses/dao/ApartmentDAO.java	(date 1639999292009)
+@@ -132,6 +132,20 @@
+         }
+     }
+ 
++    public void addOwner(String apartment, String address) throws SQLException{
++        try{
++            connect();
++            String sql = "UPDATE apartment SET apt_own=? where apt_name=? and apt_addr=?";
++            preset = prepConnect(sql);
++            preset.setString(1, loadLatestId("users","user_id"));
++            preset.setString(2,apartment);
++            preset.setString(3,address);
++            preset.executeUpdate();
++        } finally {
++            disconnect();
++        }
++    }
++
+     public String checkUserAptFromNumber(String aptNumber,String condAddr, String userRequired) throws SQLException{
+         String usrId = null;
+         try {
+Index: bin/logic/view/RegistrationDetailTableView.fxml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n\r\n<?import javafx.geometry.Insets?>\r\n<?import javafx.scene.control.Button?>\r\n<?import javafx.scene.control.TextField?>\r\n<?import javafx.scene.image.Image?>\r\n<?import javafx.scene.image.ImageView?>\r\n<?import javafx.scene.layout.AnchorPane?>\r\n<?import javafx.scene.layout.ColumnConstraints?>\r\n<?import javafx.scene.layout.GridPane?>\r\n<?import javafx.scene.layout.RowConstraints?>\r\n<?import javafx.scene.layout.VBox?>\r\n<?import javafx.scene.text.Text?>\r\n\r\n<AnchorPane prefHeight=\"400.0\" prefWidth=\"600.0\" xmlns=\"http://javafx.com/javafx/17\" xmlns:fx=\"http://javafx.com/fxml/1\" fx:controller=\"logic.controller.guicontroller.admin.requests.registration.RegistrationTableDetailGUI\">\r\n   <VBox prefHeight=\"200.0\" prefWidth=\"100.0\" spacing=\"20.0\" AnchorPane.bottomAnchor=\"0.0\" AnchorPane.leftAnchor=\"0.0\" AnchorPane.rightAnchor=\"0.0\" AnchorPane.topAnchor=\"0.0\">\r\n      <children>\r\n         <Button mnemonicParsing=\"false\" onAction=\"#btnX\" style=\"-fx-background-color: null;\">\r\n            <graphic>\r\n               <ImageView fitHeight=\"26.0\" fitWidth=\"30.0\" pickOnBounds=\"true\" preserveRatio=\"true\">\r\n                  <Image url=\"@Icon/outline_arrow_back_black_24dp.png\" />\r\n               </ImageView>\r\n            </graphic>\r\n         </Button>\r\n         <GridPane alignment=\"CENTER\" vgap=\"10.0\">\r\n           <columnConstraints>\r\n             <ColumnConstraints hgrow=\"SOMETIMES\" maxWidth=\"295.0\" minWidth=\"10.0\" prefWidth=\"164.6\" />\r\n             <ColumnConstraints hgrow=\"SOMETIMES\" maxWidth=\"436.19999999999993\" minWidth=\"10.0\" prefWidth=\"436.19999999999993\" />\r\n           </columnConstraints>\r\n           <rowConstraints>\r\n             <RowConstraints minHeight=\"10.0\" prefHeight=\"30.0\" vgrow=\"SOMETIMES\" />\r\n             <RowConstraints minHeight=\"10.0\" prefHeight=\"30.0\" vgrow=\"SOMETIMES\" />\r\n               <RowConstraints minHeight=\"10.0\" prefHeight=\"30.0\" vgrow=\"SOMETIMES\" />\r\n               <RowConstraints minHeight=\"10.0\" prefHeight=\"30.0\" vgrow=\"SOMETIMES\" />\r\n               <RowConstraints minHeight=\"10.0\" prefHeight=\"30.0\" vgrow=\"SOMETIMES\" />\r\n               <RowConstraints minHeight=\"10.0\" prefHeight=\"30.0\" vgrow=\"SOMETIMES\" />\r\n               <RowConstraints minHeight=\"10.0\" prefHeight=\"30.0\" vgrow=\"SOMETIMES\" />\r\n           </rowConstraints>\r\n            <children>\r\n               <TextField fx:id=\"tfEmail\" alignment=\"CENTER\" editable=\"false\" prefWidth=\"200.0\" promptText=\"Email\" GridPane.columnIndex=\"1\" GridPane.rowIndex=\"2\" />\r\n               <Text strokeType=\"OUTSIDE\" strokeWidth=\"0.0\" text=\"ID        \" />\r\n               <TextField fx:id=\"tfID\" alignment=\"CENTER\" editable=\"false\" prefWidth=\"200.0\" promptText=\"ID\" GridPane.columnIndex=\"1\" />\r\n               <Text strokeType=\"OUTSIDE\" strokeWidth=\"0.0\" text=\"Email     \" GridPane.rowIndex=\"2\" />\r\n               <Text strokeType=\"OUTSIDE\" strokeWidth=\"0.0\" text=\"Password  \" GridPane.rowIndex=\"3\" />\r\n               <TextField fx:id=\"tfPwd\" alignment=\"CENTER\" editable=\"false\" prefWidth=\"200.0\" promptText=\"Password\" GridPane.columnIndex=\"1\" GridPane.rowIndex=\"3\" />\r\n               <Text strokeType=\"OUTSIDE\" strokeWidth=\"0.0\" text=\"Role      \" GridPane.rowIndex=\"4\" />\r\n               <TextField fx:id=\"tfRole\" alignment=\"CENTER\" editable=\"false\" prefWidth=\"200.0\" promptText=\"Role\" GridPane.columnIndex=\"1\" GridPane.rowIndex=\"4\" />\r\n               <Text strokeType=\"OUTSIDE\" strokeWidth=\"0.0\" text=\"Address \" GridPane.rowIndex=\"5\" />\r\n               <TextField fx:id=\"tfAddr\" alignment=\"CENTER\" editable=\"false\" prefWidth=\"200.0\" promptText=\"Address\" GridPane.columnIndex=\"1\" GridPane.rowIndex=\"5\" />\r\n               <TextField fx:id=\"tfName\" alignment=\"CENTER\" editable=\"false\" promptText=\"Name\" GridPane.columnIndex=\"1\" GridPane.rowIndex=\"1\" />\r\n               <Text strokeType=\"OUTSIDE\" strokeWidth=\"0.0\" text=\"Name\" GridPane.rowIndex=\"1\" />\r\n            </children>\r\n            <VBox.margin>\r\n               <Insets />\r\n            </VBox.margin>\r\n         </GridPane>\r\n      </children>\r\n   </VBox>\r\n</AnchorPane>\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/bin/logic/view/RegistrationDetailTableView.fxml b/bin/logic/view/RegistrationDetailTableView.fxml
+--- a/bin/logic/view/RegistrationDetailTableView.fxml	(revision 7d47bd5323c00044053142316b183ac00439c9f5)
++++ b/bin/logic/view/RegistrationDetailTableView.fxml	(date 1639999317702)
+@@ -1,59 +1,64 @@
+ <?xml version="1.0" encoding="UTF-8"?>
+ 
+-<?import javafx.geometry.Insets?>
+-<?import javafx.scene.control.Button?>
+-<?import javafx.scene.control.TextField?>
+-<?import javafx.scene.image.Image?>
+-<?import javafx.scene.image.ImageView?>
+-<?import javafx.scene.layout.AnchorPane?>
+-<?import javafx.scene.layout.ColumnConstraints?>
+-<?import javafx.scene.layout.GridPane?>
+-<?import javafx.scene.layout.RowConstraints?>
+-<?import javafx.scene.layout.VBox?>
+-<?import javafx.scene.text.Text?>
++<?import javafx.geometry.*?>
++<?import javafx.scene.control.*?>
++<?import javafx.scene.image.*?>
++<?import javafx.scene.layout.*?>
++<?import javafx.scene.text.*?>
+ 
+-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="logic.controller.guicontroller.admin.requests.registration.RegistrationTableDetailGUI">
+-   <VBox prefHeight="200.0" prefWidth="100.0" spacing="20.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+-      <children>
+-         <Button mnemonicParsing="false" onAction="#btnX" style="-fx-background-color: null;">
+-            <graphic>
++<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="logic.controller.guicontroller.admin.requests.registration.RegistrationTableDetailGUI">
++    <VBox prefHeight="200.0" prefWidth="100.0" spacing="20.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
++          AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
++        <Button mnemonicParsing="false" onAction="#btnX" style="-fx-background-color: null;">
++           <graphic>
+                <ImageView fitHeight="26.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+-                  <Image url="@Icon/outline_arrow_back_black_24dp.png" />
++                   <Image url="@Icon/outline_arrow_back_black_24dp.png"/>
+                </ImageView>
+-            </graphic>
+-         </Button>
+-         <GridPane alignment="CENTER" vgap="10.0">
+-           <columnConstraints>
+-             <ColumnConstraints hgrow="SOMETIMES" maxWidth="295.0" minWidth="10.0" prefWidth="164.6" />
+-             <ColumnConstraints hgrow="SOMETIMES" maxWidth="436.19999999999993" minWidth="10.0" prefWidth="436.19999999999993" />
+-           </columnConstraints>
+-           <rowConstraints>
+-             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+-             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+-               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+-               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+-               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+-               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+-               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+-           </rowConstraints>
+-            <children>
+-               <TextField fx:id="tfEmail" alignment="CENTER" editable="false" prefWidth="200.0" promptText="Email" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+-               <Text strokeType="OUTSIDE" strokeWidth="0.0" text="ID        " />
+-               <TextField fx:id="tfID" alignment="CENTER" editable="false" prefWidth="200.0" promptText="ID" GridPane.columnIndex="1" />
+-               <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Email     " GridPane.rowIndex="2" />
+-               <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Password  " GridPane.rowIndex="3" />
+-               <TextField fx:id="tfPwd" alignment="CENTER" editable="false" prefWidth="200.0" promptText="Password" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+-               <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Role      " GridPane.rowIndex="4" />
+-               <TextField fx:id="tfRole" alignment="CENTER" editable="false" prefWidth="200.0" promptText="Role" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+-               <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Address " GridPane.rowIndex="5" />
+-               <TextField fx:id="tfAddr" alignment="CENTER" editable="false" prefWidth="200.0" promptText="Address" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+-               <TextField fx:id="tfName" alignment="CENTER" editable="false" promptText="Name" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+-               <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Name" GridPane.rowIndex="1" />
+-            </children>
+-            <VBox.margin>
+-               <Insets />
+-            </VBox.margin>
+-         </GridPane>
+-      </children>
+-   </VBox>
++           </graphic>
++        </Button>
++        <GridPane alignment="CENTER" vgap="10.0">
++            <columnConstraints>
++                <ColumnConstraints hgrow="SOMETIMES" maxWidth="295.0" minWidth="10.0" prefWidth="164.6"/>
++                <ColumnConstraints hgrow="SOMETIMES" maxWidth="436.19999999999993" minWidth="10.0"
++                                   prefWidth="436.19999999999993"/>
++            </columnConstraints>
++            <rowConstraints>
++                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
++                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
++                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
++                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
++                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
++                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
++                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
++            </rowConstraints>
++            <VBox.margin>
++                <Insets/>
++            </VBox.margin>
++            <TextField fx:id="tfEmail" alignment="CENTER" editable="false" prefWidth="200.0" promptText="Email"
++                       GridPane.columnIndex="1" GridPane.rowIndex="2"/>
++            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="ID        "/>
++            <TextField fx:id="tfID" alignment="CENTER" editable="false" prefWidth="200.0" promptText="ID"
++                       GridPane.columnIndex="1"/>
++            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Email     " GridPane.rowIndex="2"/>
++            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Password  " GridPane.rowIndex="3"/>
++            <TextField fx:id="tfPwd" alignment="CENTER" editable="false" prefWidth="200.0" promptText="Password"
++                       GridPane.columnIndex="1" GridPane.rowIndex="3"/>
++            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Role      " GridPane.rowIndex="4"/>
++            <TextField fx:id="tfRole" alignment="CENTER" editable="false" prefWidth="200.0" promptText="Role"
++                       GridPane.columnIndex="1" GridPane.rowIndex="4"/>
++            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Address " GridPane.rowIndex="5"/>
++            <TextField fx:id="tfAddr" alignment="CENTER" editable="false" prefWidth="200.0" promptText="Address"
++                       GridPane.columnIndex="1" GridPane.rowIndex="5"/>
++            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Apartment" GridPane.rowIndex="6"/>
++            <TextField fx:id="tfApartment" alignment="CENTER" editable="false" prefWidth="200.0"
++                       promptText="Apartment" GridPane.columnIndex="1" GridPane.rowIndex="6"/>
++            <TextField fx:id="tfName" alignment="CENTER" editable="false" promptText="Name" GridPane.columnIndex="1"
++                       GridPane.rowIndex="1"/>
++            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Name" GridPane.rowIndex="1"/>
++        </GridPane>
++        <HBox alignment="CENTER" prefHeight="54.0" prefWidth="600.0" spacing="50.0">
++            <Button minWidth="200.0" mnemonicParsing="false" onAction="#btnAddClick" text="Add"/>
++            <Button minWidth="200.0" mnemonicParsing="false" onAction="#btnDeleteClick" text="Delete"/>
++        </HBox>
++    </VBox>
+ </AnchorPane>
+Index: src/logic/engineeringclasses/dao/UserDAO.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package logic.engineeringclasses.dao;\r\n\r\nimport javafx.collections.FXCollections;\r\nimport javafx.collections.ObservableList;\r\nimport logic.engineeringclasses.exception.PatternException;\r\nimport logic.engineeringclasses.query.ApartmentQuery;\r\nimport logic.engineeringclasses.query.CondominiumQuery;\r\nimport logic.engineeringclasses.query.UserQuery;\r\nimport logic.model.Administrator;\r\nimport logic.model.Owner;\r\nimport logic.model.Resident;\r\nimport logic.model.Role;\r\n\r\nimport java.sql.ResultSet;\r\nimport java.sql.SQLException;\r\n\r\npublic class UserDAO extends SqlDAO{\r\n\r\n    private String usrName;\r\n\r\n    public String checkNameByID(String id)throws SQLException {\r\n        try {\r\n            connect();\r\n            ResultSet rs = ApartmentQuery.selectNameByID(stmt, id);\r\n            if(rs.next()) {\r\n                this.usrName = rs.getString(\"user_name\");\r\n            }\r\n        } finally {\r\n            disconnect();\r\n        }\r\n        return this.usrName;\r\n    }\r\n\r\n    public String checkUserID(String email,String address) throws SQLException{\r\n        String getID = \"\";\r\n        try {\r\n            connect();\r\n            ResultSet rs = UserQuery.selectUserID(stmt, email,address);\r\n            if(rs.next()) {\r\n                getID = rs.getString(\"user_id\");\r\n            }\r\n        } finally {\r\n            disconnect();\r\n        }\r\n        return getID;\r\n    }\r\n\r\n    public Role checkRole(String id) throws SQLException {\r\n        Role role = null;\r\n        try {\r\n            connect();\r\n            ResultSet rs = UserQuery.selectRole(stmt,id);\r\n            if(rs.next()) {\r\n                role = Role.valueOf(rs.getString(\"user_role\"));\r\n            }\r\n        } finally {\r\n            disconnect();\r\n        }\r\n        return role;\r\n    }\r\n\r\n    public  String checkLogin(String email,String condominiumCode) throws SQLException {\r\n        String pwd = \"\";\r\n        try {\r\n            connect();\r\n            ResultSet rs = UserQuery.selectLogin(stmt, email, condominiumCode);\r\n            if(rs.next()) {\r\n                pwd = rs.getString(\"user_pwd\");\r\n            }\r\n        } finally {\r\n            disconnect();\r\n        }\r\n        return pwd;\r\n    }\r\n\r\n    //USER INITIALIZATION\r\n    public Administrator loadAdminID(String id) throws SQLException, PatternException {\r\n        Administrator admin = null;\r\n        try {\r\n            connect();\r\n            ResultSet rs = UserQuery.loadUserByID(stmt,id);\r\n            if(rs.next()) {\r\n                String userName = rs.getString(\"user_name\");\r\n                String userEmail = rs.getString(\"user_email\");\r\n                String userPwd = rs.getString(\"user_pwd\");\r\n                String userAddr = rs.getString(\"user_addr\");\r\n                admin = new Administrator(id,userName,userEmail,userPwd,userAddr,null);\r\n            }\r\n        } finally {\r\n            disconnect();\r\n        }\r\n        return admin;\r\n    }\r\n\r\n    public Owner loadOwnerID(String id) throws SQLException,PatternException {\r\n        Owner owner = null;\r\n        try {\r\n            connect();\r\n            ResultSet rs = UserQuery.loadUserByID(stmt,id);\r\n            if(rs.next()) {\r\n                String userName = rs.getString(\"user_name\");\r\n                String userEmail = rs.getString(\"user_email\");\r\n                String userPwd = rs.getString(\"user_pwd\");\r\n                String userAddr = rs.getString(\"user_addr\");\r\n                owner = new Owner(id,userName,userEmail,userPwd,userAddr);\r\n            }\r\n        } finally {\r\n            disconnect();\r\n        }\r\n        return owner;\r\n    }\r\n\r\n    public Resident loadResidentID(String id) throws SQLException,PatternException{\r\n        Resident resident = null;\r\n        try {\r\n            connect();\r\n            ResultSet rs = UserQuery.loadUserByID(stmt,id);\r\n            if(rs.next()) {\r\n                String userName = rs.getString(\"user_name\");\r\n                String userEmail = rs.getString(\"user_email\");\r\n                String userPwd = rs.getString(\"user_pwd\");\r\n                String userAddr = rs.getString(\"user_addr\");\r\n                resident = new Resident(id,userName,userEmail,userPwd,userAddr);\r\n            }\r\n        } finally {\r\n            disconnect();\r\n        }\r\n        return resident;\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/logic/engineeringclasses/dao/UserDAO.java b/src/logic/engineeringclasses/dao/UserDAO.java
+--- a/src/logic/engineeringclasses/dao/UserDAO.java	(revision 7d47bd5323c00044053142316b183ac00439c9f5)
++++ b/src/logic/engineeringclasses/dao/UserDAO.java	(date 1639999284022)
+@@ -2,14 +2,11 @@
+ 
+ import javafx.collections.FXCollections;
+ import javafx.collections.ObservableList;
+-import logic.engineeringclasses.exception.PatternException;
++import logic.engineeringclasses.exception.InputException;
+ import logic.engineeringclasses.query.ApartmentQuery;
+-import logic.engineeringclasses.query.CondominiumQuery;
++import logic.engineeringclasses.query.RegisterQuery;
+ import logic.engineeringclasses.query.UserQuery;
+-import logic.model.Administrator;
+-import logic.model.Owner;
+-import logic.model.Resident;
+-import logic.model.Role;
++import logic.model.*;
+ 
+ import java.sql.ResultSet;
+ import java.sql.SQLException;
+@@ -74,7 +71,7 @@
+     }
+ 
+     //USER INITIALIZATION
+-    public Administrator loadAdminID(String id) throws SQLException, PatternException {
++    public Administrator loadAdminID(String id) throws SQLException, InputException {
+         Administrator admin = null;
+         try {
+             connect();
+@@ -92,7 +89,7 @@
+         return admin;
+     }
+ 
+-    public Owner loadOwnerID(String id) throws SQLException,PatternException {
++    public Owner loadOwnerID(String id) throws SQLException, InputException {
+         Owner owner = null;
+         try {
+             connect();
+@@ -110,7 +107,7 @@
+         return owner;
+     }
+ 
+-    public Resident loadResidentID(String id) throws SQLException,PatternException{
++    public Resident loadResidentID(String id) throws SQLException, InputException {
+         Resident resident = null;
+         try {
+             connect();
+@@ -127,4 +124,19 @@
+         }
+         return resident;
+     }
++
++    public ObservableList<User> loadUserList(String address) throws SQLException{
++        ObservableList<User> list = FXCollections.observableArrayList();
++        ResultSet rs;
++        try {
++            connect();
++            rs = UserQuery.selectUserList(stmt,address);
++            while(rs.next()) {
++                list.add(new User(rs.getString("user_id"),rs.getString("user_name"),rs.getString("user_email"),rs.getString("user_pwd"),rs.getString("user_role"),rs.getString("user_addr")));
++            }
++        } finally {
++            disconnect();
++        }
++        return list;
++    }
+ }
+Index: src/logic/controller/applicationcontroller/RegisterController.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package logic.controller.applicationcontroller;\r\n\r\nimport javafx.collections.FXCollections;\r\nimport javafx.collections.ObservableList;\r\nimport javafx.fxml.FXMLLoader;\r\nimport javafx.scene.control.ButtonType;\r\nimport javafx.scene.control.Dialog;\r\nimport javafx.scene.control.DialogPane;\r\n\r\nimport logic.controller.guicontroller.general.registration.SelectApartmentDialogGUI;\r\nimport logic.engineeringclasses.bean.FeeBean;\r\nimport logic.engineeringclasses.bean.RegistrationBean;\r\nimport logic.engineeringclasses.bean.UserBean;\r\nimport logic.engineeringclasses.dao.CondominiumDAO;\r\nimport logic.engineeringclasses.dao.RegisterDAO;\r\nimport logic.engineeringclasses.exception.PatternException;\r\nimport logic.model.Registration;\r\nimport logic.model.Role;\r\nimport logic.model.User;\r\n\r\nimport java.io.IOException;\r\nimport java.sql.SQLException;\r\nimport java.util.Optional;\r\n\r\npublic class RegisterController{\r\n\r\n\tprivate final CondominiumDAO cond = new CondominiumDAO();\r\n\tprivate final RegisterDAO register = new RegisterDAO();\r\n\tprivate final ApartmentController aptController = new ApartmentController();\r\n\tprivate final PatternController pattern = new PatternController();\r\n\tprivate int typError;\r\n\r\n\tpublic int registration(UserBean bean){\r\n\t\tthis.typError = 0;\r\n\t\ttry {\r\n\t\t\tif(pattern.isName(bean.getName())) {\r\n\t\t\t\tthis.typError = 1;\r\n\t\t\t\tthrow new PatternException(\"Incorrect Name : \"+bean.getName());\r\n\t\t\t}\r\n\t\t\tif(pattern.isName(bean.getSurname())) {\r\n\t\t\t\tthis.typError = 2;\r\n\t\t\t\tthrow new PatternException(\"Incorrect Surname : \"+bean.getSurname());\r\n\t\t\t}\r\n\t\t\tif(!pattern.isEmail(bean.getEmail())) {\r\n\t\t\t\tthis.typError = 3;\r\n\t\t\t\tthrow new PatternException(\"Incorrect Email : \"+bean.getEmail());\r\n\t\t\t}\r\n\t\t\tif(!pattern.isPassword(bean.getPassword())){\r\n\t\t\t\tthis.typError = 4;\r\n\t\t\t\tthrow new PatternException(\"Incorrect Password\");\r\n\t\t\t}\r\n\t\t\tif(!bean.getPassword().equals(bean.getOkPassword())) {\r\n\t\t\t\tthis.typError = 5;\r\n\t\t\t\tthrow new PatternException(\"Password Mismatch\");\r\n\t\t\t}\r\n\t\t\tif(bean.getRole() == null) {\r\n\t\t\t\tthis.typError = 6;\r\n\t\t\t\tthrow new PatternException(\"No Role Selected\");\r\n\t\t\t}\r\n\t\t\tif(bean.getAddress() == null) {\r\n\t\t\t\tthis.typError = 7;\r\n\t\t\t\tthrow new PatternException(\"No Address Selected\");\r\n\t\t\t}\r\n\t\t\tif(checkRegistration(bean.getEmail(),bean.getAddress())){\r\n\t\t\t\tFXMLLoader loader = new FXMLLoader();\r\n\t\t\t\tloader.setLocation(getClass().getResource(\"/logic/view/SelectApartmentDialog.fxml\"));\r\n\t\t\t\tDialogPane pane = loader.load();\r\n\t\t\t\tSelectApartmentDialogGUI apt = loader.getController();\r\n\t\t\t\tObservableList<String> list = FXCollections.observableArrayList();\r\n\t\t\t\tswitch(Role.valueOf(bean.getRole().toUpperCase())) {\r\n\t\t\t\t\tcase OWNER:\r\n\t\t\t\t\t\tlist = aptController.loadApartmentOwner(bean.getAddress());\r\n\t\t\t\t\t\tbreak;\r\n\t\t\t\t\tcase RESIDENT:\r\n\t\t\t\t\t\tlist = aptController.loadApartmentResident(bean.getAddress());\r\n\t\t\t\t\t\tbreak;\r\n\t\t\t\t}\r\n\t\t\t\tif(list.isEmpty()){\r\n\t\t\t\t\tthis.typError = 10;\r\n\t\t\t\t\tthrow new PatternException(\"No Apartment Available\");\r\n\t\t\t\t}else{\r\n\t\t\t\t\tapt.setUp(list,bean.getRole(), bean.getAddress());\r\n\t\t\t\t}\r\n\t\t\t\tDialog<ButtonType> dialog = new Dialog<>();\r\n\t\t\t\tdialog.setDialogPane(pane);\r\n\t\t\t\tOptional<ButtonType> btn = dialog.showAndWait();\r\n\t\t\t\tif(btn.isPresent() && btn.get() == ButtonType.OK){\r\n\t\t\t\t\tlist = apt.getApt();\r\n\t\t\t\t\tif(list.isEmpty()){\r\n\t\t\t\t\t\tthis.typError = 11;\r\n\t\t\t\t\t\tthrow new PatternException(\"No Apartment Selected\");\r\n\t\t\t\t\t}else{\r\n\t\t\t\t\t\tfor(String aptName : list){\r\n\t\t\t\t\t\t\tString name = bean.getName() +\" \"+ bean.getSurname();\r\n\t\t\t\t\t\t\tUser user = new User(null,name,bean.getEmail(),bean.getPassword(),bean.getAddress());\r\n\t\t\t\t\t\t\tregister.addRegistrationUser(user,bean.getRole().toUpperCase(),aptName);\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t}\r\n\t\t\t\t}\r\n\t\t\t}\r\n\t\t\treturn this.typError;\r\n\t\t}catch(PatternException | SQLException | IOException e){\r\n\t\t\treturn this.typError;\r\n\t\t}\r\n\t}\r\n\r\n\tprivate boolean checkRegistration(String email, String address) throws SQLException{\r\n\t\ttry{\r\n\t\t\tif(register.checkRegistration(email, address)) {\r\n\t\t\t\treturn true;\r\n\t\t\t}\r\n\t\t\tthis.typError = 9;\r\n\t\t\treturn false;\r\n\t\t}catch(SQLException e) {\r\n\t\t\tthis.typError = 8;\r\n\t\t\treturn false;\r\n\t\t}\r\n\t}\r\n\r\n\tpublic ObservableList<String> loadAddresses() throws SQLException{\r\n\t\treturn cond.checkAddressesList();\r\n\t}\r\n\r\n\tpublic ObservableList<Registration> loadRegistration(String address)throws SQLException{\r\n\t\treturn register.loadRegistrationList(address);\r\n\t}\r\n\r\n\tpublic void addRegistered(RegistrationBean reg, FeeBean fee){\r\n\t\ttry{\r\n\t\t\tFeeController feeCtrl = new FeeController();\r\n\t\t\tApartmentController aptCtrl = new ApartmentController();\r\n\t\t\tregister.addRegistered(reg);\r\n\t\t\tfee.setApt(aptCtrl.loadApartmentId(reg.getApartment(),reg.getAddress()));\r\n\t\t\tfeeCtrl.addFees(fee);\r\n\t\t\taptCtrl.addResident(reg.getApartment(),reg.getAddress());\r\n\t\t}catch(Exception e) {\r\n\t\t\tSystem.out.println(\"SQLException\");\r\n\t\t}\r\n\t}\r\n\r\n\tpublic void removeRegistered(int id) {\r\n\t\ttry{\r\n\t\t\tregister.deleteRegistered(id);\r\n\t\t}catch(SQLException e){\r\n\t\t\tSystem.out.println(\"SQLException\");\r\n\t\t}\r\n\t}\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/logic/controller/applicationcontroller/RegisterController.java b/src/logic/controller/applicationcontroller/RegisterController.java
+--- a/src/logic/controller/applicationcontroller/RegisterController.java	(revision 7d47bd5323c00044053142316b183ac00439c9f5)
++++ b/src/logic/controller/applicationcontroller/RegisterController.java	(date 1639999283960)
+@@ -13,7 +13,7 @@
+ import logic.engineeringclasses.bean.UserBean;
+ import logic.engineeringclasses.dao.CondominiumDAO;
+ import logic.engineeringclasses.dao.RegisterDAO;
+-import logic.engineeringclasses.exception.PatternException;
++import logic.engineeringclasses.exception.InputException;
+ import logic.model.Registration;
+ import logic.model.Role;
+ import logic.model.User;
+@@ -35,31 +35,31 @@
+ 		try {
+ 			if(pattern.isName(bean.getName())) {
+ 				this.typError = 1;
+-				throw new PatternException("Incorrect Name : "+bean.getName());
++				throw new InputException("Incorrect Name : "+bean.getName());
+ 			}
+ 			if(pattern.isName(bean.getSurname())) {
+ 				this.typError = 2;
+-				throw new PatternException("Incorrect Surname : "+bean.getSurname());
++				throw new InputException("Incorrect Surname : "+bean.getSurname());
+ 			}
+ 			if(!pattern.isEmail(bean.getEmail())) {
+ 				this.typError = 3;
+-				throw new PatternException("Incorrect Email : "+bean.getEmail());
++				throw new InputException("Incorrect Email : "+bean.getEmail());
+ 			}
+ 			if(!pattern.isPassword(bean.getPassword())){
+ 				this.typError = 4;
+-				throw new PatternException("Incorrect Password");
++				throw new InputException("Incorrect Password");
+ 			}
+ 			if(!bean.getPassword().equals(bean.getOkPassword())) {
+ 				this.typError = 5;
+-				throw new PatternException("Password Mismatch");
++				throw new InputException("Password Mismatch");
+ 			}
+ 			if(bean.getRole() == null) {
+ 				this.typError = 6;
+-				throw new PatternException("No Role Selected");
++				throw new InputException("No Role Selected");
+ 			}
+ 			if(bean.getAddress() == null) {
+ 				this.typError = 7;
+-				throw new PatternException("No Address Selected");
++				throw new InputException("No Address Selected");
+ 			}
+ 			if(checkRegistration(bean.getEmail(),bean.getAddress())){
+ 				FXMLLoader loader = new FXMLLoader();
+@@ -77,7 +77,7 @@
+ 				}
+ 				if(list.isEmpty()){
+ 					this.typError = 10;
+-					throw new PatternException("No Apartment Available");
++					throw new InputException("No Apartment Available");
+ 				}else{
+ 					apt.setUp(list,bean.getRole(), bean.getAddress());
+ 				}
+@@ -88,7 +88,7 @@
+ 					list = apt.getApt();
+ 					if(list.isEmpty()){
+ 						this.typError = 11;
+-						throw new PatternException("No Apartment Selected");
++						throw new InputException("No Apartment Selected");
+ 					}else{
+ 						for(String aptName : list){
+ 							String name = bean.getName() +" "+ bean.getSurname();
+@@ -99,7 +99,7 @@
+ 				}
+ 			}
+ 			return this.typError;
+-		}catch(PatternException | SQLException | IOException e){
++		}catch(InputException | SQLException | IOException e){
+ 			return this.typError;
+ 		}
+ 	}
+@@ -126,16 +126,29 @@
+ 	}
+ 
+ 	public void addRegistered(RegistrationBean reg, FeeBean fee){
+-		try{
+-			FeeController feeCtrl = new FeeController();
+-			ApartmentController aptCtrl = new ApartmentController();
+-			register.addRegistered(reg);
+-			fee.setApt(aptCtrl.loadApartmentId(reg.getApartment(),reg.getAddress()));
+-			feeCtrl.addFees(fee);
+-			aptCtrl.addResident(reg.getApartment(),reg.getAddress());
+-		}catch(Exception e) {
+-			System.out.println("SQLException");
++		ApartmentController aptCtrl = new ApartmentController();
++		switch (Role.valueOf(reg.getRole())){
++			case OWNER:
++				try {
++					register.addRegistered(reg);
++					aptCtrl.addOwner(reg.getApartment(), reg.getAddress());
++				}catch (SQLException e){
++					e.printStackTrace();
++				}
++				break;
++			case RESIDENT:
++				try{
++					FeeController feeCtrl = new FeeController();
++					register.addRegistered(reg);
++					fee.setApt(aptCtrl.loadApartmentId(reg.getApartment(),reg.getAddress()));
++					feeCtrl.addFees(fee);
++					aptCtrl.addResident(reg.getApartment(),reg.getAddress());
++				}catch(SQLException e) {
++					System.out.println("SQLException");
++				}
++				break;
+ 		}
++
+ 	}
+ 
+ 	public void removeRegistered(int id) {
+Index: bin/logic/view/LoginView.fxml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n\r\n<?import javafx.geometry.*?>\r\n<?import javafx.scene.control.*?>\r\n<?import javafx.scene.image.Image?>\r\n<?import javafx.scene.image.ImageView?>\r\n<?import javafx.scene.layout.*?>\r\n<?import javafx.scene.text.*?>\r\n<AnchorPane id=\"AnchorPane\" prefHeight=\"650.0\" prefWidth=\"950.0\" style=\"-fx-background-color: #fff;\"\r\n            xmlns=\"http://javafx.com/javafx/11.0.2\" xmlns:fx=\"http://javafx.com/fxml/1\"\r\n            fx:controller=\"logic.controller.guicontroller.general.login.LoginGUI\">\r\n    <AnchorPane prefHeight=\"650.0\" prefWidth=\"400.0\" style=\"-fx-background-color: #0C39FF;\"\r\n                AnchorPane.bottomAnchor=\"0.0\" AnchorPane.leftAnchor=\"0.0\" AnchorPane.topAnchor=\"0.0\">\r\n        <Label alignment=\"CENTER\" layoutX=\"32.0\" layoutY=\"269.0\" prefHeight=\"58.0\" prefWidth=\"317.0\"\r\n               text=\"Condominium\" textFill=\"WHITE\" AnchorPane.leftAnchor=\"32.0\" AnchorPane.rightAnchor=\"32.0\">\r\n        </Label>\r\n        <Label alignment=\"CENTER\" layoutX=\"46.0\" layoutY=\"315.0\" prefHeight=\"23.0\" prefWidth=\"290.0\"\r\n               text=\"Manage your condominiums easily\" textFill=\"WHITE\" AnchorPane.leftAnchor=\"32.0\"\r\n               AnchorPane.rightAnchor=\"32.0\">\r\n        </Label>\r\n        <ImageView fitHeight=\"113.0\" fitWidth=\"116.0\" layoutX=\"144.0\" layoutY=\"108.0\" pickOnBounds=\"true\"\r\n                   preserveRatio=\"true\" AnchorPane.leftAnchor=\"144.0\" AnchorPane.rightAnchor=\"143.0\"\r\n                   AnchorPane.topAnchor=\"108.0\">\r\n            <Image url=\"@Icon/outline_apartment_white_48dp.png\"/>\r\n        </ImageView>\r\n    </AnchorPane>\r\n    <VBox layoutX=\"488.0\" layoutY=\"50.0\" prefHeight=\"400.0\" prefWidth=\"350.0\" AnchorPane.bottomAnchor=\"150.0\"\r\n          AnchorPane.leftAnchor=\"480.0\" AnchorPane.rightAnchor=\"80.0\" AnchorPane.topAnchor=\"150.0\">\r\n        <TextField fx:id=\"tfEmail\" prefHeight=\"40.0\" promptText=\"Email\">\r\n            <font>\r\n                <Font size=\"18.0\"/>\r\n            </font>\r\n        </TextField>\r\n        <PasswordField fx:id=\"tfPwd\" prefHeight=\"40.0\" promptText=\"Password\">\r\n            <font>\r\n                <Font size=\"18.0\"/>\r\n            </font>\r\n            <VBox.margin>\r\n                <Insets top=\"25.0\"/>\r\n            </VBox.margin>\r\n        </PasswordField>\r\n        <ComboBox fx:id=\"comboBox\" minWidth=\"390.0\" prefHeight=\"40.0\" promptText=\"Condominium Address\">\r\n            <VBox.margin>\r\n                <Insets top=\"25.0\"/>\r\n            </VBox.margin>\r\n        </ComboBox>\r\n        <Button mnemonicParsing=\"false\" onAction=\"#onSignClick\" prefHeight=\"40.0\"\r\n                prefWidth=\"420.0\" stylesheets=\"@style.css\" text=\"Sign in\">\r\n            <font>\r\n                <Font size=\"18.0\"/>\r\n            </font>\r\n            <VBox.margin>\r\n                <Insets top=\"25.0\"/>\r\n            </VBox.margin>\r\n        </Button>\r\n        <Pane prefHeight=\"31.0\" prefWidth=\"275.0\">\r\n            <VBox.margin>\r\n                <Insets top=\"10.0\"/>\r\n            </VBox.margin>\r\n            <Separator accessibleText=\"Or\" layoutX=\"3.0\" layoutY=\"13.0\" prefHeight=\"5.0\" prefWidth=\"390.0\"/>\r\n            <Label alignment=\"CENTER\" layoutX=\"180.0\" layoutY=\"4.0\" prefHeight=\"23.0\" prefWidth=\"31.0\"\r\n                   style=\"-fx-background-color: #fff;\" text=\"Or\" textAlignment=\"CENTER\" textFill=\"#5b5a5a\">\r\n            </Label>\r\n        </Pane>\r\n        <Button mnemonicParsing=\"false\" onAction=\"#onSignupClick\" prefHeight=\"40.0\"\r\n                prefWidth=\"420.0\" stylesheets=\"@style.css\" text=\"Sign up\">\r\n            <font>\r\n                <Font size=\"18.0\"/>\r\n            </font>\r\n            <VBox.margin>\r\n                <Insets top=\"10.0\"/>\r\n            </VBox.margin>\r\n        </Button>\r\n    </VBox>\r\n    <Label alignment=\"CENTER\" layoutX=\"394.0\" layoutY=\"466.0\" prefHeight=\"23.0\" prefWidth=\"93.0\" text=\"Design by me\"\r\n           textFill=\"#5b5a5a\" AnchorPane.bottomAnchor=\"14.0\">\r\n    </Label>\r\n    <Label alignment=\"CENTER\" layoutX=\"842.0\" layoutY=\"612.0\" prefHeight=\"23.0\" prefWidth=\"93.0\" text=\"DOWNLOAD APP\"\r\n           textFill=\"#a6b1cc\" AnchorPane.bottomAnchor=\"14.799999999999955\">\r\n    </Label>\r\n</AnchorPane>\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/bin/logic/view/LoginView.fxml b/bin/logic/view/LoginView.fxml
+--- a/bin/logic/view/LoginView.fxml	(revision 7d47bd5323c00044053142316b183ac00439c9f5)
++++ b/bin/logic/view/LoginView.fxml	(date 1639999284069)
+@@ -2,80 +2,66 @@
+ 
+ <?import javafx.geometry.*?>
+ <?import javafx.scene.control.*?>
+-<?import javafx.scene.image.Image?>
+-<?import javafx.scene.image.ImageView?>
++<?import javafx.scene.image.*?>
+ <?import javafx.scene.layout.*?>
+ <?import javafx.scene.text.*?>
+-<AnchorPane id="AnchorPane" prefHeight="650.0" prefWidth="950.0" style="-fx-background-color: #fff;"
+-            xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1"
+-            fx:controller="logic.controller.guicontroller.general.login.LoginGUI">
+-    <AnchorPane prefHeight="650.0" prefWidth="400.0" style="-fx-background-color: #0C39FF;"
+-                AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+-        <Label alignment="CENTER" layoutX="32.0" layoutY="269.0" prefHeight="58.0" prefWidth="317.0"
+-               text="Condominium" textFill="WHITE" AnchorPane.leftAnchor="32.0" AnchorPane.rightAnchor="32.0">
++
++<AnchorPane prefHeight="650.0" prefWidth="950.0" stylesheets="style.css" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="logic.controller.guicontroller.general.login.LoginGUI">
++    <AnchorPane prefHeight="650.0" prefWidth="400.0" style="-fx-background-color: #0C39FF;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
++        <Label alignment="CENTER" layoutX="32.0" layoutY="269.0" prefHeight="58.0" prefWidth="317.0" text="Condominium" textFill="WHITE" AnchorPane.leftAnchor="32.0" AnchorPane.rightAnchor="32.0">
+         </Label>
+-        <Label alignment="CENTER" layoutX="46.0" layoutY="315.0" prefHeight="23.0" prefWidth="290.0"
+-               text="Manage your condominiums easily" textFill="WHITE" AnchorPane.leftAnchor="32.0"
+-               AnchorPane.rightAnchor="32.0">
++        <Label alignment="CENTER" layoutX="46.0" layoutY="315.0" prefHeight="23.0" prefWidth="290.0" text="Manage your condominiums easily" textFill="WHITE" AnchorPane.leftAnchor="32.0" AnchorPane.rightAnchor="32.0">
+         </Label>
+-        <ImageView fitHeight="113.0" fitWidth="116.0" layoutX="144.0" layoutY="108.0" pickOnBounds="true"
+-                   preserveRatio="true" AnchorPane.leftAnchor="144.0" AnchorPane.rightAnchor="143.0"
+-                   AnchorPane.topAnchor="108.0">
+-            <Image url="@Icon/outline_apartment_white_48dp.png"/>
++        <ImageView fitHeight="113.0" fitWidth="116.0" layoutX="144.0" layoutY="108.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="144.0" AnchorPane.rightAnchor="143.0" AnchorPane.topAnchor="108.0">
++            <Image url="@Icon/outline_apartment_white_48dp.png" />
+         </ImageView>
+     </AnchorPane>
+-    <VBox layoutX="488.0" layoutY="50.0" prefHeight="400.0" prefWidth="350.0" AnchorPane.bottomAnchor="150.0"
+-          AnchorPane.leftAnchor="480.0" AnchorPane.rightAnchor="80.0" AnchorPane.topAnchor="150.0">
++    <VBox layoutX="488.0" layoutY="50.0" prefHeight="400.0" prefWidth="350.0" AnchorPane.bottomAnchor="150.0" AnchorPane.leftAnchor="480.0" AnchorPane.rightAnchor="80.0" AnchorPane.topAnchor="150.0">
+         <TextField fx:id="tfEmail" prefHeight="40.0" promptText="Email">
+             <font>
+-                <Font size="18.0"/>
++                <Font size="18.0" />
+             </font>
+         </TextField>
+         <PasswordField fx:id="tfPwd" prefHeight="40.0" promptText="Password">
+             <font>
+-                <Font size="18.0"/>
++                <Font size="18.0" />
+             </font>
+             <VBox.margin>
+-                <Insets top="25.0"/>
++                <Insets top="25.0" />
+             </VBox.margin>
+         </PasswordField>
+         <ComboBox fx:id="comboBox" minWidth="390.0" prefHeight="40.0" promptText="Condominium Address">
+             <VBox.margin>
+-                <Insets top="25.0"/>
++                <Insets top="25.0" />
+             </VBox.margin>
+         </ComboBox>
+-        <Button mnemonicParsing="false" onAction="#onSignClick" prefHeight="40.0"
+-                prefWidth="420.0" stylesheets="@style.css" text="Sign in">
++        <Button mnemonicParsing="false" onAction="#onSignClick" prefHeight="40.0" prefWidth="420.0" stylesheets="@style.css" text="Sign in">
+             <font>
+-                <Font size="18.0"/>
++                <Font size="18.0" />
+             </font>
+             <VBox.margin>
+-                <Insets top="25.0"/>
++                <Insets top="25.0" />
+             </VBox.margin>
+         </Button>
+         <Pane prefHeight="31.0" prefWidth="275.0">
+             <VBox.margin>
+-                <Insets top="10.0"/>
++                <Insets top="10.0" />
+             </VBox.margin>
+-            <Separator accessibleText="Or" layoutX="3.0" layoutY="13.0" prefHeight="5.0" prefWidth="390.0"/>
+-            <Label alignment="CENTER" layoutX="180.0" layoutY="4.0" prefHeight="23.0" prefWidth="31.0"
+-                   style="-fx-background-color: #fff;" text="Or" textAlignment="CENTER" textFill="#5b5a5a">
++            <Separator accessibleText="Or" layoutX="3.0" layoutY="13.0" prefHeight="5.0" prefWidth="390.0" />
++            <Label alignment="CENTER" layoutX="180.0" layoutY="4.0" prefHeight="23.0" prefWidth="31.0" style="-fx-background-color: #fff;" text="Or" textAlignment="CENTER" textFill="#5b5a5a">
+             </Label>
+         </Pane>
+-        <Button mnemonicParsing="false" onAction="#onSignupClick" prefHeight="40.0"
+-                prefWidth="420.0" stylesheets="@style.css" text="Sign up">
++        <Button mnemonicParsing="false" onAction="#onSignupClick" prefHeight="40.0" prefWidth="420.0" stylesheets="@style.css" text="Sign up">
+             <font>
+-                <Font size="18.0"/>
++                <Font size="18.0" />
+             </font>
+             <VBox.margin>
+-                <Insets top="10.0"/>
++                <Insets top="10.0" />
+             </VBox.margin>
+         </Button>
+     </VBox>
+-    <Label alignment="CENTER" layoutX="394.0" layoutY="466.0" prefHeight="23.0" prefWidth="93.0" text="Design by me"
+-           textFill="#5b5a5a" AnchorPane.bottomAnchor="14.0">
++    <Label alignment="CENTER" layoutX="394.0" layoutY="466.0" prefHeight="23.0" prefWidth="93.0" text="Design by me" textFill="#5b5a5a" AnchorPane.bottomAnchor="14.0">
+     </Label>
+-    <Label alignment="CENTER" layoutX="842.0" layoutY="612.0" prefHeight="23.0" prefWidth="93.0" text="DOWNLOAD APP"
+-           textFill="#a6b1cc" AnchorPane.bottomAnchor="14.799999999999955">
++    <Label alignment="CENTER" layoutX="842.0" layoutY="612.0" prefHeight="23.0" prefWidth="93.0" text="DOWNLOAD APP" textFill="#a6b1cc" AnchorPane.bottomAnchor="14.799999999999955">
+     </Label>
+ </AnchorPane>
+Index: src/logic/controller/applicationcontroller/ApartmentController.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package logic.controller.applicationcontroller;\r\n\r\nimport javafx.collections.ObservableList;\r\nimport logic.engineeringclasses.dao.ApartmentDAO;\r\nimport logic.model.Apartment;\r\n\r\nimport java.sql.SQLException;\r\n\r\npublic class ApartmentController {\r\n\r\n    private final ApartmentDAO dao = new ApartmentDAO();\r\n\r\n    public ObservableList<String> loadApartmentResident(String address) throws SQLException {\r\n        return dao.loadApartmentResident(address);\r\n    }\r\n\r\n    public ObservableList<String> loadApartmentOwner(String address) throws SQLException {\r\n        return dao.loadApartmentOwner(address);\r\n    }\r\n\r\n    public int loadApartmentId(String apartment,String address) throws SQLException{\r\n        return dao.loadApartmentId(apartment,address);\r\n    }\r\n\r\n    public void addResident(String apartment,String address) {\r\n        try{\r\n            dao.addResident(apartment,address);\r\n        }catch(SQLException e){\r\n            e.printStackTrace();\r\n        }\r\n    }\r\n\r\n\r\n    public ObservableList<Apartment> loadApartments(String addr) throws SQLException{\r\n        return dao.loadApartments(addr);\r\n    }\r\n\r\n    public Apartment checkApartments(String userID, String address, String apt_res) throws SQLException {\r\n        return dao.checkApartments(userID, address, apt_res);\r\n    }\r\n\r\n    public String checkMailById(String userId) throws SQLException{\r\n        return dao.checkMailById(userId);\r\n    }\r\n\r\n    public String checkUserAptFromNumber(String aptNumber,String condAddr, String userRequired) throws SQLException{\r\n        return dao.checkUserAptFromNumber(aptNumber,condAddr,userRequired);\r\n    }\r\n\r\n    public ObservableList<Apartment> checkApartmentsList(String userID, String address, String apt_res) throws SQLException {\r\n        return dao.checkApartmentsList(userID, address, apt_res);\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/logic/controller/applicationcontroller/ApartmentController.java b/src/logic/controller/applicationcontroller/ApartmentController.java
+--- a/src/logic/controller/applicationcontroller/ApartmentController.java	(revision 7d47bd5323c00044053142316b183ac00439c9f5)
++++ b/src/logic/controller/applicationcontroller/ApartmentController.java	(date 1639999292016)
+@@ -30,6 +30,14 @@
+         }
+     }
+ 
++    public void addOwner(String apartment,String address){
++        try{
++            dao.addOwner(apartment,address);
++        }catch(SQLException e){
++            e.printStackTrace();
++        }
++    }
++
+ 
+     public ObservableList<Apartment> loadApartments(String addr) throws SQLException{
+         return dao.loadApartments(addr);
+Index: src/logic/engineeringclasses/query/UserQuery.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package logic.engineeringclasses.query;\r\n\r\nimport java.sql.ResultSet;\r\nimport java.sql.SQLException;\r\nimport java.sql.Statement;\r\n\r\npublic class UserQuery {\r\n\r\n    public static ResultSet selectUserID(Statement stmt, String email, String address) throws SQLException {\r\n        String sql = \"SELECT user_id FROM users where user_email='\" + email + \"'and user_addr='\" + address + \"'\";\r\n        System.out.println(sql);\r\n        return stmt.executeQuery(sql);\r\n    }\r\n\r\n    public static ResultSet selectRole(Statement stmt, String id) throws SQLException {\r\n        String sql = \"SELECT user_role FROM users WHERE user_id='\" + id + \"'\";\r\n        System.out.println(sql);\r\n        return stmt.executeQuery(sql);\r\n    }\r\n\r\n    public static ResultSet selectLogin(Statement stmt, String email, String address) throws SQLException {\r\n        String sql = \"SELECT user_pwd from users where user_email='\" + email + \"'and user_addr='\" + address + \"'\";\r\n        System.out.println(sql);\r\n        return stmt.executeQuery(sql);\r\n    }\r\n\r\n    public static ResultSet loadUserByID(Statement stmt, String id) throws SQLException {\r\n        String sql = \"SELECT user_name,user_email,user_pwd,user_role,user_addr FROM users WHERE user_id='\" + id + \"'\";\r\n        System.out.println(sql);\r\n        return stmt.executeQuery(sql);\r\n    }\r\n\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/logic/engineeringclasses/query/UserQuery.java b/src/logic/engineeringclasses/query/UserQuery.java
+--- a/src/logic/engineeringclasses/query/UserQuery.java	(revision 7d47bd5323c00044053142316b183ac00439c9f5)
++++ b/src/logic/engineeringclasses/query/UserQuery.java	(date 1639999284038)
+@@ -30,4 +30,9 @@
+         return stmt.executeQuery(sql);
+     }
+ 
++    public static ResultSet selectUserList(Statement stmt, String address) throws SQLException{
++        String sql = "SELECT * FROM users WHERE user_addr='" + address + "' AND user_role !='ADMINISTRATOR'";
++        System.out.println(sql);
++        return stmt.executeQuery(sql);
++    }
+ }
+Index: src/logic/controller/guicontroller/admin/requests/registration/RegistrationTableDetailGUI.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package logic.controller.guicontroller.admin.requests.registration;\r\n\r\nimport javafx.fxml.FXML;\r\nimport javafx.fxml.FXMLLoader;\r\nimport javafx.scene.Parent;\r\nimport javafx.scene.control.*;\r\nimport logic.controller.guicontroller.admin.requests.TabOrganizeGUI;\r\nimport logic.controller.guicontroller.general.AlertGUI;\r\nimport logic.controller.guicontroller.general.MenuGUI;\r\nimport logic.engineeringclasses.bean.RegistrationBean;\r\nimport java.io.IOException;\r\nimport java.sql.SQLException;\r\nimport java.util.Optional;\r\n\r\npublic class RegistrationTableDetailGUI extends RegistrationTableGUI {\r\n\r\n    private AlertGUI alert = new AlertGUI();\r\n\r\n    @FXML private TextField tfID;\r\n    @FXML private TextField tfName;\r\n    @FXML private TextField tfEmail;\r\n    @FXML private TextField tfPwd;\r\n    @FXML private TextField tfRole;\r\n    @FXML private TextField tfAddr;\r\n    @FXML private TextField tfApartment;\r\n\r\n    @FXML private void btnX() {\r\n        MenuGUI.border.setRight(null);\r\n    }\r\n\r\n    @FXML private void btnAddClick() throws IOException, SQLException {\r\n        FXMLLoader loader = new FXMLLoader();\r\n        loader.setLocation(getClass().getResource(\"/logic/view/FeeDialog.fxml\"));\r\n        DialogPane pane = loader.load();\r\n        RegistrationFeeDialogGUI fee = loader.getController();\r\n        fee.setUp(tfName.getText(),tfApartment.getText());\r\n        Dialog<ButtonType> dialog = new Dialog<>();\r\n        dialog.setDialogPane(pane);\r\n        Optional<ButtonType> btn = dialog.showAndWait();\r\n        if(btn.isPresent() && fee.check()){\r\n            controller.addRegistered(getRegistered(), fee.getFees());\r\n            alert.alertInfo(\"Registration/Info\",\"User Successfully Registered\",null);\r\n            remove();\r\n        } else{\r\n            alert.alertError(\"Registration/Error\",\"Incorrect/Empty Credential\",\"\\n-Empty Field\\n-More than 4 digits fee\");\r\n        }\r\n    }\r\n\r\n    @FXML private void btnDeleteClick() throws IOException {\r\n        if(alert.alertConfirm(\"Title\",\"Are you sure?\",\"\")){\r\n            remove();\r\n        }\r\n    }\r\n\r\n    private RegistrationBean getRegistered(){\r\n        return regBean(tfName.getText(),tfEmail.getText(),tfPwd.getText(),tfRole.getText(),tfAddr.getText(),tfApartment.getText());\r\n    }\r\n\r\n    private RegistrationBean regBean(String name, String email, String pwd, String role, String addr, String apt){\r\n        RegistrationBean bean = new RegistrationBean();\r\n        bean.setName(name);\r\n        bean.setEmail(email);\r\n        bean.setPassword(pwd);\r\n        bean.setRole(role);\r\n        bean.setAddress(addr);\r\n        bean.setApartment(apt);\r\n        return bean;\r\n    }\r\n\r\n    private void remove() throws IOException {\r\n        controller.removeRegistered(Integer.parseInt(tfID.getText()));\r\n        btnX();\r\n        FXMLLoader loader = view.loader(\"TabOrganize\");\r\n        Parent root = loader.load();\r\n        TabOrganizeGUI org = loader.getController();\r\n        //org.regTabClick();\r\n        MenuGUI.border.setCenter(root);\r\n    }\r\n\r\n    protected void setUp(RegistrationBean bean){\r\n        tfID.setText(bean.getID());\r\n        tfName.setText(bean.getName());\r\n        tfEmail.setText(bean.getEmail());\r\n        tfPwd.setText(bean.getPassword());\r\n        tfRole.setText(bean.getRole());\r\n        tfAddr.setText(bean.getAddress());\r\n        tfApartment.setText(bean.getApartment());\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/logic/controller/guicontroller/admin/requests/registration/RegistrationTableDetailGUI.java b/src/logic/controller/guicontroller/admin/requests/registration/RegistrationTableDetailGUI.java
+--- a/src/logic/controller/guicontroller/admin/requests/registration/RegistrationTableDetailGUI.java	(revision 7d47bd5323c00044053142316b183ac00439c9f5)
++++ b/src/logic/controller/guicontroller/admin/requests/registration/RegistrationTableDetailGUI.java	(date 1639999283976)
+@@ -8,13 +8,15 @@
+ import logic.controller.guicontroller.general.AlertGUI;
+ import logic.controller.guicontroller.general.MenuGUI;
+ import logic.engineeringclasses.bean.RegistrationBean;
++import logic.model.Role;
++
+ import java.io.IOException;
+ import java.sql.SQLException;
+ import java.util.Optional;
+ 
+ public class RegistrationTableDetailGUI extends RegistrationTableGUI {
+ 
+-    private AlertGUI alert = new AlertGUI();
++    private final AlertGUI alert = new AlertGUI();
+ 
+     @FXML private TextField tfID;
+     @FXML private TextField tfName;
+@@ -29,6 +31,23 @@
+     }
+ 
+     @FXML private void btnAddClick() throws IOException, SQLException {
++        switch(Role.valueOf(tfRole.getText())){
++            case RESIDENT:
++                addResident();
++                break;
++            case OWNER:
++                addOwner();
++                break;
++        }
++    }
++
++    @FXML private void btnDeleteClick() throws IOException {
++        if(alert.alertConfirm("Title","Are you sure?","")){
++            remove();
++        }
++    }
++
++    private void addResident() throws IOException, SQLException {
+         FXMLLoader loader = new FXMLLoader();
+         loader.setLocation(getClass().getResource("/logic/view/FeeDialog.fxml"));
+         DialogPane pane = loader.load();
+@@ -42,12 +61,14 @@
+             alert.alertInfo("Registration/Info","User Successfully Registered",null);
+             remove();
+         } else{
+-            alert.alertError("Registration/Error","Incorrect/Empty Credential","\n-Empty Field\n-More than 4 digits fee");
++            alert.alertError("Registration/Error","Incorrect/Empty Credential","\n-Empty Field\n-More than 4 digits fee\n-Negative Value");
+         }
+     }
+ 
+-    @FXML private void btnDeleteClick() throws IOException {
+-        if(alert.alertConfirm("Title","Are you sure?","")){
++    private void addOwner() throws IOException {
++        if(alert.alertConfirm("Registration/Confirm","Are you sure?",null)){
++            controller.addRegistered(getRegistered(), null);
++            alert.alertInfo("Registration/Info","User Successfully Registered",null);
+             remove();
+         }
+     }
+@@ -73,7 +94,7 @@
+         FXMLLoader loader = view.loader("TabOrganize");
+         Parent root = loader.load();
+         TabOrganizeGUI org = loader.getController();
+-        //org.regTabClick();
++        org.selectRegistration();
+         MenuGUI.border.setCenter(root);
+     }
+ 
+Index: src/logic/controller/guicontroller/admin/requests/registration/RegistrationFeeDialogGUI.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package logic.controller.guicontroller.admin.requests.registration;\r\n\r\nimport javafx.fxml.FXML;\r\nimport javafx.scene.control.TextField;\r\nimport javafx.scene.text.Text;\r\nimport logic.controller.applicationcontroller.FeeController;\r\nimport logic.controller.applicationcontroller.PatternController;\r\nimport logic.engineeringclasses.bean.FeeBean;\r\nimport logic.model.Fee;\r\nimport java.sql.SQLException;\r\nimport java.text.DecimalFormat;\r\nimport static logic.controller.guicontroller.general.MenuGUI.sg;\r\n\r\npublic class RegistrationFeeDialogGUI extends RegistrationTableGUI {\r\n\r\n    private final FeeController controller = new FeeController();\r\n    private final PatternController pattern = new PatternController();\r\n\r\n    @FXML private Text apt_txt;\r\n    @FXML private Text res_txt;\r\n    @FXML private TextField tfWater;\r\n    @FXML private TextField tfGas;\r\n    @FXML private TextField tfElectricity;\r\n    @FXML private TextField tfAdministrative;\r\n    @FXML private TextField tfPark;\r\n    @FXML private TextField tfElevator;\r\n    @FXML private TextField tfPet;\r\n    @FXML private TextField tfWifi;\r\n\r\n    private void noFee(TextField tf){\r\n        tf.setText(\"Unavailable in your Condominium\");\r\n        tf.setEditable(false);\r\n    }\r\n\r\n    private boolean checkErrorTf(TextField tf){\r\n        if(!tf.editableProperty().get()) return false;\r\n        if(tf.editableProperty().get() && tf.getText().equals(\"0.0\")) return true;\r\n        double d = Double.parseDouble(tf.getText());\r\n        int length = String.valueOf((int)d).length();\r\n        return length > 3;\r\n    }\r\n\r\n    private String format(TextField tf){\r\n        if(!tf.editableProperty().get()) return \"0.0\";\r\n        double d = Double.parseDouble(tf.getText());\r\n        DecimalFormat df = new DecimalFormat(\"#.##\");\r\n        return df.format(d);\r\n    }\r\n\r\n    public boolean check(){\r\n        if(checkErrorTf(tfWater)) return false;\r\n        if(checkErrorTf(tfGas)) return false;\r\n        if(checkErrorTf(tfElectricity)) return false;\r\n        if(checkErrorTf(tfAdministrative)) return false;\r\n        if(checkErrorTf(tfElevator)) return false;\r\n        if(checkErrorTf(tfPet)) return false;\r\n        return !checkErrorTf(tfWifi);\r\n    }\r\n\r\n    public FeeBean getFees(){\r\n    return feeBean(format(tfWater),format(tfGas),format(tfElectricity),format(tfAdministrative),\r\n            format(tfPark),format(tfElevator),format(tfPet),format(tfWifi));\r\n    }\r\n\r\n    public void setUp(String name,String apartment) throws SQLException {\r\n        apt_txt.setText(apartment);\r\n        res_txt.setText(name);\r\n        pattern.textFilter(tfWater);\r\n        pattern.textFilter(tfGas);\r\n        pattern.textFilter(tfElectricity);\r\n        pattern.textFilter(tfAdministrative);\r\n        Fee fee = controller.setUpFees(sg.getAddress());\r\n        if(!fee.getAvailablePark()) noFee(tfPark);\r\n        else pattern.textFilter(tfPark);\r\n        if(!fee.getAvailableElevator()) noFee(tfElevator);\r\n        else  pattern.textFilter(tfElevator);\r\n        if(!fee.getAvailablePet()) noFee(tfPet);\r\n        else pattern.textFilter(tfPet);\r\n        if(!fee.getAvailableWifi()) noFee(tfWifi);\r\n        else pattern.textFilter(tfWifi);\r\n    }\r\n\r\n    private FeeBean feeBean(String water,String gas,String elect,String admin,String park,String elev,String pet,String wifi){\r\n        FeeBean bean = new FeeBean();\r\n        bean.setWater(Double.valueOf(water));\r\n        bean.setGas(Double.valueOf(gas));\r\n        bean.setElect(Double.valueOf(elect));\r\n        bean.setAdmin(Double.valueOf(admin));\r\n        bean.setPark(Double.valueOf(park));\r\n        bean.setElevator(Double.valueOf(elev));\r\n        bean.setPet(Double.valueOf(pet));\r\n        bean.setWifi(Double.valueOf(wifi));\r\n        return bean;\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/logic/controller/guicontroller/admin/requests/registration/RegistrationFeeDialogGUI.java b/src/logic/controller/guicontroller/admin/requests/registration/RegistrationFeeDialogGUI.java
+--- a/src/logic/controller/guicontroller/admin/requests/registration/RegistrationFeeDialogGUI.java	(revision 7d47bd5323c00044053142316b183ac00439c9f5)
++++ b/src/logic/controller/guicontroller/admin/requests/registration/RegistrationFeeDialogGUI.java	(date 1639999283976)
+@@ -36,6 +36,7 @@
+         if(!tf.editableProperty().get()) return false;
+         if(tf.editableProperty().get() && tf.getText().equals("0.0")) return true;
+         double d = Double.parseDouble(tf.getText());
++        if(d < 0) return true;
+         int length = String.valueOf((int)d).length();
+         return length > 3;
+     }
+Index: src/logic/controller/guicontroller/admin/requests/registration/RegistrationTableGUI.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package logic.controller.guicontroller.admin.requests.registration;\r\n\r\nimport javafx.collections.ObservableList;\r\nimport javafx.fxml.FXML;\r\nimport javafx.fxml.FXMLLoader;\r\nimport javafx.scene.Parent;\r\nimport javafx.scene.control.TableColumn;\r\nimport javafx.scene.control.TableView;\r\nimport javafx.scene.control.cell.PropertyValueFactory;\r\nimport logic.controller.applicationcontroller.ViewController;\r\nimport logic.engineeringclasses.bean.RegistrationBean;\r\nimport logic.controller.applicationcontroller.RegisterController;\r\nimport logic.model.Registration;\r\nimport java.io.IOException;\r\n\r\nimport static logic.controller.guicontroller.general.MainGUI.border;\r\n\r\npublic class RegistrationTableGUI {\r\n\r\n\tprotected final RegisterController controller = new RegisterController();\r\n    protected final ViewController view = new ViewController();\r\n\r\n    @FXML private TableView<Registration> registrationTable;\r\n    @FXML private TableColumn<Registration, String> tcID;\r\n    @FXML private TableColumn<Registration, String> tcName;\r\n    @FXML private TableColumn<Registration, String> tcEmail;\r\n    @FXML private TableColumn<Registration, String> tcPwd;\r\n    @FXML private TableColumn<Registration, String> tcRole;\r\n    @FXML private TableColumn<Registration, String> tcAddress;\r\n    @FXML private TableColumn<Registration, String> tcApartment;\r\n\r\n    @FXML private void getSelected() throws IOException {\r\n        int index;\r\n        index = registrationTable.getSelectionModel().getSelectedIndex();\r\n        if(index<=-1)return;\r\n        RegistrationBean bean = registrationBean(tcID.getCellData(index),tcName.getCellData(index),tcEmail.getCellData(index),tcPwd.getCellData(index),tcRole.getCellData(index),tcAddress.getCellData(index),tcApartment.getCellData(index));\r\n        FXMLLoader loader = view.loader(\"RegistrationDetailTable\");\r\n        Parent root = loader.load();\r\n        RegistrationTableDetailGUI detail = loader.getController();\r\n        detail.setUp(bean);\r\n        style();\r\n        border.setRight(root);\r\n    }\r\n\r\n    private void style() {\r\n        registrationTable.getStylesheets().clear();\r\n        registrationTable.setId(\"detail-table\");\r\n        registrationTable.getStylesheets().add(getClass().getResource(\"/logic/view/style.css\").toExternalForm());\r\n    }\r\n\r\n    public void setUpRegistration(String address) {\r\n        tcID.setCellValueFactory(new PropertyValueFactory<>(\"id\"));\r\n        tcName.setCellValueFactory(new PropertyValueFactory<>(\"name\"));\r\n        tcEmail.setCellValueFactory(new PropertyValueFactory<>(\"email\"));\r\n        tcPwd.setCellValueFactory(new PropertyValueFactory<>(\"password\"));\r\n        tcRole.setCellValueFactory(new PropertyValueFactory<>(\"role\"));\r\n        tcAddress.setCellValueFactory(new PropertyValueFactory<>(\"address\"));\r\n        tcApartment.setCellValueFactory(new PropertyValueFactory<>(\"apartment\"));\r\n        try {\r\n\t    \tObservableList<Registration> list = controller.loadRegistration(address);\r\n            registrationTable.setItems(list);\r\n    \t}catch(Exception e) {\r\n    \t\tSystem.out.println(\"No\");\r\n    \t}\r\n    }\r\n\r\n    private RegistrationBean registrationBean(String id, String name, String email, String password, String role, String address, String apartment) {\r\n        RegistrationBean registered = new RegistrationBean();\r\n        registered.setID(id);\r\n        registered.setName(name);\r\n        registered.setEmail(email);\r\n        registered.setPassword(password);\r\n        registered.setRole(role);\r\n        registered.setAddress(address);\r\n        registered.setApartment(apartment);\r\n        return registered;\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/logic/controller/guicontroller/admin/requests/registration/RegistrationTableGUI.java b/src/logic/controller/guicontroller/admin/requests/registration/RegistrationTableGUI.java
+--- a/src/logic/controller/guicontroller/admin/requests/registration/RegistrationTableGUI.java	(revision 7d47bd5323c00044053142316b183ac00439c9f5)
++++ b/src/logic/controller/guicontroller/admin/requests/registration/RegistrationTableGUI.java	(date 1639999283976)
+@@ -43,19 +43,20 @@
+     }
+ 
+     private void style() {
++        //TODO ADD CSS
+         registrationTable.getStylesheets().clear();
+         registrationTable.setId("detail-table");
+         registrationTable.getStylesheets().add(getClass().getResource("/logic/view/style.css").toExternalForm());
+     }
+ 
+     public void setUpRegistration(String address) {
+-        tcID.setCellValueFactory(new PropertyValueFactory<>("id"));
+-        tcName.setCellValueFactory(new PropertyValueFactory<>("name"));
+-        tcEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
+-        tcPwd.setCellValueFactory(new PropertyValueFactory<>("password"));
+-        tcRole.setCellValueFactory(new PropertyValueFactory<>("role"));
+-        tcAddress.setCellValueFactory(new PropertyValueFactory<>("address"));
+-        tcApartment.setCellValueFactory(new PropertyValueFactory<>("apartment"));
++        tcID.setCellValueFactory(new PropertyValueFactory<>("regID"));
++        tcName.setCellValueFactory(new PropertyValueFactory<>("regName"));
++        tcEmail.setCellValueFactory(new PropertyValueFactory<>("regEmail"));
++        tcPwd.setCellValueFactory(new PropertyValueFactory<>("regPwd"));
++        tcRole.setCellValueFactory(new PropertyValueFactory<>("regRole"));
++        tcAddress.setCellValueFactory(new PropertyValueFactory<>("regAddr"));
++        tcApartment.setCellValueFactory(new PropertyValueFactory<>("regApt"));
+         try {
+ 	    	ObservableList<Registration> list = controller.loadRegistration(address);
+             registrationTable.setItems(list);
+Index: src/logic/controller/applicationcontroller/LoginController.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package logic.controller.applicationcontroller;\r\n\r\nimport javafx.collections.ObservableList;\r\nimport logic.engineeringclasses.bean.UserBean;\r\nimport logic.engineeringclasses.dao.CondominiumDAO;\r\nimport logic.engineeringclasses.dao.UserDAO;\r\nimport logic.engineeringclasses.exception.PatternException;\r\nimport logic.model.Administrator;\r\nimport logic.model.Owner;\r\nimport logic.model.Resident;\r\nimport logic.model.UserSingleton;\r\n\r\nimport java.sql.SQLException;\r\n\r\npublic class LoginController {\r\n\r\n\tprivate final CondominiumDAO cond = new CondominiumDAO();\r\n\tprivate final UserDAO login = new UserDAO();\r\n\tprivate static final UserSingleton sg = UserSingleton.getInstance();\r\n\tprivate int typError;\r\n\t\r\n\tpublic int login(UserBean bean){\r\n\t\ttry {\r\n\t\t\tif (checkBean(bean)) {\t\t\t\r\n\t\t\t\tsg.setUserID(login.checkUserID(bean.getEmail(), bean.getAddress()));\r\n\t\t\t\tsg.setAddress(bean.getAddress());\r\n\t\t\t\tsg.setRole(login.checkRole((sg.getUserID())));\r\n\t\t\t\t\tswitch (sg.getRole()) {\r\n\t\t\t\t\t\tcase ADMINISTRATOR:\t\t\t\t\t\t\r\n\t\t\t\t\t\t\tAdministrator admin = login.loadAdminID(sg.getUserID());\r\n\t\t\t\t\t\t\tsg.setAdministrator(admin);\r\n\t\t\t\t\t\t\tbreak;\r\n\t\t\t\t\t\tcase OWNER:\r\n\t\t\t\t\t\t\tOwner owner = login.loadOwnerID(sg.getUserID());\r\n\t\t\t\t\t\t\tsg.setOwner(owner);\r\n\t\t\t\t\t\t\tbreak;\r\n\t\t\t\t\t\tcase RESIDENT:\r\n\t\t\t\t\t\t\tResident resident = login.loadResidentID(sg.getUserID());\r\n\t\t\t\t\t\t\tsg.setResident(resident);\r\n\t\t\t\t\t\t\tbreak;\t\t\t\t\r\n\t\t\t\t\t\tdefault:\r\n\t\t\t\t\t\t\tbreak;\r\n\t\t\t\t\t}\r\n\t\t\t}\r\n\t\t\treturn this.typError;\r\n\t\t}catch(SQLException|PatternException e){\r\n\t\t\treturn this.typError;\r\n\t\t}\r\n\t}\r\n\t\r\n\tpublic boolean checkBean(UserBean bean) {\r\n\t\tthis.typError = 0;\r\n\t\ttry {\r\n\t\t\tif(bean.getEmail().isEmpty() || bean.getPassword().isEmpty()||bean.getAddress().isEmpty()) {\r\n\t\t\t\tthis.typError = 1;\r\n\t\t\t\treturn false;\r\n\t\t\t}\r\n\t\t\tif(login.checkLogin( bean.getEmail(),bean.getAddress()).equals(bean.getPassword())) {\r\n\t\t\t\treturn true;\r\n\t\t\t}\r\n\t\t\tthis.typError = 1;\r\n\t\t\treturn false;\r\n\t\t}catch(NullPointerException n) {\r\n\t\t\tthis.typError = 1;\r\n\t\t\treturn false;\r\n\t\t}catch(SQLException s) {\r\n\t\t\tthis.typError = 2;\r\n\t\t\treturn false;\r\n\t\t}\r\n\t}\r\n\t\r\n\tpublic ObservableList<String> loadAddresses() throws SQLException{\r\n\t\treturn cond.checkAddressesList();\r\n\t}\r\n\t\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/logic/controller/applicationcontroller/LoginController.java b/src/logic/controller/applicationcontroller/LoginController.java
+--- a/src/logic/controller/applicationcontroller/LoginController.java	(revision 7d47bd5323c00044053142316b183ac00439c9f5)
++++ b/src/logic/controller/applicationcontroller/LoginController.java	(date 1639999283960)
+@@ -4,7 +4,7 @@
+ import logic.engineeringclasses.bean.UserBean;
+ import logic.engineeringclasses.dao.CondominiumDAO;
+ import logic.engineeringclasses.dao.UserDAO;
+-import logic.engineeringclasses.exception.PatternException;
++import logic.engineeringclasses.exception.InputException;
+ import logic.model.Administrator;
+ import logic.model.Owner;
+ import logic.model.Resident;
+@@ -43,7 +43,7 @@
+ 					}
+ 			}
+ 			return this.typError;
+-		}catch(SQLException|PatternException e){
++		}catch(SQLException| InputException e){
+ 			return this.typError;
+ 		}
+ 	}

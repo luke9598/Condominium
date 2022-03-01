@@ -1,0 +1,94 @@
+<changelist name="Uncommitted_changes_before_Update_at_20_12_2021_12_47_[Changes]" date="1644778929715" recycled="false" toDelete="true" deleted="true">
+  <option name="PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_20_12_2021_12_47_[Changes]/shelved.patch" />
+  <option name="DESCRIPTION" value="Uncommitted changes before Update at 20/12/2021 12:47 [Changes]" />
+  <binary>
+    <option name="BEFORE_PATH" value="bin/logic/model/Registration.class" />
+    <option name="AFTER_PATH" value="bin/logic/model/Registration.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_20_12_2021_12_47_[Changes]/Registration.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="bin/logic/controller/guicontroller/admin/requests/registration/RegistrationFeeDialogGUI.class" />
+    <option name="AFTER_PATH" value="bin/logic/controller/guicontroller/admin/requests/registration/RegistrationFeeDialogGUI.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_20_12_2021_12_47_[Changes]/RegistrationFeeDialogGUI.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="bin/logic/model/Resident.class" />
+    <option name="AFTER_PATH" value="bin/logic/model/Resident.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_20_12_2021_12_47_[Changes]/Resident.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="bin/logic/controller/guicontroller/admin/condominium/InfoGUI.class" />
+    <option name="AFTER_PATH" value="bin/logic/controller/guicontroller/admin/condominium/InfoGUI.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_20_12_2021_12_47_[Changes]/InfoGUI.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="bin/logic/controller/applicationcontroller/LoginController.class" />
+    <option name="AFTER_PATH" value="bin/logic/controller/applicationcontroller/LoginController.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_20_12_2021_12_47_[Changes]/LoginController.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="bin/logic/controller/guicontroller/admin/requests/registration/RegistrationTableGUI.class" />
+    <option name="AFTER_PATH" value="bin/logic/controller/guicontroller/admin/requests/registration/RegistrationTableGUI.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_20_12_2021_12_47_[Changes]/RegistrationTableGUI.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="bin/logic/controller/guicontroller/admin/organize/CondInfoGUI.class" />
+    <option name="AFTER_PATH" />
+    <option name="SHELVED_PATH" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="bin/logic/controller/applicationcontroller/PatternController.class" />
+    <option name="AFTER_PATH" value="bin/logic/controller/applicationcontroller/PatternController.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_20_12_2021_12_47_[Changes]/PatternController.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="bin/logic/controller/applicationcontroller/PatternController$1.class" />
+    <option name="AFTER_PATH" value="bin/logic/controller/applicationcontroller/PatternController$1.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_20_12_2021_12_47_[Changes]/PatternController$1.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="bin/logic/controller/guicontroller/admin/requests/TabOrganizeGUI.class" />
+    <option name="AFTER_PATH" value="bin/logic/controller/guicontroller/admin/requests/TabOrganizeGUI.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_20_12_2021_12_47_[Changes]/TabOrganizeGUI.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="bin/logic/controller/guicontroller/general/MenuGUI.class" />
+    <option name="AFTER_PATH" value="bin/logic/controller/guicontroller/general/MenuGUI.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_20_12_2021_12_47_[Changes]/MenuGUI.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="bin/logic/model/Administrator.class" />
+    <option name="AFTER_PATH" value="bin/logic/model/Administrator.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_20_12_2021_12_47_[Changes]/Administrator.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="bin/logic/controller/applicationcontroller/RegisterController.class" />
+    <option name="AFTER_PATH" value="bin/logic/controller/applicationcontroller/RegisterController.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_20_12_2021_12_47_[Changes]/RegisterController.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="bin/logic/engineeringclasses/bean/UserBean.class" />
+    <option name="AFTER_PATH" value="bin/logic/engineeringclasses/bean/UserBean.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_20_12_2021_12_47_[Changes]/UserBean.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="bin/logic/engineeringclasses/exception/PatternException.class" />
+    <option name="AFTER_PATH" />
+    <option name="SHELVED_PATH" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="bin/logic/controller/guicontroller/admin/requests/registration/RegistrationTableDetailGUI.class" />
+    <option name="AFTER_PATH" value="bin/logic/controller/guicontroller/admin/requests/registration/RegistrationTableDetailGUI.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_20_12_2021_12_47_[Changes]/RegistrationTableDetailGUI.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="bin/logic/engineeringclasses/dao/UserDAO.class" />
+    <option name="AFTER_PATH" value="bin/logic/engineeringclasses/dao/UserDAO.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_20_12_2021_12_47_[Changes]/UserDAO.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="bin/logic/model/Owner.class" />
+    <option name="AFTER_PATH" value="bin/logic/model/Owner.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_20_12_2021_12_47_[Changes]/Owner.class" />
+  </binary>
+</changelist>
