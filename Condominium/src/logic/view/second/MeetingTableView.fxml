@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" styleClass="MeetingTableView" stylesheets="@style.css" xmlns="http://javafx.com/javafx/" xmlns:fx="http://javafx.com/fxml/" fx:controller="logic.controller.guicontroller.second.admin.requests.meeting.MeetingTableGUI">
+   <Label layoutX="18.0" prefWidth="204.0" text="Meeting Request List" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" />
+   <HBox layoutX="100.0" layoutY="33.0" nodeOrientation="LEFT_TO_RIGHT" spacing="30.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+      <Label minWidth="50.0" text="ID" />
+      <Label minWidth="100.0" text="Name" />
+      <Label minWidth="150.0" text="Address" />
+      <Label minWidth="250.0" text="Object" />
+      <Label minWidth="500.0" text="Text" />
+      <Label minWidth="100.0" text="Status" />
+   </HBox>
+   <ScrollPane layoutY="71.0" prefHeight="332.0" prefWidth="1214.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="71.0">
+      <VBox fx:id="scrollBox" alignment="CENTER" prefHeight="336.0" prefWidth="600.0" />
+   </ScrollPane>
+</AnchorPane>

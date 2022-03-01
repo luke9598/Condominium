@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane stylesheets="@style.css" styleClass="itemList" xmlns="http://javafx.com/javafx/" xmlns:fx="http://javafx.com/fxml/" fx:controller="logic.controller.guicontroller.second.owner.ListItemGUI">
+   <HBox fx:id="resListHbox" alignment="CENTER_RIGHT" spacing="100.0">
+      <Text fx:id="txtApt" fill="WHITE" text="Apt" wrappingWidth="150" />
+      <Text fx:id="txtName" fill="WHITE" text="Name" wrappingWidth="150"/>
+      <Button fx:id="btnValues" onMouseClicked="#getValues" text="Submit"/>
+      <padding>
+         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+      </padding>
+   </HBox>
+</AnchorPane>

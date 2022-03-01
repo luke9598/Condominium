@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane minHeight="950.0" prefWidth="650.0" styleClass="pane" stylesheets="@style.css" xmlns="http://javafx.com/javafx/" xmlns:fx="http://javafx.com/fxml/" fx:controller="logic.controller.guicontroller.second.general.registration.RegisterGUI">
+   <VBox alignment="TOP_CENTER" layoutX="498.0" layoutY="60.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <HBox alignment="CENTER">
+         <ImageView fitHeight="113.0" fitWidth="116.0" pickOnBounds="true" preserveRatio="true">
+            <Image url="@../Icon/outline_apartment_white_48dp.png" />
+         </ImageView>
+         <Label alignment="CENTER" prefHeight="58.0" prefWidth="317.0" text="Condominium" textFill="WHITE">
+            <font>
+               <Font size="72.0" />
+            </font>
+         </Label>
+      </HBox>
+      <TextField fx:id="tfName" prefHeight="40.0" promptText="name" styleClass="fieldGeneral">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </TextField>
+      <TextField fx:id="tfSurname" prefHeight="40.0" promptText="surname" styleClass="fieldGeneral">
+         <VBox.margin>
+            <Insets top="10.0" />
+         </VBox.margin>
+         <font>
+            <Font size="18.0" />
+         </font>
+      </TextField>
+      <TextField fx:id="tfEmail" prefHeight="40.0" promptText="email" styleClass="fieldGeneral" stylesheets="@style.css">
+         <VBox.margin>
+            <Insets top="10.0" />
+         </VBox.margin>
+         <font>
+            <Font size="18.0" />
+         </font>
+      </TextField>
+      <PasswordField fx:id="tfPassword" prefHeight="40.0" promptText="password" styleClass="fieldGeneral" stylesheets="@style.css">
+         <VBox.margin>
+            <Insets top="10.0" />
+         </VBox.margin>
+         <font>
+            <Font size="18.0" />
+         </font>
+      </PasswordField>
+      <PasswordField fx:id="tfOkPwd" prefHeight="40.0" promptText="confirm password" styleClass="fieldGeneral" stylesheets="@style.css">
+         <VBox.margin>
+            <Insets top="10.0" />
+         </VBox.margin>
+         <font>
+            <Font size="18.0" />
+         </font>
+      </PasswordField>
+      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="30.0">
+         <children>
+            <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Choose a Role:">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Text>
+            <RadioButton mnemonicParsing="false" selected="true" styleClass="btnRadio" stylesheets="@style.css" text="Resident">
+               <toggleGroup>
+                  <ToggleGroup fx:id="radio" />
+               </toggleGroup>
+            </RadioButton>
+            <RadioButton mnemonicParsing="false" styleClass="btnRadio" stylesheets="@style.css" text="Owner" toggleGroup="$radio" />
+         </children>
+      </HBox>
+      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="20.0">
+         <Button mnemonicParsing="false" onAction="#addressBtnClick" styleClass="btnGeneral" text="Condominium address" />
+         <Text fx:id="txtAddress" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0">
+            <font>
+               <Font size="18.0" />
+            </font></Text>
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+      </HBox>
+      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="20.0">
+         <Button mnemonicParsing="false" onAction="#onSignupClick" prefHeight="40.0" prefWidth="420.0" styleClass="btnGeneral" stylesheets="@style.css" text="Sign up" textFill="WHITE">
+            <font>
+               <Font size="18.0" />
+            </font>
+         </Button>
+         <Button mnemonicParsing="false" onAction="#onSignClick" prefHeight="40.0" prefWidth="420.0" styleClass="btnGeneral" stylesheets="@style.css" text="Sign in" textFill="WHITE">
+            <font>
+               <Font size="18.0" />
+            </font>
+         </Button>
+      </HBox>
+   </VBox>
+</AnchorPane>

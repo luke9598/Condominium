@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="logic.controller.guicontroller.second.admin.condominium.UpdateRatingItemGUI">
+   <HBox alignment="CENTER" nodeOrientation="LEFT_TO_RIGHT" spacing="30.0" styleClass="item" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <Label fx:id="lbID" minWidth="50.0" text="ID" />
+      <Label fx:id="lbName" minWidth="100.0" text="Name" />
+      <Label fx:id="lbVal" minWidth="50.0" text="Value" />
+      <TextArea fx:id="areaTxt" maxHeight="50.0" maxWidth="150.0" text="Text" />
+      <Button mnemonicParsing="false" onAction="#onDeletePress" style="-fx-background-color: trasparent; -fx-border-color: trasparent; -fx-text-fill: trasparent;">
+         <graphic>
+            <ImageView fx:id="iconDelete" fitHeight="27.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
+               <Image url="@../Icon/outline_clear_white_24dp.png" />
+            </ImageView>
+         </graphic>
+      </Button>
+   </HBox>
+</AnchorPane>

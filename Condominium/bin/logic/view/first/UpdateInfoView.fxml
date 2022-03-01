@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="logic.controller.guicontroller.first.admin.condominium.UpdateInfoGUI">
+   <GridPane alignment="CENTER" layoutX="10.0" layoutY="10.0" vgap="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <columnConstraints>
+         <ColumnConstraints hgrow="SOMETIMES" maxWidth="295.0" minWidth="10.0" prefWidth="164.6" />
+         <ColumnConstraints hgrow="SOMETIMES" maxWidth="436.19999999999993" minWidth="10.0" prefWidth="436.19999999999993" />
+      </columnConstraints>
+      <rowConstraints>
+         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+      </rowConstraints>
+      <TextField fx:id="tfEmail" alignment="CENTER" prefWidth="200.0" promptText="Email" styleClass="fieldGeneral" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+      <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="Text" text="ID        " />
+      <TextField fx:id="tfID" alignment="CENTER" editable="false" prefWidth="200.0" promptText="ID" styleClass="fieldGeneral" GridPane.columnIndex="1" />
+      <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="Text" text="Email     " GridPane.rowIndex="2" />
+      <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="Text" text="Password  " GridPane.rowIndex="3" />
+      <TextField fx:id="tfPwd" alignment="CENTER" prefWidth="200.0" promptText="Password" styleClass="fieldGeneral" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+      <TextField fx:id="tfName" alignment="CENTER" promptText="Name" styleClass="fieldGeneral" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+      <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="Text" text="Name" GridPane.rowIndex="1" />
+   </GridPane>
+</AnchorPane>

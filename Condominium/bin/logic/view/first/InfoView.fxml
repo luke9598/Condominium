@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="logic.controller.guicontroller.first.admin.condominium.InfoGUI">
+    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Your Condominium" AnchorPane.leftAnchor="0.0"
+          AnchorPane.topAnchor="0.0">
+        <font>
+          <Font size="24.0"/>
+        </font>
+    </Text>
+    <TableView fx:id="infoTableView" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+               minWidth="-Infinity" onMouseClicked="#getSelected" prefHeight="400.0" prefWidth="600.0"
+               AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+               AnchorPane.topAnchor="30.0">
+      <columns>
+          <TableColumn fx:id="tcID" maxWidth="-1.0" minWidth="100.0" prefWidth="-1.0" text="ID"/>
+          <TableColumn fx:id="tcName" maxWidth="-1.0" minWidth="150.0" prefWidth="-1.0" text="Name"/>
+          <TableColumn fx:id="tcEmail" maxWidth="-1.0" minWidth="200.0" prefWidth="-1.0" text="Email"/>
+          <TableColumn fx:id="tcPwd" maxWidth="-1.0" minWidth="150.0" prefWidth="-1.0" text="Password"/>
+          <TableColumn fx:id="tcRole" maxWidth="-1.0" minWidth="150.0" prefWidth="-1.0" text="Role"/>
+          <TableColumn fx:id="tcAddress" maxWidth="-1.0" minWidth="150.0" prefWidth="-1.0" text="Address"/>
+      </columns>
+    </TableView>
+</AnchorPane>

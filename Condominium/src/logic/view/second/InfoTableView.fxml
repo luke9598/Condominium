@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane styleClass="InfoTableView" stylesheets="@style.css" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+             xmlns="http://javafx.com/javafx/" xmlns:fx="http://javafx.com/fxml/"
+            fx:controller="logic.controller.guicontroller.second.admin.condominium.InfoTableGUI">
+   <Label layoutX="18.0" prefWidth="204.0" text="Your Condominium" AnchorPane.leftAnchor="0.0"
+          AnchorPane.topAnchor="0.0"/>
+   <HBox layoutX="100.0" layoutY="33.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="34.0" prefWidth="1214.0"
+         spacing="30.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+      <Label minWidth="50.0" text="ID"/>
+      <Label minWidth="100.0" text="Name"/>
+      <Label minWidth="200.0" text="Email"/>
+      <Label minWidth="150.0" text="Password"/>
+      <Label minWidth="150.0" text="Role"/>
+      <Label minWidth="150.0" text="Address"/>
+      <Label minWidth="100.0" text="info"/>
+      <Label minWidth="100.0" text="Status"/>
+      <Label minWidth="100.0" text="Remove"/>
+   </HBox>
+   <ScrollPane layoutY="71.0" prefHeight="332.0" prefWidth="1214.0" AnchorPane.bottomAnchor="0.0"
+               AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="71.0">
+      <VBox fx:id="scrollBox" alignment="CENTER" prefHeight="307.0" prefWidth="1346.0"/>
+   </ScrollPane>
+</AnchorPane>

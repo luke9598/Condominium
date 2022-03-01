@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="205.0" prefWidth="574.0" style="-fx-background-color: white; -fx-border-color: #0C39FF;"
+            xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="logic.controller.guicontroller.first.general.home.AddPostGUI">
+   <TextField fx:id="txtMsg" layoutX="118.0" layoutY="26.0" prefHeight="53.0" prefWidth="405.0"
+              promptText="Write something.."
+              style="-fx-border-color: #0C39FF; -fx-border-radius: 2em; -fx-background-color: transparent;"/>
+   <Separator layoutX="11.0" layoutY="104.0" prefHeight="7.0" prefWidth="530.0"/>
+   <Button fx:id="btnAddPost" layoutX="51.0" layoutY="131.0" mnemonicParsing="false" onAction="#addFileClick"
+           prefHeight="34.0" prefWidth="194.0" style="-fx-background-color: #0C39FF;" text="Add File" textFill="WHITE"/>
+   <Button fx:id="btnPublish" layoutX="346.0" layoutY="131.0" mnemonicParsing="false" onAction="#onPublishClick"
+           prefHeight="34.0" prefWidth="194.0" style="-fx-background-color: #0C39FF;" text="Publish" textFill="WHITE"/>
+</AnchorPane>

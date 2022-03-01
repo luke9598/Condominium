@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="logic.controller.guicontroller.first.admin.requests.meeting.OrganizeMeetGUI">
+   <VBox prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <Text fx:id="txt" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="Text" text="Text" />
+      <TextField fx:id="txtObj" editable="false" styleClass="fieldGeneral" />
+      <TextArea fx:id="txtArea" prefHeight="200.0" prefWidth="200.0" styleClass="AreaGeneral" />
+   </VBox>
+</AnchorPane>

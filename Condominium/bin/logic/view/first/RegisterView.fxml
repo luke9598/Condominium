@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<AnchorPane id="AnchorPane" prefHeight="650.0" prefWidth="950.0" style="-fx-background-color: #fff;"
+            xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="logic.controller.guicontroller.first.general.registration.RegisterGUI">
+   <AnchorPane layoutX="10.0" layoutY="10.0" prefHeight="650.0" prefWidth="400.0" style="-fx-background-color: #0C39FF;"
+               AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <Label alignment="CENTER" layoutX="32.0" layoutY="269.0" prefHeight="58.0" prefWidth="317.0" text="Condominium"
+             textFill="WHITE" AnchorPane.leftAnchor="32.0" AnchorPane.rightAnchor="32.0">
+      </Label>
+      <Label alignment="CENTER" layoutX="46.0" layoutY="315.0" prefHeight="23.0" prefWidth="290.0"
+             text="Manage your condominiums easily" textFill="WHITE" AnchorPane.leftAnchor="32.0"
+             AnchorPane.rightAnchor="32.0">
+      </Label>
+      <ImageView fitHeight="113.0" fitWidth="116.0" layoutX="144.0" layoutY="108.0" pickOnBounds="true"
+                 preserveRatio="true" AnchorPane.leftAnchor="144.0" AnchorPane.rightAnchor="143.0"
+                 AnchorPane.topAnchor="108.0">
+         <Image url="@../Icon/outline_apartment_white_48dp.png"/>
+      </ImageView>
+   </AnchorPane>
+   <VBox layoutX="488.0" layoutY="-10.0" prefHeight="448.0" prefWidth="275.0" AnchorPane.bottomAnchor="30.0"
+         AnchorPane.leftAnchor="500.0" AnchorPane.rightAnchor="80.0" AnchorPane.topAnchor="50.0">
+      <opaqueInsets>
+         <Insets/>
+      </opaqueInsets>
+      <TextField fx:id="tfName" prefHeight="40.0" promptText="name">
+         <font>
+            <Font size="18.0"/>
+         </font>
+      </TextField>
+      <TextField fx:id="tfSurname" prefHeight="40.0" promptText="surname">
+         <VBox.margin>
+            <Insets top="10.0"/>
+         </VBox.margin>
+         <font>
+            <Font size="18.0"/>
+         </font>
+      </TextField>
+      <TextField fx:id="tfEmail" prefHeight="40.0" promptText="email">
+         <VBox.margin>
+            <Insets top="10.0"/>
+         </VBox.margin>
+         <font>
+            <Font size="18.0"/>
+         </font>
+      </TextField>
+      <PasswordField fx:id="tfPassword" prefHeight="40.0" promptText="password">
+         <VBox.margin>
+            <Insets top="10.0"/>
+         </VBox.margin>
+         <font>
+            <Font size="18.0"/>
+         </font>
+      </PasswordField>
+      <PasswordField fx:id="tfOkPwd" prefHeight="40.0" promptText="confirm password">
+         <VBox.margin>
+            <Insets top="10.0"/>
+         </VBox.margin>
+         <font>
+            <Font size="18.0"/>
+         </font>
+      </PasswordField>
+      <ComboBox fx:id="roleBox" prefHeight="40.0" prefWidth="450.0" promptText="Role in your condominium?">
+         <VBox.margin>
+            <Insets top="10.0"/>
+         </VBox.margin>
+      </ComboBox>
+      <ComboBox fx:id="addressBox" prefHeight="40.0" prefWidth="450.0" promptText="Condominium address"
+                stylesheets="@style.css">
+         <VBox.margin>
+            <Insets top="10.0"/>
+         </VBox.margin>
+      </ComboBox>
+      <Button mnemonicParsing="false" onAction="#onSignupClick" prefHeight="40.0" prefWidth="400.0"
+              stylesheets="@style.css" text="Sign up">
+         <VBox.margin>
+            <Insets top="10.0"/>
+         </VBox.margin>
+         <font>
+            <Font size="18.0"/>
+         </font>
+      </Button>
+      <Pane prefHeight="31.0" prefWidth="275.0">
+         <VBox.margin>
+            <Insets top="10.0"/>
+         </VBox.margin>
+         <Separator accessibleText="Or" layoutX="3.0" layoutY="13.0" prefHeight="5.0" prefWidth="370.0"/>
+         <Label alignment="CENTER" layoutX="170.0" layoutY="4.0" prefHeight="23.0" prefWidth="31.0"
+                style="-fx-background-color: #fff;" text="Or" textAlignment="CENTER" textFill="#5b5a5a">
+         </Label>
+      </Pane>
+      <Button mnemonicParsing="false" onAction="#onSignClick" prefHeight="40.0" prefWidth="420.0"
+              stylesheets="@style.css" text="Sign in">
+         <font>
+            <Font size="18.0"/>
+         </font>
+         <VBox.margin>
+            <Insets top="10.0"/>
+         </VBox.margin>
+      </Button>
+   </VBox>
+   <Label alignment="CENTER" layoutX="394.0" layoutY="466.0" prefHeight="23.0" prefWidth="93.0" text="Design by me"
+          textFill="#5b5a5a" AnchorPane.bottomAnchor="14.0">
+   </Label>
+   <Label alignment="CENTER" layoutX="747.0" layoutY="466.0" prefHeight="23.0" prefWidth="93.0" text="DOWNLOAD APP"
+          textFill="#a6b1cc" AnchorPane.bottomAnchor="14.0">
+   </Label>
+</AnchorPane>

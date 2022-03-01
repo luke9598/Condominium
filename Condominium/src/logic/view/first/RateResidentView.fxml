@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/" xmlns:fx="http://javafx.com/fxml/" fx:controller="logic.controller.guicontroller.first.owner.RateResidentGUI">
+    <VBox spacing="10.0" AnchorPane.leftAnchor="100.0" AnchorPane.topAnchor="50.0">
+        <TableView fx:id="table" layoutX="36.0" layoutY="38.0" onMouseClicked="#submitUser" prefHeight="200.0">
+            <columns>
+                <TableColumn fx:id="resName" prefWidth="150.0" style="-fx-alignment: center" text="Resident"/>
+                <TableColumn fx:id="aptAddress" prefWidth="150.0" style="-fx-alignment: center" text="Address"/>
+                <TableColumn fx:id="aptNum" prefWidth="100.0" resizable="false" style="-fx-alignment: center"
+                             text="Number"/>
+            </columns>
+            <VBox.margin>
+                <Insets bottom="50.0"/>
+            </VBox.margin>
+        </TableView>
+        <VBox fx:id="scrollPrevRates"/>
+    </VBox>
+</AnchorPane>

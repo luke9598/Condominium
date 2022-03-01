@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="SqlDialectMappings">
+    <file url="file://$PROJECT_DIR$/src/logic/engineeringclasses/dao/FeeDAO.java" dialect="GenericSQL" />
+    <file url="file://$PROJECT_DIR$/src/logic/engineeringclasses/dao/PostDAO.java" dialect="GenericSQL" />
+    <file url="file://$PROJECT_DIR$/src/logic/engineeringclasses/dao/RegisterDAO.java" dialect="GenericSQL" />
+    <file url="file://$PROJECT_DIR$/src/logic/engineeringclasses/dao/UserDAO.java" dialect="GenericSQL" />
+    <file url="file://$PROJECT_DIR$/src/logic/engineeringclasses/query/ApartmentQuery.java" dialect="GenericSQL" />
+    <file url="file://$PROJECT_DIR$/src/logic/engineeringclasses/query/CondominiumQuery.java" dialect="GenericSQL" />
+    <file url="file://$PROJECT_DIR$/src/logic/engineeringclasses/query/PostQuery.java" dialect="GenericSQL" />
+    <file url="file://$PROJECT_DIR$/src/logic/engineeringclasses/query/RegisterQuery.java" dialect="GenericSQL" />
+    <file url="file://$PROJECT_DIR$/src/logic/engineeringclasses/query/UserQuery.java" dialect="GenericSQL" />
+  </component>
+</project>

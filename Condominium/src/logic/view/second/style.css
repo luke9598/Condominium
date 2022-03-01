@@ -1,0 +1,201 @@
+/*GLOBAL*/
+*{
+    /*-fx-background-color: #121212;*/
+    -fx-font-family: "Times New Roman";
+    -fx-text-fill: white;
+    -fx-font-size: 20px;
+}
+
+.pane {
+    -fx-background-color: #121212;
+}
+
+.scrollPost, .scrollPost *{
+    -fx-background-color: #121212;
+    -fx-border-color: #121212;
+}
+.scrollPost .scroll-bar:horizontal .thumb {
+    -fx-background-color: #2E2E2E;
+    -fx-border-color: #121212;
+}
+/*BUTTON*/
+.btnGeneral {
+    -fx-background-color: #1E1E1E;
+}
+.btnGeneral:hover{
+    -fx-background-color: #2E2E2E;
+}
+/*TEXT FIELD*/
+.fieldGeneral {
+    -fx-background-color: #1E1E1E;
+}
+/*RADIO BUTTON*/
+.btnRadio{
+    -fx-background-color: #1E1E1E;
+}
+.btnRadio:hover{
+    -fx-background-color: #2E2E2E;
+}
+.btnRadio .radio{
+    -fx-background-image: null;
+}
+.btnRadio  .dot{
+    -fx-background-color: #2E2E2E;
+}
+.btnRadio:selected .dot{
+    -fx-background-color: white;
+}
+.item{
+    -fx-background-color: #121212;
+}
+.item:hover {
+    -fx-background-color: #2E2E2E;
+}
+
+.Text {
+    -fx-background-color: #121212;
+    -fx-fill: white;
+}
+
+.choice-box{
+    -fx-background-color: #1E1E1E;
+}
+
+.choice-box .context-menu{
+    -fx-background-color: #121212;
+}
+
+.AreaGeneral {
+    -fx-border-color: #121212;
+}
+
+.MenuTop {
+    -fx-background-color: #2E2E2E;
+}
+
+/*ListView*/
+
+.list-view{
+    -fx-background-color: #2E2E2E;
+}
+.list-view .cell{
+    -fx-background-color: #2E2E2E;
+ }
+
+/* Add Post*/
+
+.addPost *{
+    -fx-background-color: #121212;
+}
+
+
+ /*Prev RateView*/
+
+.previousRate *{
+    -fx-background-color: #121212;
+}
+
+.RateView *{
+    -fx-background-color: #121212;
+}
+.RateView .text-field{
+    -fx-text-fill: white;
+ }
+.RateView, .RateView .label{
+    -fx-background-color: #2E2E2E;
+}
+
+
+
+
+/*resident list item*/
+.paneResList *{
+    -fx-background-color: #121212;
+}
+
+
+.itemList #resListHbox{
+    -fx-background-color: #121212;
+}
+
+.itemList .button{
+    -fx-background-color: #2E2E2E;
+    -fx-text-fill: white;
+}
+
+/*addRate*/
+
+.addRate{
+    -fx-background-color: #121213;
+}
+
+.addRate #addVbox, .addRate #addHbox, .addRate #rate, .addRate .radio-button, .addRate .text-area{
+    -fx-background-color: #2E2E2E;
+}
+
+.addRate .text-area, .addRate .button{
+    -fx-text-fill: black;
+}
+
+.addRate .radio-button:selected .radio .dot{
+    -fx-background-color: black;
+}
+
+/*Apt Info*/
+
+.AptInfo *{
+    -fx-text-fill: white;
+    -fx-font-family: "Times New Roman";
+    -fx-font-size: 20px;
+}
+
+.AptInfo .check-box .box{
+    -fx-background-color: white;
+}
+
+.AptInfo .check-box:selected .mark{
+    -fx-background-color: black;
+}
+
+.AptInfo .check-box .mark{
+    -fx-background-color: white;
+}
+
+.AptInfo .tab-pane *{
+    -fx-background-color: white;
+}
+
+.tab {
+    -fx-background-color: #2E2E2E;
+}
+
+.tab .Text{
+    -fx-background-color: #2E2E2E;
+    -fx-fill: white;
+}
+
+.tab:selected {
+    -fx-background-color: #121213;
+}
+/*INFO TABLE VIEW*/
+.InfoTableView , .InfoTableView *{
+    -fx-background-color: #121212;
+}
+
+/*MEETING TABLE VIEW*/
+
+.MeetingTableView , .MeetingTableView *{
+    -fx-background-color: #121212;
+}
+
+/*REGISTRATION TABLE VIEW*/
+
+.RegistrationTableView , .RegistrationTableView *{
+    -fx-background-color: #121212;
+}
+
+/*REQUEST BOTTOM NAV MENU VIEW*/
+
+.RequestBottomNavMenuView .button{
+    -fx-background-color: #2E2E2E;
+}

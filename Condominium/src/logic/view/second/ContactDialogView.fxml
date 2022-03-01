@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<DialogPane minHeight="150.0" minWidth="300.0" prefWidth="321.0" xmlns="http://javafx.com/javafx/" xmlns:fx="http://javafx.com/fxml/" fx:controller="logic.controller.guicontroller.second.resident.ContactDialogGUI">
+    <content>
+        <VBox alignment="CENTER" spacing="10.0">
+            <TextArea fx:id="mailText" promptText="Write your mail to your apartment owner" />
+        </VBox>
+    </content>
+    <ButtonType fx:constant="OK" />
+    <ButtonType fx:constant="CANCEL" />
+</DialogPane>

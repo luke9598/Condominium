@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="1920.0" style="-fx-border-color: white;" styleClass="MenuTop" stylesheets="@style.css" xmlns="http://javafx.com/javafx/" xmlns:fx="http://javafx.com/fxml/" fx:controller="logic.controller.guicontroller.second.general.Menu2GUI">
+   <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <VBox>
+         <Label prefHeight="78.0" prefWidth="316.0" text="CONDOMINIUM" textFill="#e7e5e5">
+            <font>
+               <Font name="Segue UI" size="39.0" />
+            </font>
+         </Label>
+         <ImageView fx:id="imgUser" fitHeight="139.0" fitWidth="188.0" pickOnBounds="true" preserveRatio="true" />
+         <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
+            <opaqueInsets>
+               <Insets />
+            </opaqueInsets>
+            <Label fx:id="lbName" prefHeight="45.0" prefWidth="223.0" text="Name" textFill="#e7e5e5">
+               <font>
+                  <Font size="18.0" />
+               </font>
+               <graphic>
+                  <Text fill="#eaeaea" strokeType="OUTSIDE" strokeWidth="0.0" text="Welcome ,">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Text>
+               </graphic>
+            </Label>
+         </HBox>
+         <Label fx:id="tfCondominiumCode" prefHeight="17.0" prefWidth="192.0" text="Address" textFill="#e7e5e5">
+            <font>
+               <Font size="18.0" />
+            </font>
+         </Label>
+      </VBox>
+      <ChoiceBox fx:id="choice" prefHeight="120.0" prefWidth="446.0" style="-fx-border-color: white;" styleClass="choice" stylesheets="@style.css" />
+   </HBox>
+</AnchorPane>

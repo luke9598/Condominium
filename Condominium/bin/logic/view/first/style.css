@@ -1,0 +1,215 @@
+ .root *{
+    -mainColor:#0C39FF;
+    -fx-font-family: "Times New Roman";
+    -fx-font-size: 20px;
+}
+
+/*Menu*/
+.verticalBox {
+    -fx-background-color: -mainColor;
+}
+
+.button{
+	-fx-background-color : #05071F;
+	-fx-text-fill : #e7e5e5;
+}
+
+.verticalBox .button{
+    -fx-text-fill: white;
+    -fx-background-color: #0C39FF;
+}
+
+.button:hover{
+    -fx-background-color : #10165F;
+}
+
+/*.button:pressed{*/
+/*	-fx-background-color : #1620A1;*/
+/*}*/
+
+.scroll-pane{
+    -fx-background-color: #02030A;
+}
+
+.scroll-bar:horizontal, .scroll-bar:vertical{
+    -fx-background-color:transparent;
+}
+
+.increment-button, .decrement-button {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+
+.scroll-bar:horizontal .track,
+.scroll-bar:vertical .track{
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-background-radius: 0em;
+}
+
+.scroll-bar:horizontal .thumb,
+.scroll-bar:vertical .thumb {
+    -fx-background-color: #10165F;
+    -fx-background-radius: 5em;
+}
+
+.scroll-pane > .corner {
+    -fx-background-color: black;
+}
+
+.combo-box{
+    -fx-font-size: 16px;
+}
+
+        /*TABLE VIEW*/
+
+.table-view .cell:hover{
+    -fx-background-color: #2D75E8;
+}
+
+#detail-table{
+    -fx-pref-width: 10px;
+}
+
+.table-view .column-header,
+.table-view .column-header-background .filler {
+    -fx-cell-size : auto;
+    -fx-background-color: #2D75E8;
+}
+.table-view .column-header .label{
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-alignment: CENTER;
+}
+.table-view .cell{
+    -fx-background-color: -fx-table-cell-border-color, darkgrey;
+    -fx-background-insets: 0, 0 0 1 0;
+    -fx-padding: 0em; /* 0 */
+}
+
+
+.table-row-cell:selected {
+    -fx-background-color: -fx-table-cell-color, #7FACF3;
+    -fx-text-fill: white;
+}
+
+
+.table-row-cell:odd{
+    -fx-background-color: #424242;
+    -fx-background-insets: 0, 0 0 1 0;
+    -fx-padding: 0em
+}
+
+/* scroll bar starts here */
+
+/* The increment and decrement button CSS class of scrollbar */
+.table-view .increment-button ,.table-view .decrement-button {
+    -fx-background-color:transparent;
+    -fx-background-radius: 2em;
+
+}
+
+/* The main scrollbar **track** CSS class  */
+.table-view .scroll-bar:horizontal .track,
+.table-view .scroll-bar:vertical .track{
+    -fx-background-color: transparent;
+    -fx-border-color:derive(  #2D75E8,80%);
+    -fx-background-radius: 2em;
+    -fx-border-radius:2em;
+}
+
+/* The main scrollbar **thumb** CSS class which we drag every time (movable) */
+.table-view .scroll-bar:horizontal .thumb,
+.table-view .scroll-bar:vertical .thumb {
+    -fx-background-color:derive( #2D75E8,90%);
+    -fx-background-insets: 2, 0, 0;
+    -fx-background-radius: 2em;
+}
+
+.button
+{
+    -fx-background-color : #FFF;
+    -fx-border-color: #355ECE;
+    -fx-text-fill:  #0C3988;
+}
+#btnSignin{
+    -fx-background-color : #FFF;
+    -fx-border-color: #355ECE;
+    -fx-text-fill:  #0C3988;
+}
+
+
+
+.button:hover
+{
+    -fx-background-color : #355ECE ;
+    -fx-text-fill:  #FFF;
+}
+.button:pressed
+{
+    -fx-background-color : #0C39FF ;
+    -fx-text-fill: #FFF;
+}
+
+.button2
+{
+    -fx-background-color :  #0C39FF;
+    -fx-border-color: #FFF;
+    -fx-text-fill:  #FFF;
+}
+.button2:hover
+{
+    -fx-background-color : #0C3988 ;
+    -fx-text-fill:   #FFF;
+}
+.button2:pressed
+{
+    -fx-background-color : #0C3400 ;
+    -fx-text-fill: #FFF;
+}
+
+
+
+/* chart properties */
+
+.chart {
+    -fx-padding: 10px;
+    -fx-background-color: transparent;
+    -fx-legend-visible: false;
+}
+.chart-plot-background {
+    -fx-background-color:transparent;
+}
+
+.chart-pie {
+    -fx-border-color: derive(-fx-pie-color, 1%);
+    -fx-border-width: 0;
+}
+
+/*Text Area*/
+.text-area{
+    -fx-border-color: #0C39FF;
+    -fx-border-width: 0.5;
+    -fx-prompt-text-fill: #0C39FF;
+}
+
+/*rates*/
+
+ .ratingText{
+     -fx-control-inner-background: #0C39FF;
+     -fx-border-width: 0.0;
+     -fx-text-box-border: #0C39FF;
+     -fx-prompt-text-fill: #0C39FF;
+ }
+
+/*Slider*/
+.slider{
+    -fx-progress-color: #0C39FF;
+
+}
+
+/*Rates Scroll*/
+
+ #scrollPrevRates *, #scrollPrevRates{
+     -fx-border-width: 0.00001;
+ }

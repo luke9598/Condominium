@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="650.0" prefWidth="950.0" styleClass="pane" stylesheets="@style.css" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="logic.controller.guicontroller.second.general.login.LoginGUI">
+   <VBox alignment="TOP_CENTER" layoutX="498.0" layoutY="60.0" prefHeight="400.0" prefWidth="350.0" spacing="30.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+         <children>
+            <ImageView fitHeight="113.0" fitWidth="116.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../Icon/outline_apartment_white_48dp.png" />
+               </image>
+            </ImageView>
+            <Label alignment="CENTER" prefHeight="58.0" prefWidth="317.0" text="Condominium" textFill="WHITE">
+               <font>
+                  <Font size="72.0" />
+               </font>
+            </Label>
+         </children>
+      </HBox>
+      <TextField fx:id="tfEmail" prefHeight="40.0" promptText="Email" styleClass="fieldGeneral">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </TextField>
+      <PasswordField fx:id="tfPwd" prefHeight="40.0" promptText="Password" styleClass="fieldGeneral">
+         <font>
+            <Font size="18.0" />
+         </font>
+         <VBox.margin>
+            <Insets top="25.0" />
+         </VBox.margin>
+      </PasswordField>
+      <Button mnemonicParsing="false" onAction="#onSelectCondominium" prefHeight="40.0" prefWidth="420.0" styleClass="btnGeneral" stylesheets="@style.css" text="Condominium Address" textFill="WHITE">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Button>
+      <Text fx:id="txtAddress" fill="WHITE" smooth="false" strokeType="OUTSIDE" strokeWidth="0.0">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Text>
+      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="20.0">
+         <Button mnemonicParsing="false" onAction="#onSignClick" prefHeight="40.0" prefWidth="420.0" styleClass="btnGeneral" stylesheets="@style.css" text="Sign in" textFill="WHITE">
+            <font>
+               <Font size="18.0" />
+            </font>
+         </Button>
+         <Button mnemonicParsing="false" onAction="#onSignupClick" prefHeight="40.0" prefWidth="420.0" styleClass="btnGeneral" stylesheets="@style.css" text="Sign up" textFill="WHITE">
+            <font>
+               <Font size="18.0" />
+            </font>
+         </Button>
+      </HBox>
+   </VBox>
+</AnchorPane>

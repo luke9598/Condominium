@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane stylesheets="@style.css"  styleClass="RateView" prefHeight="200.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/" xmlns:fx="http://javafx.com/fxml/" fx:controller="logic.controller.guicontroller.second.owner.RateGUI">
+   <Label fx:id="rateOwnName" layoutX="75.0" layoutY="31.0" text="Name" />
+   <ImageView fx:id="rateOwnImg" fitHeight="40.0" fitWidth="40.0" layoutX="22.0" layoutY="20.0" pickOnBounds="true" preserveRatio="true" />
+   <Label fx:id="rateValue" layoutX="264.0" layoutY="31.0" text="RateValue" />
+   <TextArea fx:id="rateComment" editable="false" layoutX="14.0" layoutY="81.0" prefHeight="100.0" prefWidth="370.0" wrapText="true" />
+</AnchorPane>

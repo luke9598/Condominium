@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0"
+            prefWidth="600.0" style="-fx-background-color: white; -fx-border-color: #0C39FF;"
+            xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="logic.controller.guicontroller.first.general.home.Post1GUI">
+   <Button fx:id="btnDelete" layoutX="508.0" layoutY="37.0" mnemonicParsing="false" onAction="#onDeletePress"
+           style="-fx-background-color: trasparent; -fx-border-color: trasparent; -fx-text-fill: trasparent;">
+      <graphic>
+         <ImageView fitHeight="27.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
+            <Image url="@../Icon/outline_delete_black_24dp.png"/>
+         </ImageView>
+      </graphic>
+   </Button>
+   <Label fx:id="usrName" layoutX="109.0" layoutY="34.0" text="user_name" AnchorPane.leftAnchor="100.0"
+          AnchorPane.topAnchor="35.0">
+      <font>
+         <Font size="18.0"/>
+      </font>
+   </Label>
+   <ImageView fx:id="usrImg" fitHeight="70.0" fitWidth="80.0" layoutX="25.0" layoutY="17.0" nodeOrientation="INHERIT"
+              pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="10.0"/>
+   <TextField fx:id="posTxt" editable="false" layoutY="97.0" prefHeight="26.0" prefWidth="600.0" promptText="Text"
+              style="-fx-background-color: trasparent;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+              AnchorPane.topAnchor="100.0">
+      <font>
+         <Font size="18.0"/>
+      </font>
+   </TextField>
+   <ImageView fx:id="postImg" fitHeight="200.0" fitWidth="594.0" layoutX="3.0" layoutY="125.0" nodeOrientation="INHERIT"
+              pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+              AnchorPane.topAnchor="150.0"/>
+</AnchorPane>

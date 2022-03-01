@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+
+<TableView fx:id="registrationTable" onMouseClicked="#getSelected" stylesheets="@style.css" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="logic.controller.guicontroller.first.admin.requests.registration.RegistrationTableGUI">
+   <columns>
+      <TableColumn fx:id="tcID" editable="false" maxWidth="-1.0" minWidth="100.0" prefWidth="-1.0" text="ID" />
+      <TableColumn fx:id="tcName" editable="false" maxWidth="-1.0" minWidth="150.0" prefWidth="-1.0" text="Name" />
+      <TableColumn fx:id="tcEmail" editable="false" maxWidth="-1.0" minWidth="200.0" prefWidth="-1.0" text="Email" />
+      <TableColumn fx:id="tcPwd" editable="false" maxWidth="-1.0" minWidth="150.0" prefWidth="-1.0" text="Password" />
+      <TableColumn fx:id="tcRole" editable="false" maxWidth="-1.0" minWidth="150.0" prefWidth="-1.0" text="Role" />
+      <TableColumn fx:id="tcAddress" editable="false" maxWidth="-1.0" minWidth="150.0" prefWidth="-1.0" text="Address" />
+      <TableColumn fx:id="tcApartment" editable="false" maxWidth="-1.0" minWidth="150.0" prefWidth="-1.0" text="Apartment" />
+   </columns>
+
+</TableView>
