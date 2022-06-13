@@ -24,7 +24,7 @@ public class Main1GUI extends Application{
         primaryStage.show();
     }
 
-    public void fullScreen(Boolean bool){
+    public void fullScreen(Boolean bool) {
         Stage stage = (Stage) firstBorder.getScene().getWindow();
         stage.setMaximized(bool);
     }

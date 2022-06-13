@@ -100,7 +100,7 @@ public class Menu1GUI extends Main1GUI implements Initializable {
         }
     }
 
-    @FXML private void btnSignOutClick() {
+    @FXML private void btnSignOutClick()  {
         sg.clearState();
         Pane log = view.getPage("Login",1);
         firstBorder.setRight(null);

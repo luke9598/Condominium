@@ -33,7 +33,7 @@ public class LoginGUI implements Initializable{
 		firstBorder.setCenter(pane);
     }
 
-	@FXML private void onSignClick(){
+	@FXML private void onSignClick() {
     	UserBean bean = loginBean(tfEmail.getText(), tfPwd.getText(), comboBox.getValue());
 		if (controller.login(bean)) {
 			Pane menu = view.getPage("Menu",1);

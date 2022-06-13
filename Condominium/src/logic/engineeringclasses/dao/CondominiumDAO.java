@@ -8,7 +8,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class CondominiumDAO extends SqlDAO{
-    public ObservableList<String> checkAddressesList() throws SQLException {
+    public ObservableList<String> checkAddressesList() throws SQLException  {
         ObservableList<String> list = FXCollections.observableArrayList();
         ResultSet rs;
         try {

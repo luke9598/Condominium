@@ -54,7 +54,7 @@ public class RegisterController{
 		return register.checkRegistration(email,address);
 	}
 
-	public ObservableList<String> loadAddresses() throws SQLException{
+	public ObservableList<String> loadAddresses() throws SQLException {
 		return cond.checkAddressesList();
 	}
 

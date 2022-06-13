@@ -4,6 +4,7 @@ import javafx.collections.ObservableList;
 import logic.engineeringclasses.bean.UserBean;
 import logic.engineeringclasses.dao.CondominiumDAO;
 import logic.engineeringclasses.dao.UserDAO;
+import logic.engineeringclasses.exception.GenericException;
 import logic.engineeringclasses.exception.InputException;
 import logic.model.Administrator;
 import logic.model.Owner;
@@ -18,7 +19,7 @@ public class LoginController {
 	private final UserDAO login = new UserDAO();
 	private static final UserSingleton sg = UserSingleton.getInstance();
 	
-	public boolean login(UserBean bean){
+	public boolean login(UserBean bean) {
 		try {
 			if (checkBean(bean)) {			
 				sg.setUserID(login.checkUserID(bean.getUsrEmail(), bean.getUsrAddr()));
@@ -43,7 +44,7 @@ public class LoginController {
 					return true;
 			}
 			return false;
-		}catch(SQLException| InputException e){
+		}catch( SQLException| InputException e){
 			return false;
 		}
 	}
@@ -51,15 +52,15 @@ public class LoginController {
 	public boolean checkBean(UserBean bean) {
 		try {
 			if(bean.getUsrEmail().isEmpty() || bean.getUsrPwd().isEmpty()||bean.getUsrAddr().isEmpty()) {
-				return false;
+				throw new GenericException("Bad data");
 			}
 			return login.checkLogin(bean.getUsrEmail(), bean.getUsrAddr()).equals(bean.getUsrPwd());
-		}catch(NullPointerException | SQLException e) {
+		}catch(NullPointerException | SQLException | GenericException e) {
 			return false;
 		}
 	}
 	
-	public ObservableList<String> loadAddresses() throws SQLException{
+	public ObservableList<String> loadAddresses() throws SQLException {
 		return cond.checkAddressesList();
 	}
 	
