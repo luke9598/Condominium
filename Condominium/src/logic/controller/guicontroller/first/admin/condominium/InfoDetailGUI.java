@@ -29,24 +29,24 @@ public class InfoDetailGUI {
 
     @FXML private Button btnRemove;
     @FXML private Button btnRole;
-    @FXML private TextField tfID;
-    @FXML private TextField tfName;
-    @FXML private TextField tfEmail;
-    @FXML private TextField tfPwd;
-    @FXML private TextField tfRole;
-    @FXML private TextField tfAddr;
+    @FXML private TextField id;
+    @FXML private TextField name;
+    @FXML private TextField email;
+    @FXML private TextField password;
+    @FXML private TextField role;
+    @FXML private TextField address;
 
     @FXML private void btnX() {
         firstBorder.setRight(null);
     }
 
     protected void setUp(UserBean bean){
-        tfID.setText(bean.getUsrID());
-        tfName.setText(bean.getUsrName());
-        tfEmail.setText(bean.getUsrEmail());
-        tfPwd.setText(bean.getUsrPwd());
-        tfRole.setText(bean.getUsrRole());
-        tfAddr.setText(bean.getUsrAddr());
+        id.setText(bean.getUsrID());
+        name.setText(bean.getUsrName());
+        email.setText(bean.getUsrEmail());
+        password.setText(bean.getUsrPwd());
+        role.setText(bean.getUsrRole());
+        address.setText(bean.getUsrAddr());
         switch (Role.valueOf(bean.getUsrRole())){
             case RESIDENT:
                 btnRole.setText("Update Fee");
@@ -83,9 +83,9 @@ public class InfoDetailGUI {
     }
 
     public void btnRemoveClick() throws IOException {
-        if(alert.alertConfirm(TITLE,"Are you sure you want to permanently delete user "+tfName.getText()+"?",null)){
-            if (Role.valueOf(tfRole.getText()) == Role.RESIDENT) {
-                usrController.removeResident(tfID.getText());
+        if(alert.alertConfirm(TITLE,"Are you sure you want to permanently delete user "+name.getText()+"?",null)){
+            if (Role.valueOf(role.getText()) == Role.RESIDENT) {
+                usrController.removeResident(id.getText());
             }
             btnX();
             reloadPage();
@@ -96,7 +96,7 @@ public class InfoDetailGUI {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("/logic/view/first/Dialog.fxml"));
         DialogPane pane = loader.load();
-        switch (Role.valueOf(tfRole.getText())){
+        switch (Role.valueOf(role.getText())){
             case RESIDENT:
                 updateFee(pane);
                 break;
@@ -112,7 +112,7 @@ public class InfoDetailGUI {
 
     private void removeRating(DialogPane pane) {
         InfoItemGUI info = new InfoItemGUI();
-        pane.setContent(info.setUpTableReview(1,tfName.getText(),tfID.getText(),"first"));
+        pane.setContent(info.setUpTableReview(1,name.getText(), id.getText(),"first"));
         pane.getStylesheets().clear();
         Dialog<ButtonType> dialog = new Dialog<>();
         dialog.setDialogPane(pane);
@@ -123,8 +123,8 @@ public class InfoDetailGUI {
         FXMLLoader feeInfo = view.loader("FeeInfo",1);
         Parent feeParent = feeInfo.load();
         FeeInfoGUI ctrlFee = feeInfo.getController();
-        ctrlFee.setUp(tfAddr.getText());
-        ctrlFee.loadFeeInfo(tfID.getText());
+        ctrlFee.setUp(address.getText());
+        ctrlFee.loadFeeInfo(id.getText());
         FeeBean past = ctrlFee.getFees();
         pane.setContent(feeParent);
         Dialog<ButtonType> dialog = new Dialog<>();
@@ -139,7 +139,7 @@ public class InfoDetailGUI {
     }
 
     private UserBean getUserBean(){
-        return setUserBean(tfID.getText(),tfName.getText(),tfEmail.getText(),tfPwd.getText());
+        return setUserBean(id.getText(),name.getText(), email.getText(), password.getText());
     }
 
     public UserBean setUserBean(String id,String name, String email, String pwd) {
@@ -155,7 +155,7 @@ public class InfoDetailGUI {
         FXMLLoader loader = view.loader("Info",1);
         Parent root = loader.load();
         InfoGUI infoCtrl = loader.getController();
-        infoCtrl.setUp(tfAddr.getText());
+        infoCtrl.setUp(address.getText());
         firstBorder.setCenter(root);
     }
 }

@@ -4,13 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2e934ded-b2fb-4671-8a0c-f8e48abf4266" name="Changes" comment="smells">
+    <list default="true" id="2e934ded-b2fb-4671-8a0c-f8e48abf4266" name="Changes" comment="smells 18">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/logic/controller/applicationcontroller/PatternController.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/logic/controller/applicationcontroller/PatternController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/logic/controller/guicontroller/first/general/login/LoginGUI.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/logic/controller/guicontroller/first/general/login/LoginGUI.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/logic/controller/guicontroller/second/admin/condominium/InfoItemGUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/logic/controller/guicontroller/second/admin/condominium/InfoItemGUI.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/logic/controller/guicontroller/second/admin/condominium/UpdateRatingItemGUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/logic/controller/guicontroller/second/admin/condominium/UpdateRatingItemGUI.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/logic/engineeringclasses/bean/RateBean.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/logic/engineeringclasses/bean/RateBean.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/logic/controller/guicontroller/first/admin/condominium/InfoDetailGUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/logic/controller/guicontroller/first/admin/condominium/InfoDetailGUI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/logic/view/first/InfoDetailView.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/logic/view/first/InfoDetailView.fxml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -310,7 +307,7 @@
       <workItem from="1655027151081" duration="2972000" />
       <workItem from="1655122340812" duration="5653000" />
       <workItem from="1655199735177" duration="1531000" />
-      <workItem from="1655215637691" duration="1063000" />
+      <workItem from="1655215637691" duration="2207000" />
     </task>
     <task id="LOCAL-00001" summary="prova pack">
       <created>1638798010140</created>
@@ -564,7 +561,14 @@
       <option name="project" value="LOCAL" />
       <updated>1655129202648</updated>
     </task>
-    <option name="localTasksCounter" value="37" />
+    <task id="LOCAL-00037" summary="smells 18">
+      <created>1655216738541</created>
+      <option name="number" value="00037" />
+      <option name="presentableId" value="LOCAL-00037" />
+      <option name="project" value="LOCAL" />
+      <updated>1655216738541</updated>
+    </task>
+    <option name="localTasksCounter" value="38" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -603,7 +607,8 @@
     <MESSAGE value="fee and query code smells" />
     <MESSAGE value="smell" />
     <MESSAGE value="smells" />
-    <option name="LAST_COMMIT_MESSAGE" value="smells" />
+    <MESSAGE value="smells 18" />
+    <option name="LAST_COMMIT_MESSAGE" value="smells 18" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
