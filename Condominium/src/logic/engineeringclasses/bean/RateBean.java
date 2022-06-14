@@ -2,46 +2,40 @@ package logic.engineeringclasses.bean;
 
 public class RateBean {
 
-    private String rateId;
-    private String ownId;
-    private String resId;
-    private String rateVal;
-    private String rateTxt;
+    private String id;
+    private String res;
+    private String value;
+    private String txt;
 
-    public String getRateId(){
-        return rateId;
+    public String getId(){
+        return id;
     }
 
-    public void setRateId(String rateId){
-        this.rateId = rateId;
+    public void setId(String rateId){
+        this.id = rateId;
     }
 
-    public String getOwnId() {return ownId;}
-
-    public void setOwnId(String ownId) {
-        this.ownId = ownId;}
-
-    public String getResId() {
-        return resId;
+    public String getRes() {
+        return res;
     }
 
-    public void setResId(String resId) {
-        this.resId = resId;
+    public void setRes(String resId) {
+        this.res = resId;
     }
 
-    public String getRateVal() {
-        return rateVal;
+    public String getVal() {
+        return value;
     }
 
-    public void setRateVal(String rateVal) {
-        this.rateVal = rateVal;
+    public void setVal(String rateVal) {
+        this.value = rateVal;
     }
 
-    public String getRateTxt() {
-        return rateTxt;
+    public String getTxt() {
+        return txt;
     }
 
-    public void setRateTxt(String rateTxt) {
-        this.rateTxt = rateTxt;
+    public void setTxt(String rateTxt) {
+        this.txt = rateTxt;
     }
 }

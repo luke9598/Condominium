@@ -34,10 +34,10 @@ public class UpdateRatingItemGUI {
     }
 
     public void setUp(RateBean bean,int gui) {
-        lbID.setText(bean.getRateId());
-        lbName.setText(bean.getResId());
-        lbVal.setText(bean.getRateVal());
-        areaTxt.setText(bean.getRateTxt());
+        lbID.setText(bean.getId());
+        lbName.setText(bean.getRes());
+        lbVal.setText(bean.getVal());
+        areaTxt.setText(bean.getTxt());
         this.gui = gui;
         if(this.gui == 1){
             ColorAdjust color = new ColorAdjust();
