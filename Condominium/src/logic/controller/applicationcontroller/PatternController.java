@@ -44,7 +44,7 @@ public class PatternController {
 	}
 
 	public void textFilter(TextField tf){
-		Pattern validEditingState = Pattern.compile("-?(([1-9][0-9]*)|0)?(\\.[0-9]*)?");
+		Pattern validEditingState = Pattern.compile("-?(([1-9]\\d*)|0)?(\\.\\d*)?");
 		UnaryOperator<TextFormatter.Change> filter = c -> {
 			String text = c.getControlNewText();
 			if (validEditingState.matcher(text).matches()) {
