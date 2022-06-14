@@ -29,12 +29,12 @@
       <opaqueInsets>
          <Insets/>
       </opaqueInsets>
-      <TextField fx:id="tfName" prefHeight="40.0" promptText="name">
+      <TextField fx:id="name" prefHeight="40.0" promptText="name">
          <font>
             <Font size="18.0"/>
          </font>
       </TextField>
-      <TextField fx:id="tfSurname" prefHeight="40.0" promptText="surname">
+      <TextField fx:id="surname" prefHeight="40.0" promptText="surname">
          <VBox.margin>
             <Insets top="10.0"/>
          </VBox.margin>
@@ -42,7 +42,7 @@
             <Font size="18.0"/>
          </font>
       </TextField>
-      <TextField fx:id="tfEmail" prefHeight="40.0" promptText="email">
+      <TextField fx:id="email" prefHeight="40.0" promptText="email">
          <VBox.margin>
             <Insets top="10.0"/>
          </VBox.margin>
@@ -50,7 +50,7 @@
             <Font size="18.0"/>
          </font>
       </TextField>
-      <PasswordField fx:id="tfPassword" prefHeight="40.0" promptText="password">
+      <PasswordField fx:id="password" prefHeight="40.0" promptText="password">
          <VBox.margin>
             <Insets top="10.0"/>
          </VBox.margin>
@@ -58,7 +58,7 @@
             <Font size="18.0"/>
          </font>
       </PasswordField>
-      <PasswordField fx:id="tfOkPwd" prefHeight="40.0" promptText="confirm password">
+      <PasswordField fx:id="okPassword" prefHeight="40.0" promptText="confirm password">
          <VBox.margin>
             <Insets top="10.0"/>
          </VBox.margin>
