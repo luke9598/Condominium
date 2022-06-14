@@ -23,8 +23,8 @@ public class OrganizeMeetGUI {
 
     private MeetRequestBean getBean(String obj,String txtArea){
         MeetRequestBean bean = new MeetRequestBean();
-        bean.setObject(obj);
-        bean.setTextArea(txtArea);
+        bean.setMeetObject(obj);
+        bean.setMeetTextArea(txtArea);
         return bean;
     }
 }

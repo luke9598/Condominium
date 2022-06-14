@@ -56,12 +56,12 @@ public class PostGUI {
     }
 
     public void setUpPost(PostBean bean) {
-        posTxt.setText(bean.getText());
+        posTxt.setText(bean.getPostText());
         posTxt.setEditable(false);
-        btnDelete.setAccessibleText(bean.getId());
-        usrName.setText(bean.getUser());
-        usrImg.setImage(new Image(view.addImage(bean.getRole())));
-        imageView.setImage(controller.setPostImage(bean.getImage()));
+        btnDelete.setAccessibleText(bean.getPostId());
+        usrName.setText(bean.getPostUser());
+        usrImg.setImage(new Image(view.addImage(bean.getPostRole())));
+        imageView.setImage(controller.setPostImage(bean.getPostImage()));
         ColorAdjust color = new ColorAdjust();
         color.setBrightness(1);
         usrImg.setEffect(color);

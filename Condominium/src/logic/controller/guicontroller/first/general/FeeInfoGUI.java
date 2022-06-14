@@ -93,12 +93,12 @@ public class FeeInfoGUI {
 
     private FeeBean feeBean(String apt,String admin,String park,String elev,String pet,String wifi){
         FeeBean bean = new FeeBean();
-        bean.setApt(apt);
-        bean.setAdmin(Double.valueOf(admin));
-        bean.setPark(Double.valueOf(park));
-        bean.setElevator(Double.valueOf(elev));
-        bean.setPet(Double.valueOf(pet));
-        bean.setWifi(Double.valueOf(wifi));
+        bean.setFeeApt(apt);
+        bean.setFeeAdmin(Double.valueOf(admin));
+        bean.setFeePark(Double.valueOf(park));
+        bean.setFeeElevator(Double.valueOf(elev));
+        bean.setFeePet(Double.valueOf(pet));
+        bean.setFeeWifi(Double.valueOf(wifi));
         return bean;
     }
 }

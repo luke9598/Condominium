@@ -77,7 +77,7 @@ public class RegisterController{
 				try{
 					FeeController feeCtrl = new FeeController();
 					register.addRegistered(reg);
-					fee.setApt(aptCtrl.loadApartmentId(reg.getApartment(),reg.getAddress()));
+					fee.setFeeApt(aptCtrl.loadApartmentId(reg.getApartment(),reg.getAddress()));
 					feeCtrl.addFees(fee,"fee");
 					aptCtrl.addResident(reg.getApartment(),reg.getAddress());
 				}catch(SQLException e) {

@@ -2,49 +2,49 @@ package logic.engineeringclasses.bean;
 
 public class MeetRequestBean{
 
-    private String id;
-    private String name;
-    private String address;
-    private String object;
-    private String textArea;
+    private String meetId;
+    private String meetName;
+    private String meetAddress;
+    private String meetObject;
+    private String meetTextArea;
 
-    public String getId() {
-        return id;
+    public String getMeetId() {
+        return meetId;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setMeetId(String meetId) {
+        this.meetId = meetId;
     }
 
-    public String getName() {
-        return name;
+    public String getMeetName() {
+        return meetName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setMeetName(String meetName) {
+        this.meetName = meetName;
     }
 
-    public String getAddress() {
-        return address;
+    public String getMeetAddress() {
+        return meetAddress;
     }
 
-    public void setAddress(String address) {
-        this.address = address;
+    public void setMeetAddress(String meetAddress) {
+        this.meetAddress = meetAddress;
     }
 
-    public String getObject() {
-        return object;
+    public String getMeetObject() {
+        return meetObject;
     }
 
-    public void setObject(String object) {
-        this.object = object;
+    public void setMeetObject(String meetObject) {
+        this.meetObject = meetObject;
     }
 
-    public String getTextArea() {
-        return textArea;
+    public String getMeetTextArea() {
+        return meetTextArea;
     }
 
-    public void setTextArea(String textArea) {
-        this.textArea = textArea;
+    public void setMeetTextArea(String meetTextArea) {
+        this.meetTextArea = meetTextArea;
     }
 }

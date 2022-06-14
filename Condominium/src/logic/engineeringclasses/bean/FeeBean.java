@@ -2,87 +2,60 @@ package logic.engineeringclasses.bean;
 
 public class FeeBean {
 
-    private String apartment;
-    private Double water;
-    private Double gas;
-    private Double elect;
-    private Double admin;
-    private Double park;
-    private Double elevator;
-    private Double pet;
-    private Double wifi;
+    private String feeApartment;
+    private Double feeAdmin;
+    private Double feePark;
+    private Double feeElevator;
+    private Double feePet;
+    private Double feeWifi;
 
 
-    public String getApt() {
-        return apartment;
+    public String getFeeApt() {
+        return feeApartment;
     }
 
-    public void setApt(String apartment) {
-        this.apartment = apartment;
+    public void setFeeApt(String apartment) {
+        this.feeApartment = apartment;
     }
 
-    public Double getWater() {
-        return water;
+    public Double getFeeAdmin() {
+        return feeAdmin;
     }
 
-    public void setWater(Double water) {
-        this.water = water;
+    public void setFeeAdmin(Double feeAdmin) {
+        this.feeAdmin = feeAdmin;
     }
 
-    public Double getGas() {
-        return gas;
+    public Double getFeePark() {
+        return feePark;
     }
 
-    public void setGas(Double gas) {
-        this.gas = gas;
+    public void setFeePark(Double feePark) {
+        this.feePark = feePark;
     }
 
-    public Double getElect() {
-        return elect;
+    public Double getFeeElevator() {
+        return feeElevator;
     }
 
-    public void setElect(Double elect) {
-        this.elect = elect;
+    public void setFeeElevator(Double feeElevator) {
+        this.feeElevator = feeElevator;
     }
 
-    public Double getAdmin() {
-        return admin;
+    public Double getFeePet() {
+        return feePet;
     }
 
-    public void setAdmin(Double admin) {
-        this.admin = admin;
+    public void setFeePet(Double feePet) {
+        this.feePet = feePet;
     }
 
-    public Double getPark() {
-        return park;
+    public Double getFeeWifi() {
+        return feeWifi;
     }
 
-    public void setPark(Double park) {
-        this.park = park;
-    }
-
-    public Double getElevator() {
-        return elevator;
-    }
-
-    public void setElevator(Double elevator) {
-        this.elevator = elevator;
-    }
-
-    public Double getPet() {
-        return pet;
-    }
-
-    public void setPet(Double pet) {
-        this.pet = pet;
-    }
-
-    public Double getWifi() {
-        return wifi;
-    }
-
-    public void setWifi(Double wifi) {
-        this.wifi = wifi;
+    public void setFeeWifi(Double feeWifi) {
+        this.feeWifi = feeWifi;
     }
 
 

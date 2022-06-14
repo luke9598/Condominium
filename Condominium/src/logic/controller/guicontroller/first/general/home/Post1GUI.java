@@ -48,12 +48,12 @@ public class Post1GUI {
     }
     
     public void setUpPost(PostBean bean) {
-    	btnDelete.setAccessibleText(bean.getId());
-    	usrName.setText(bean.getUser());
-    	posTxt.setText(bean.getText());
+    	btnDelete.setAccessibleText(bean.getPostId());
+    	usrName.setText(bean.getPostUser());
+    	posTxt.setText(bean.getPostText());
     	posTxt.setEditable(false);
-		usrImg.setImage(new Image(view.addImage(bean.getRole())));
-		postImg.setImage(controller.setPostImage(bean.getImage()));
+		usrImg.setImage(new Image(view.addImage(bean.getPostRole())));
+		postImg.setImage(controller.setPostImage(bean.getPostImage()));
     }
 
 

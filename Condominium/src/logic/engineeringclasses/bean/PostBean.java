@@ -6,45 +6,45 @@ import java.io.InputStream;
 
 public class PostBean {
 
-	private String id;
-	private String usr;
-	private Role role;
-	private InputStream img;
-	private String text;
+	private String postId;
+	private String postUsr;
+	private Role postRole;
+	private InputStream postImage;
+	private String postText;
 	
-	public String getId() {
-		return this.id;
+	public String getPostId() {
+		return this.postId;
 	}
 
-	public void setId(String id) {
-		this.id = id;
+	public void setPostId(String postId) {
+		this.postId = postId;
 	}
 
-	public void setUser(String usr) {
-		this.usr = usr;
+	public void setPostUser(String usr) {
+		this.postUsr = usr;
 	}
 	
-	public String getUser() {
-		return this.usr;
+	public String getPostUser() {
+		return this.postUsr;
 	}
 
-	public void setRole(Role role){this.role = role;}
+	public void setPostRole(Role postRole){this.postRole = postRole;}
 
-	public Role getRole(){return this.role;}
+	public Role getPostRole(){return this.postRole;}
 	
-	public void setImage(InputStream img) {
-		this.img = img;
+	public void setPostImage(InputStream img) {
+		this.postImage = img;
 	}
 	
-	public InputStream getImage() {
-		return this.img;
+	public InputStream getPostImage() {
+		return this.postImage;
 	}	
 
-	public String getText() {
-		return text;
+	public String getPostText() {
+		return postText;
 	}
 
-	public void setText(String text) {
-		this.text = text;
+	public void setPostText(String text) {
+		this.postText = text;
 	}
 }

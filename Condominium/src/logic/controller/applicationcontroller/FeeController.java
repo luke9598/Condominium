@@ -32,7 +32,7 @@ public class FeeController {
 
     public void updateFees(FeeBean pastBean,FeeBean newBean) {
         try {
-            if (checkPastId(pastBean.getApt())) {
+            if (checkPastId(pastBean.getFeeApt())) {
                 dao.updateFee(pastBean, "pastfee");
             } else {
                 addFees(pastBean, "pastfee");

@@ -39,11 +39,11 @@ public class MeetingTableGUI  {
 
     private MeetRequestBean meetRequestBean(String id, String name, String address, String object, String text) {
         MeetRequestBean meet = new MeetRequestBean();
-        meet.setId(id);
-        meet.setName(name);
-        meet.setAddress(address);
-        meet.setObject(object);
-        meet.setTextArea(text);
+        meet.setMeetId(id);
+        meet.setMeetName(name);
+        meet.setMeetAddress(address);
+        meet.setMeetObject(object);
+        meet.setMeetTextArea(text);
         return meet;
     }
 

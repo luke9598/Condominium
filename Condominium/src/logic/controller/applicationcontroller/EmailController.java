@@ -56,7 +56,7 @@ public class EmailController {
     public void meetEmail(ObservableList<String> list, MeetRequestBean bean) {
         for (String email : list) {
             String[] recipient = new String[]{email};
-            send(recipient, recipient, bean.getObject(), bean.getTextArea());
+            send(recipient, recipient, bean.getMeetObject(), bean.getMeetTextArea());
         }
     }
 }

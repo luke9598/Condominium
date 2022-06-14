@@ -72,10 +72,10 @@ public class MeetingItemGUI {
     }
 
     public void setUp(MeetRequestBean bean) {
-        lbID.setText(bean.getId());
-        lbName.setText(bean.getName());
-        lbAddr.setText(bean.getAddress());
-        lbObject.setText(bean.getObject());
-        txtArea.setText(bean.getTextArea());
+        lbID.setText(bean.getMeetId());
+        lbName.setText(bean.getMeetName());
+        lbAddr.setText(bean.getMeetAddress());
+        lbObject.setText(bean.getMeetObject());
+        txtArea.setText(bean.getMeetTextArea());
     }
 }

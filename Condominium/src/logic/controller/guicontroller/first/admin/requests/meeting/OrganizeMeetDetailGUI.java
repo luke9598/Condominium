@@ -76,10 +76,10 @@ public class OrganizeMeetDetailGUI {
     }
 
     public void setUp(MeetRequestBean bean){
-        tfID.setText(bean.getId());
-        tfAddr.setText(bean.getAddress());
-        tfName.setText(bean.getName());
-        tfObject.setText(bean.getObject());
-        txtArea.setText(bean.getTextArea());
+        tfID.setText(bean.getMeetId());
+        tfAddr.setText(bean.getMeetAddress());
+        tfName.setText(bean.getMeetName());
+        tfObject.setText(bean.getMeetObject());
+        txtArea.setText(bean.getMeetTextArea());
     }
 }

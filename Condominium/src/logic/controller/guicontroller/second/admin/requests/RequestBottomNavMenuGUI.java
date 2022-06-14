@@ -37,11 +37,11 @@ public class RequestBottomNavMenuGUI {
 
     private MeetRequestBean setUpMeeting(MeetRequest meet){
         MeetRequestBean bean = new MeetRequestBean();
-        bean.setId(meet.getId());
-        bean.setName(meet.getName());
-        bean.setAddress(meet.getAddress());
-        bean.setObject(meet.getObject());
-        bean.setTextArea(meet.getText());
+        bean.setMeetId(meet.getId());
+        bean.setMeetName(meet.getName());
+        bean.setMeetAddress(meet.getAddress());
+        bean.setMeetObject(meet.getObject());
+        bean.setMeetTextArea(meet.getText());
         return bean;
     }
 

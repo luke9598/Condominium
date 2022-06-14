@@ -4,15 +4,26 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2e934ded-b2fb-4671-8a0c-f8e48abf4266" name="Changes" comment="smells 16">
+    <list default="true" id="2e934ded-b2fb-4671-8a0c-f8e48abf4266" name="Changes" comment="smells 14">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/logic/controller/guicontroller/first/admin/condominium/InfoDetailGUI.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/logic/controller/guicontroller/first/admin/condominium/InfoDetailGUI.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/logic/controller/guicontroller/second/admin/condominium/InfoItemGUI.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/logic/controller/guicontroller/second/admin/condominium/InfoItemGUI.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/logic/controller/guicontroller/second/admin/condominium/UpdateRatingItemGUI.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/logic/controller/guicontroller/second/admin/condominium/UpdateRatingItemGUI.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/logic/engineeringclasses/bean/RateBean.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/logic/engineeringclasses/bean/RateBean.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/logic/view/first/InfoDetailView.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/bin/logic/view/first/InfoDetailView.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/logic/controller/guicontroller/first/general/registration/RegisterGUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/logic/controller/guicontroller/first/general/registration/RegisterGUI.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/logic/view/first/RegisterView.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/logic/view/first/RegisterView.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/logic/controller/guicontroller/first/general/registration/RegisterGUI.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/logic/controller/guicontroller/first/general/registration/RegisterGUI.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/logic/view/first/RegisterView.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/bin/logic/view/first/RegisterView.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/logic/controller/applicationcontroller/EmailController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/logic/controller/applicationcontroller/EmailController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/logic/controller/applicationcontroller/FeeController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/logic/controller/applicationcontroller/FeeController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/logic/controller/applicationcontroller/RegisterController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/logic/controller/applicationcontroller/RegisterController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/logic/controller/guicontroller/first/admin/requests/meeting/MeetingTableGUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/logic/controller/guicontroller/first/admin/requests/meeting/MeetingTableGUI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/logic/controller/guicontroller/first/admin/requests/meeting/OrganizeMeetDetailGUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/logic/controller/guicontroller/first/admin/requests/meeting/OrganizeMeetDetailGUI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/logic/controller/guicontroller/first/admin/requests/meeting/OrganizeMeetGUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/logic/controller/guicontroller/first/admin/requests/meeting/OrganizeMeetGUI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/logic/controller/guicontroller/first/general/FeeInfoGUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/logic/controller/guicontroller/first/general/FeeInfoGUI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/logic/controller/guicontroller/first/general/Menu1GUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/logic/controller/guicontroller/first/general/Menu1GUI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/logic/controller/guicontroller/first/general/home/Post1GUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/logic/controller/guicontroller/first/general/home/Post1GUI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/logic/controller/guicontroller/second/admin/requests/RequestBottomNavMenuGUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/logic/controller/guicontroller/second/admin/requests/RequestBottomNavMenuGUI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/logic/controller/guicontroller/second/admin/requests/meeting/MeetingItemGUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/logic/controller/guicontroller/second/admin/requests/meeting/MeetingItemGUI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/logic/controller/guicontroller/second/general/home/PostGUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/logic/controller/guicontroller/second/general/home/PostGUI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/logic/engineeringclasses/bean/FeeBean.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/logic/engineeringclasses/bean/FeeBean.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/logic/engineeringclasses/bean/MeetRequestBean.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/logic/engineeringclasses/bean/MeetRequestBean.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/logic/engineeringclasses/bean/PostBean.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/logic/engineeringclasses/bean/PostBean.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/logic/engineeringclasses/dao/FeeDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/logic/engineeringclasses/dao/FeeDAO.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -113,7 +124,7 @@
       <recent name="logic.controller.guicontroller.second" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.Main1GUI">
+  <component name="RunManager" selected="Application.Main2GUI">
     <configuration name="Main1GUI" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="logic.controller.guicontroller.first.general.Main1GUI" />
       <module name="Condominium" />
@@ -177,9 +188,9 @@
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.Main2GUI" />
         <item itemvalue="Application.Main1GUI" />
         <item itemvalue="JUnit.LoginTest" />
-        <item itemvalue="Application.Main2GUI" />
         <item itemvalue="JUnit.test in Condominium" />
       </list>
     </recent_temporary>
@@ -312,7 +323,7 @@
       <workItem from="1655027151081" duration="2972000" />
       <workItem from="1655122340812" duration="5653000" />
       <workItem from="1655199735177" duration="1531000" />
-      <workItem from="1655215637691" duration="3156000" />
+      <workItem from="1655215637691" duration="4965000" />
     </task>
     <task id="LOCAL-00001" summary="prova pack">
       <created>1638798010140</created>
@@ -580,7 +591,21 @@
       <option name="project" value="LOCAL" />
       <updated>1655217887034</updated>
     </task>
-    <option name="localTasksCounter" value="39" />
+    <task id="LOCAL-00039" summary="smells 14">
+      <created>1655218845855</created>
+      <option name="number" value="00039" />
+      <option name="presentableId" value="LOCAL-00039" />
+      <option name="project" value="LOCAL" />
+      <updated>1655218845855</updated>
+    </task>
+    <task id="LOCAL-00040" summary="smells 14">
+      <created>1655218851652</created>
+      <option name="number" value="00040" />
+      <option name="presentableId" value="LOCAL-00040" />
+      <option name="project" value="LOCAL" />
+      <updated>1655218851652</updated>
+    </task>
+    <option name="localTasksCounter" value="41" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -621,7 +646,8 @@
     <MESSAGE value="smells" />
     <MESSAGE value="smells 18" />
     <MESSAGE value="smells 16" />
-    <option name="LAST_COMMIT_MESSAGE" value="smells 16" />
+    <MESSAGE value="smells 14" />
+    <option name="LAST_COMMIT_MESSAGE" value="smells 14" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

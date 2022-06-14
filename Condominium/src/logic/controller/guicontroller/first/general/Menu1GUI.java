@@ -126,11 +126,11 @@ public class Menu1GUI extends Main1GUI implements Initializable {
 
     public PostBean setUpPost(Post curr) {
         PostBean post = new PostBean();
-        post.setId(curr.getId());
-        post.setImage(curr.getImage());
-        post.setRole(curr.getRole());
-        post.setText(curr.getText());
-        post.setUser(curr.getUser());
+        post.setPostId(curr.getId());
+        post.setPostImage(curr.getImage());
+        post.setPostRole(curr.getRole());
+        post.setPostText(curr.getText());
+        post.setPostUser(curr.getUser());
         return post;
     }
 
