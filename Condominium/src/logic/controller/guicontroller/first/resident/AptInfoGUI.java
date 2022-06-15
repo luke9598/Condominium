@@ -31,7 +31,7 @@ public class AptInfoGUI extends Main1GUI implements Initializable {
     private final ChartGUI chart = new ChartGUI();
     private final ApartmentController aptController = new ApartmentController();
     private final FeeController feeController = new FeeController();
-    private final List<String> seriesName = Arrays.asList("Water","Gas","Electricity","Admin","Parking","Elevator","Pet","WiFi");
+    private final List<String> seriesName = Arrays.asList("Admin","Parking","Elevator","Pet","WiFi");
     private static final String CHOOSE_CHART = "Choose Chart";
     private static final String BAR_CHART = "Bar Chart";
     private static final String PIE_CHART = "Pie Chart";

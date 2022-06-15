@@ -10,7 +10,6 @@ import javafx.scene.chart.LineChart;
 import javafx.scene.chart.PieChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.CheckBox;
-import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.GridPane;
@@ -53,20 +52,7 @@ public class AptInfoGUI implements Initializable {
 
     @FXML CheckBox lastMonthFee;
 
-    @FXML Label tfAdmin = new Label();
-    @FXML Label tfPark = new Label();
-    @FXML Label tfElevator = new Label();
-    @FXML Label tfPet = new Label();
-    @FXML Label tfWifi = new Label();
 
-    @FXML Label tfPastAdmin = new Label();
-    @FXML Label tfPastPark = new Label();
-    @FXML Label tfPastElevator = new Label();
-    @FXML Label tfPastPet = new Label();
-    @FXML Label tfPastWifi = new Label();
-
-    private final List<Label> tfName = Arrays.asList(tfAdmin,tfPark,tfElevator,tfPet,tfWifi);
-    private final List<Label> tfPastName = Arrays.asList(tfPastAdmin,tfPastPark,tfPastElevator,tfPastPet,tfPastWifi);
 
 
     @Override
@@ -74,22 +60,8 @@ public class AptInfoGUI implements Initializable {
         setUp();
     }
 
-    private void noFee(Label t){
-        t.setText("Unavailable in your Condominium");
-    }
-
     public List<Double> getList(Fee fee){
         return Arrays.asList(fee.getAdmin(),fee.getPark(),fee.getElevator(),fee.getPet(),fee.getWifi());
-    }
-
-    public GridPane setUpGrid(GridPane grid, List<Label> tfList){
-
-        for (int i = 0; i < seriesName.size(); i++){
-            grid.addRow(i,new Label(seriesName.get(i)+" :"),tfList.get(i));
-        }
-        grid.setVgap(20);
-        grid.setHgap(70);
-        return grid;
     }
 
     public void submitLastMonthFee(){
@@ -163,39 +135,17 @@ public class AptInfoGUI implements Initializable {
         }
         submitLastMonthFee();
         return null;
-    }
+       }
 
     public void setUp(){
 
         try {
-            feeGrid = setUpGrid(feeGrid,tfName);
-            pastGrid = setUpGrid(pastGrid,tfPastName);
-            pastGrid.setVisible(false);
-            Fee boolFee = feeController.setUpFees(sg.getAddress());
             final Apartment apartment = aptController.checkApartments(sg.getUserID(),sg.getAddress(),"apt_res");
             Fee currentFee = feeController.loadFees(apartment.getNumber(),"fee");
             sg.setFee(currentFee);
             Fee pastFee = feeController.loadFees(apartment.getNumber(),"pastfee" );
             sg.setPastfee(pastFee);
 
-            if (boolFee.getAvailablePark()) { tfPark.setText(currentFee.getPark() + " €"); tfPastPark.setText(pastFee.getPark() + " €");}
-            else {noFee(tfPark); noFee(tfPastPark);}
-            if (boolFee.getAvailableElevator()) { tfElevator.setText(currentFee.getElevator() + " €"); tfPastElevator.setText(pastFee.getElevator()+" €"); }
-            else {noFee(tfElevator); noFee(tfPastElevator);}
-            if (boolFee.getAvailablePet()) { tfPet.setText(currentFee.getPet() + " €"); tfPastPet.setText(pastFee.getPet()+" €"); }
-            else {noFee(tfPet); noFee(tfPastPet);}
-            if (boolFee.getAvailableWifi()) { tfWifi.setText(currentFee.getWifi()+" €"); tfPastWifi.setText(pastFee.getWifi()+" €"); }
-            else {noFee(tfWifi); noFee(tfPastWifi);}
-            tfAdmin.setText(currentFee.getAdmin()+" €");
-            tfPastAdmin.setText(pastFee.getAdmin()+" €");
-
-
-            Label tfOwner = new Label(apartment.getOwner());
-            Label tfNumber = new Label(apartment.getNumber());
-            HBox box = new HBox(tfOwner,tfNumber);
-            box.setSpacing(120);
-            gridVbox.getChildren().add(0,box);
-            gridVbox.setSpacing(20);
 
         } catch (SQLException e) {
             e.printStackTrace();
