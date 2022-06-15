@@ -50,17 +50,17 @@ public class AptInfoGUI implements Initializable {
     }
 
     private List<String> createList(Fee currentFee,Fee boolFee) {
-
+        String univ = "Unavailable";
         List<String> list = new ArrayList<>();
         list.add(currentFee.getAdmin().toString());
         if(boolFee.getAvailablePark()) list.add(currentFee.getPark().toString());
-        else{list.add("0.0");}
+        else{list.add(univ);}
         if(boolFee.getAvailableElevator()) list.add(currentFee.getElevator().toString());
-        else{list.add("0.0");}
+        else{list.add(univ);}
         if(boolFee.getAvailablePet()) list.add(currentFee.getPet().toString());
-        else{list.add("0.0");}
+        else{list.add(univ);}
         if(boolFee.getAvailableWifi()) list.add(currentFee.getWifi().toString());
-        else{list.add("0.0");}
+        else{list.add(univ);}
         return list;
     }
 }
