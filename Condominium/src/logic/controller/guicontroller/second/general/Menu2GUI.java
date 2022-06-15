@@ -272,7 +272,7 @@ public class Menu2GUI extends Main2GUI implements Initializable {
             root.setMaxSize(Double.MAX_VALUE, Region.USE_COMPUTED_SIZE);
             secondBorder.setBottom(root);
         }catch(IOException ignore) {
-            //Error
+            //ignore
         }
     }
 
