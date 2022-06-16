@@ -16,7 +16,7 @@ public class FeeController {
 
     public void addFees(FeeBean bean,String table) {
         try{
-            dao.addFees(bean,table);
+            dao.addUpdateFee(bean,table,"add");
         }catch(SQLException e){
             e.printStackTrace();
         }
@@ -33,11 +33,11 @@ public class FeeController {
     public void updateFees(FeeBean pastBean,FeeBean newBean) {
         try {
             if (checkPastId(pastBean.getFeeApt())) {
-                dao.updateFee(pastBean, "pastfee");
+                dao.addUpdateFee(pastBean, "pastfee","update");
             } else {
                 addFees(pastBean, "pastfee");
             }
-            dao.updateFee(newBean, "fee");
+            dao.addUpdateFee(newBean, "fee","update");
         }catch (SQLException e){
             e.printStackTrace();
         }

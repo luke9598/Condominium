@@ -44,9 +44,19 @@ public class FeeDAO extends SqlDAO{
         return fee;
     }
 
-    public void addFees(FeeBean fee,String table) throws SQLException{
+    public void addUpdateFee(FeeBean fee,String table, String type) throws SQLException{
+        String sql = null;
         try{
-            String sql = "INSERT INTO "+table+" (fee_apt,fee_admin,fee_park,fee_elevator,fee_pet,fee_wifi) VALUES (?,?,?,?,?,?)";
+            switch (type){
+                case "add":
+                    sql = "INSERT INTO "+table+" (fee_apt,fee_admin,fee_park,fee_elevator,fee_pet,fee_wifi) VALUES (?,?,?,?,?,?)";
+                    break;
+                case "update":
+                    sql = "UPDATE "+table+" SET fee_apt=?, fee_admin=?, fee_park=?, fee_elevator=?, fee_pet=?, fee_wifi=? WHERE fee_apt='"+fee.getFeeApt()+"'";
+                    break;
+                default:
+                    break;
+            }
             preset = prepConnect(sql);
             preset.setString(1,fee.getFeeApt());
             preset.setDouble(2,fee.getFeeAdmin());
@@ -59,27 +69,7 @@ public class FeeDAO extends SqlDAO{
             if(fee.getFeeWifi().equals(0.0)) preset.setNull(6, Types.NULL);
             else preset.setDouble(6,fee.getFeeWifi());
             preset.execute();
-        } finally {
-            disconnect();
-        }
-    }
-
-    public void updateFee(FeeBean fee, String table) throws SQLException{
-        try{
-            connect();
-            String sql = "UPDATE "+table+" SET fee_admin=?, fee_park=?, fee_elevator=?, fee_pet=?, fee_wifi=? WHERE fee_apt='"+fee.getFeeApt()+"'";
-            preset = prepConnect(sql);
-            preset.setDouble(1,fee.getFeeAdmin());
-            if(fee.getFeePark().equals(0.0)) preset.setNull(2, Types.NULL);
-            else preset.setDouble(2,fee.getFeePark());
-            if(fee.getFeeElevator().equals(0.0)) preset.setNull(3, Types.NULL);
-            else preset.setDouble(3,fee.getFeeElevator());
-            if(fee.getFeePet().equals(0.0)) preset.setNull(4, Types.NULL);
-            else preset.setDouble(4,fee.getFeePet());
-            if(fee.getFeeWifi().equals(0.0)) preset.setNull(5, Types.NULL);
-            else preset.setDouble(5,fee.getFeeWifi());
-            preset.execute();
-        } finally {
+        }finally {
             disconnect();
         }
     }
