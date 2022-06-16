@@ -24,7 +24,7 @@ public class ApartmentController {
 
     public void addResident(String apartment,String address) {
         try{
-            dao.addResident(apartment,address);
+            dao.addResidentOwner(apartment,address,"resident");
         }catch(SQLException e){
             e.printStackTrace();
         }
@@ -32,7 +32,7 @@ public class ApartmentController {
 
     public void addOwner(String apartment,String address){
         try{
-            dao.addOwner(apartment,address);
+            dao.addResidentOwner(apartment,address,"owner");
         }catch(SQLException e){
             e.printStackTrace();
         }

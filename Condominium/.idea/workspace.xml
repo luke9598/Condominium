@@ -6,12 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="2e934ded-b2fb-4671-8a0c-f8e48abf4266" name="Changes" comment="smells 7">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/logic/controller/guicontroller/second/resident/AptInfoGUI.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/logic/controller/guicontroller/second/resident/AptInfoGUI.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/logic/controller/guicontroller/second/resident/ChartGUI.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/logic/view/second/AptInfoView.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/bin/logic/view/second/AptInfoView.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/logic/controller/guicontroller/second/resident/AptInfoGUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/logic/controller/guicontroller/second/resident/AptInfoGUI.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/logic/view/second/AptInfoItemView.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/logic/view/second/AptInfoItemView.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/logic/view/second/AptInfoView.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/logic/view/second/AptInfoView.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/logic/controller/applicationcontroller/ApartmentController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/logic/controller/applicationcontroller/ApartmentController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/logic/engineeringclasses/dao/ApartmentDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/logic/engineeringclasses/dao/ApartmentDAO.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -112,7 +108,7 @@
       <recent name="logic.controller.guicontroller.second" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.Main2GUI">
+  <component name="RunManager" selected="Application.Main1GUI">
     <configuration name="Main1GUI" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="logic.controller.guicontroller.first.general.Main1GUI" />
       <module name="Condominium" />
@@ -176,8 +172,8 @@
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.Main2GUI" />
         <item itemvalue="Application.Main1GUI" />
+        <item itemvalue="Application.Main2GUI" />
         <item itemvalue="JUnit.LoginTest" />
         <item itemvalue="JUnit.test in Condominium" />
       </list>
@@ -314,6 +310,7 @@
       <workItem from="1655215637691" duration="4965000" />
       <workItem from="1655300731803" duration="3294000" />
       <workItem from="1655304137363" duration="4429000" />
+      <workItem from="1655387367438" duration="1392000" />
     </task>
     <task id="LOCAL-00001" summary="prova pack">
       <created>1638798010140</created>
